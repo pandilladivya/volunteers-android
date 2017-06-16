@@ -41,4 +41,6 @@
     <string name="openDrawer">open_drawer</string>
     <string name="closeDrawer">close_drawer</string>
 
+    <string name="requireVolunteers">Require Volunteers!</string>
+    <string name="readMore">Read More</string>
 </resources>
