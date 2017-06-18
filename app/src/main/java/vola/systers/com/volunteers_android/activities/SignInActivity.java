@@ -8,6 +8,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.google.android.gms.auth.api.Auth;
@@ -25,6 +28,11 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import org.json.JSONObject;
 import java.util.Arrays;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import vola.systers.com.volunteers_android.R;
 
@@ -39,7 +47,6 @@ public class SignInActivity extends AppCompatActivity implements
         View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String TAG = SignInActivity.class.getSimpleName();
     private static final int RC_GOOGLE_SIGN_IN = 007;
     private static final int RC_FACEBOOK_SIGN_IN=64206;
     private GoogleApiClient mGoogleApiClient;
@@ -47,6 +54,13 @@ public class SignInActivity extends AppCompatActivity implements
     private Button btnSignIn;
     LoginButton btnLogin;
     CallbackManager callbackManager;
+    private static final String TAG = SignInActivity.class.getSimpleName();
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private EditText emailText,passwordText;
+    private Button login;
 
 
     @Override
@@ -58,6 +72,33 @@ public class SignInActivity extends AppCompatActivity implements
         btnLogin=(LoginButton) findViewById(R.id.usersettings_fragment_login_button) ;
         btnSignIn.setOnClickListener(this);
 
+        emailText= (EditText)findViewById(R.id.input_email) ;
+        passwordText= (EditText)findViewById(R.id.input_password);
+
+        login =(Button)findViewById(R.id.btn_login) ;
+        mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+            }
+        };
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signin(emailText,passwordText);
+            }
+        });
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -66,6 +107,7 @@ public class SignInActivity extends AppCompatActivity implements
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
 
         callbackManager = CallbackManager.Factory.create();
         btnLogin.setReadPermissions(Arrays.asList("public_profile", "email"));
@@ -98,6 +140,42 @@ public class SignInActivity extends AppCompatActivity implements
         });
     }
 
+    public void signin(EditText email,EditText password) {
+
+        Log.d(TAG, "SignIn");
+        final ProgressDialog progressDialog = new ProgressDialog(SignInActivity.this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Creating Account...");
+        progressDialog.show();
+
+        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+
+                // If sign in fails, display a message to the user. If sign in succeeds
+                // the auth state listener will be notified and logic to handle the
+                // signed in user can be handled in the listener.
+
+                if (!task.isSuccessful()) {
+                    Log.w(TAG, "signInWithEmail:failed", task.getException());
+                    Toast.makeText(SignInActivity.this, R.string.auth_failed,Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(SignInActivity.this, R.string.auth_success,Toast.LENGTH_SHORT).show();
+                }
+                }
+            });
+
+        new android.os.Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    progressDialog.dismiss();
+                }
+            }, 3000);
+    }
 
 
     private void googleSignIn() {
@@ -185,7 +263,7 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-
+        mAuth.addAuthStateListener(mAuthListener);
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
@@ -205,6 +283,14 @@ public class SignInActivity extends AppCompatActivity implements
                     handlegoogleSignInResult(googleSignInResult);
                 }
             });
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
