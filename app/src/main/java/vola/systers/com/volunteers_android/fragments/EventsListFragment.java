@@ -163,7 +163,7 @@ public class EventsListFragment extends Fragment {
              * */
             ListAdapter adapter = new SimpleAdapter(
                     getActivity(), eventList,
-                    R.layout.list_item, new String[]{"name", "startDate", "endDate","startTime","endTime"}, new int[]{R.id.event_name, R.id.startDate, R.id.endDate,R.id.startTime,R.id.endTime});
+                    R.layout.events_list_item, new String[]{"name", "startDate", "endDate","startTime","endTime"}, new int[]{R.id.event_name, R.id.startDate, R.id.endDate,R.id.startTime,R.id.endTime});
 
             lv.setAdapter(adapter);
         }
