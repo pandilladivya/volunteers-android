@@ -126,6 +126,8 @@ public class SignInActivity extends AppCompatActivity implements
                 parameters.putString("fields","id,name,email,gender,birthday");
                 request.setParameters(parameters);
                 request.executeAsync();
+                Intent intent = new Intent(SignInActivity.this,Menu.class);
+                startActivity(intent);
             }
 
             @Override
@@ -165,6 +167,8 @@ public class SignInActivity extends AppCompatActivity implements
                 else
                 {
                     Toast.makeText(SignInActivity.this, R.string.auth_success,Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignInActivity.this,Menu.class);
+                    startActivity(intent);
                 }
                 }
             });
