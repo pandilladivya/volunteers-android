@@ -28,6 +28,9 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import org.json.JSONObject;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -95,7 +98,20 @@ public class SignInActivity extends AppCompatActivity implements
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signin(emailText,passwordText);
+
+                final String email = emailText.getText().toString();
+                final String pass = passwordText.getText().toString();
+
+                if (!isValidEmail(email)) {
+                    emailText.setError(getText(R.string.invalid_username));
+                }
+
+                if (!isValidPassword(pass)) {
+                    passwordText.setError(getText(R.string.invalid_password));
+                }
+
+                if(isValidEmail(email) && isValidPassword(pass))
+                    signin(emailText,passwordText);
             }
         });
 
@@ -316,5 +332,22 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
+    // validating email id
+    private boolean isValidEmail(String email) {
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    // validating password with retype password
+    private boolean isValidPassword(String pass) {
+        if (pass != null && pass.length() > 6) {
+            return true;
+        }
+        return false;
+    }
 
 }

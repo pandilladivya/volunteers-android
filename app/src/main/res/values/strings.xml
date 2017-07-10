@@ -23,7 +23,8 @@
     <string name="nav_profile">Profile</string>
     <string name="nav_share">Share App</string>
     <string name="verifying">Verifying Account...</string>
-
+    <string name="invalid_password">Password should atleast be 6 letters long</string>
+    <string name="invalid_username">Please enter a valid Email</string>
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">
         <item>Events</item>
