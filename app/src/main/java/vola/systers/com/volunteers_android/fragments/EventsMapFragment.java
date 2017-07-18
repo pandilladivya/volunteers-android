@@ -1,7 +1,5 @@
 package vola.systers.com.volunteers_android.fragments;
 
-
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,14 +15,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import vola.systers.com.volunteers_android.R;
 
-/*
- * @author divyapandilla
- * @since 2017-06-10
- */
-
 public class EventsMapFragment extends Fragment implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private GoogleMap map;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,18 +27,15 @@ public class EventsMapFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
         return rootView;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
+        map = googleMap;
         LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Some XYZ Event"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        map.addMarker(new MarkerOptions().position(sydney).title("Some XYZ Event"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
 

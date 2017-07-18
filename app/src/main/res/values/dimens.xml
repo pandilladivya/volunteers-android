@@ -2,11 +2,28 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
-
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="profile_width">75dp</dimen>
     <dimen name="profile_height">75dp</dimen>
+
+    <dimen name="heightImageLogo">150dp</dimen>
+    <dimen name="drawerLayoutHeight">100dp</dimen>
+    <dimen name="dimenMarginBottom">20dp</dimen>
+    <dimen name="dimenMarginTop">20dp</dimen>
+    <dimen name="dimenMarginLeft">30dp</dimen>
+    <dimen name="dimenMarginRight">30dp</dimen>
+    <dimen name="dimenLayoutMargin">16dp</dimen>
+    <dimen name="tabLayoutHeight">56dp</dimen>
+    <dimen name="textSize">16dp</dimen>
+    <dimen name="textNavItem">12dp</dimen>
+    <dimen name="dividerHeight">1dp</dimen>
+    <dimen name="padding">8dp</dimen>
+    <dimen name="navImageMargin">12dp</dimen>
+    <dimen name="paddingFbButton">15dp</dimen>
+    <dimen name="navImageDimens">24dp</dimen>
+    <dimen name="viewpagerLayoutHeight">0dp</dimen>
+    <dimen name="navLayoutWidth">240dp</dimen>
 </resources>

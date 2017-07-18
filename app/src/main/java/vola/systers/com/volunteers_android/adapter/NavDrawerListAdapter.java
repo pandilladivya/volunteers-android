@@ -14,11 +14,6 @@ import java.util.ArrayList;
 import vola.systers.com.volunteers_android.R;
 import vola.systers.com.volunteers_android.model.NavDrawerItem;
 
-/*
- * @author divyapandilla
- * @since 2017-06-06
- */
-
 public class NavDrawerListAdapter extends BaseAdapter {
 	
 	private Context context;
@@ -52,7 +47,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.drawer_list_item, null);
         }
          
-        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
+        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.nav_list_icon);
         TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
         TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
          

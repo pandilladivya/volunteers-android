@@ -23,12 +23,6 @@ import java.util.HashMap;
 import vola.systers.com.volunteers_android.R;
 import vola.systers.com.volunteers_android.handler.HttpHandler;
 
-/*
- * @author divyapandilla
- * @since 2017-06-11
- */
-
-
 public class EventsListFragment extends Fragment {
 
 

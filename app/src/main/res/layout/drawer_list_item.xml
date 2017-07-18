@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="@dimen/drawerLayoutHeight"
     android:background="@drawable/list_selector">
 
     <ImageView
-        android:id="@+id/icon"
-        android:layout_width="25dp"
+        android:id="@+id/nav_list_icon"
+        android:layout_width="@dimen/navImageDimens"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginLeft="@dimen/navImageMargin"
+        android:layout_marginRight="@dimen/navImageMargin"
         android:contentDescription="@string/desc_list_item_icon"
         android:layout_centerVertical="true" />
 
@@ -18,12 +18,12 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/icon"
+        android:layout_toRightOf="@id/nav_list_icon"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:textColor="@color/colorPrimaryDark"
         android:gravity="center_vertical"
-        android:paddingRight="40dp"/>
+        android:paddingRight="@dimen/dimenMarginRight"/>
     
     <TextView android:id="@+id/counter"
         android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
         android:background="@drawable/counter_bg"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="@dimen/padding"
         android:textColor="@color/colorPrimaryDark"/>
 
 </RelativeLayout>

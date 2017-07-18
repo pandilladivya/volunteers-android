@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -30,9 +34,6 @@ import vola.systers.com.volunteers_android.R;
 
  /*
   * User can SignIn manually or through social in this activity.
-  *
-  * @author divyapandilla
-  * @since 2017-06-02
   */
 
 public class SignInActivity extends AppCompatActivity implements
@@ -44,19 +45,18 @@ public class SignInActivity extends AppCompatActivity implements
     private static final int RC_FACEBOOK_SIGN_IN=64206;
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
-    private Button btnSignIn;
-    LoginButton btnLogin;
     CallbackManager callbackManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        btnSignIn = (Button) findViewById(R.id.btn_sign_in_google);
-        btnLogin=(LoginButton) findViewById(R.id.usersettings_fragment_login_button) ;
-        btnSignIn.setOnClickListener(this);
+        LoginButton btnFacebookLogin=(LoginButton) findViewById(R.id.btn_fb_sign_in) ;
+        Button btnGoogleLogin = (Button) findViewById(R.id.btn_sign_in_google);
+        TextView skipLink = (TextView)findViewById(R.id.link_skip);
+        btnGoogleLogin.setOnClickListener(this);
+        skipLink.setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -68,8 +68,8 @@ public class SignInActivity extends AppCompatActivity implements
                 .build();
 
         callbackManager = CallbackManager.Factory.create();
-        btnLogin.setReadPermissions(Arrays.asList("public_profile", "email"));
-        btnLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        btnFacebookLogin.setReadPermissions(Arrays.asList("public_profile", "email"));
+        btnFacebookLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 GraphRequest request = GraphRequest.newMeRequest(
@@ -84,48 +84,40 @@ public class SignInActivity extends AppCompatActivity implements
                 parameters.putString("fields","id,name,email,gender,birthday");
                 request.setParameters(parameters);
                 request.executeAsync();
+                Intent intent = new Intent(SignInActivity.this,Menu.class);
+                startActivity(intent);
             }
 
             @Override
             public void onCancel() {
-
+                Toast.makeText(SignInActivity.this,R.string.cancelled_request,Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-
+                Toast.makeText(SignInActivity.this,R.string.error,Toast.LENGTH_LONG).show();
             }
         });
     }
 
-
-
     private void googleSignIn() {
-
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
-
-
     }
 
-        //      code to SignOut from the google Account.
-        //    private void signOut() {
-        //        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-        //                new ResultCallback<Status>() {
-        //                    @Override
-        //                    public void onResult(Status status) {
-        //
-        //                    }
-        //                });
-        //    }
+    public void onSkipClicked() {
+        Intent intent = new Intent(SignInActivity.this,Menu.class);
+        startActivity(intent);
+    }
 
-    private void handlegoogleSignInResult(GoogleSignInResult result) {
+    private void handleGoogleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully.
+            Toast.makeText(this,R.string.sign_in_success,Toast.LENGTH_LONG).show();
             GoogleSignInAccount acct = result.getSignInAccount();
 
-            Log.e(TAG, "display name: " + acct.getDisplayName());
+            Log.i(TAG, "display name: " + acct.getDisplayName());
 
             String personName = acct.getDisplayName();
             String personPhotoUrl;
@@ -140,7 +132,7 @@ public class SignInActivity extends AppCompatActivity implements
 
             String email = acct.getEmail();
 
-            Log.e(TAG, "Name: " + personName + ", email: " + email
+            Log.i(TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " +personPhotoUrl);
 
             Intent intent = new Intent(SignInActivity.this,Menu.class);
@@ -148,7 +140,7 @@ public class SignInActivity extends AppCompatActivity implements
 
         } else {
             // UnAuthenticated.
-
+            Toast.makeText(this,R.string.sign_in_failure,Toast.LENGTH_LONG).show();
         }
 
     }
@@ -159,11 +151,14 @@ public class SignInActivity extends AppCompatActivity implements
         int id = v.getId();
 
         switch (id) {
+
             case R.id.btn_sign_in_google:
                 googleSignIn();
                 break;
+            case R.id.link_skip:
+                onSkipClicked();
 
-                   }
+        }
     }
 
     @Override
@@ -174,7 +169,7 @@ public class SignInActivity extends AppCompatActivity implements
         if (requestCode == RC_GOOGLE_SIGN_IN) {
             Log.d(TAG, "signin");
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handlegoogleSignInResult(result);
+            handleGoogleSignInResult(result);
         }
         else if( requestCode == RC_FACEBOOK_SIGN_IN){
             super.onActivityResult(requestCode, resultCode, data);
@@ -192,7 +187,7 @@ public class SignInActivity extends AppCompatActivity implements
             // and the GoogleSignInResult will be available instantly.
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
-            handlegoogleSignInResult(result);
+            handleGoogleSignInResult(result);
         } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.
@@ -202,7 +197,7 @@ public class SignInActivity extends AppCompatActivity implements
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
                     hideProgressDialog();
-                    handlegoogleSignInResult(googleSignInResult);
+                    handleGoogleSignInResult(googleSignInResult);
                 }
             });
         }
@@ -210,7 +205,6 @@ public class SignInActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
@@ -229,6 +223,4 @@ public class SignInActivity extends AppCompatActivity implements
             mProgressDialog.hide();
         }
     }
-
-
 }
