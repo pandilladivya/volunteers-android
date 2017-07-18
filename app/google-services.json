@@ -1,19 +1,73 @@
 {
   "project_info": {
-    "project_number": "18689589026",
-    "project_id": "volunteers-android-170220"
+    "project_number": "341524951998",
+    "firebase_url": "https://volunteers-android.firebaseio.com",
+    "project_id": "volunteers-android",
+    "storage_bucket": "volunteers-android.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:18689589026:android:c3ed4e73071e770f",
         "android_client_info": {
+          "package_name": "com.systers.vola"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341524951998-r4cjbmshlrignngk7qj0k482dkego4i1.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "341524951998-qm74kqkugrlurg4ieib4g3i0l1cqnsnk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.systers.vola",
+            "certificate_hash": "e927a38fe2380e9ccfe8132bc2845e167bde3ab3"
+          }
+        },
+        {
+          "client_id": "341524951998-226dg65jfgrraltjgv2ogaghkek85i0q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcj0OEhsA3b5c9EyHPuiP7aMWfJb_vtpU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341524951998-r4cjbmshlrignngk7qj0k482dkego4i1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341524951998:android:c3ed4e73071e770f",
+        "android_client_info": {
           "package_name": "vola.systers.com.volunteers_android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "18689589026-14ek5lvigmtdf5ippi1cbmvnv7tdg7eu.apps.googleusercontent.com",
+          "client_id": "341524951998-r4cjbmshlrignngk7qj0k482dkego4i1.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "341524951998-5bifb9718o6897uv8s9sj3hspd9r8j1j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "vola.systers.com.volunteers_android",
@@ -35,11 +89,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341524951998-r4cjbmshlrignngk7qj0k482dkego4i1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
