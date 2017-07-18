@@ -42,8 +42,10 @@ public class EventsListFragment extends Fragment {
     static String startDate, endDate, id,name,startTime,endTime;
 
     // URL to get events JSON
-    private static String url = "http://divya-gsoc.esy.es/sample/data.json";
-    private static String url2 = "http://divya-gsoc.esy.es/sample/data2.json";
+    private static String listEventsUrl = "https://www.eiseverywhere.com/api/v2/global/listEvents.json?accesstoken=";
+    private static String eventUrl = "https://www.eiseverywhere.com/api/v2/ereg/getEvent.json?accesstoken=";
+    private static String gettingTokenUrl="https://www.eiseverywhere.com/api/v2/global/authorize.json?accountid=7157&key=74b7ba663ce4885fd0c1ecefbb57fe8580e2a932";
+    private static String token="";
 
     ArrayList<HashMap<String, String>> eventList;
 
@@ -82,26 +84,41 @@ public class EventsListFragment extends Fragment {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String eventsJsonStr = sh.makeServiceCall(url);
-            String eventDetailsJsonStr = sh.makeServiceCall(url2);
-            Log.e(TAG, "Response from url: " + eventsJsonStr);
-            Log.e(TAG, "Response from url 2 : " + eventDetailsJsonStr);
+            String tokenJsonStr = sh.makeServiceCall(gettingTokenUrl);
 
-            if (eventsJsonStr != null && eventDetailsJsonStr != null) {
+
+            Log.e(TAG,"Token Response : "+tokenJsonStr);
+
+            if(tokenJsonStr!=null)
+            {
                 try {
-                    JSONObject eventsJsonObj = new JSONObject(eventsJsonStr);
-                    JSONObject eventDetailsJsonObject = new JSONObject(eventDetailsJsonStr);
+                    JSONObject tokenObject = new JSONObject(tokenJsonStr);
+                    token=tokenObject.getString("accesstoken");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    // Getting JSON Array node
-                    JSONArray events = eventsJsonObj.getJSONArray("events");
+            String eventsJsonStr = sh.makeServiceCall(listEventsUrl+token);
+            Log.e("EVENTS", "Response from url: " + eventsJsonStr);
+
+            if (eventsJsonStr != null ) {
+                try {
+                  // Getting JSON Array node
+                    JSONArray events = new JSONArray(eventsJsonStr);
 
                     // looping through All events
                     for (int i = 0; i < events.length(); i++) {
                         JSONObject eventJs = events.getJSONObject(i);
 
                         id = eventJs.getString("eventid");
+                        String eventDetailsUrl= eventUrl +token+ "&eventid=" + id;
+                        String eventDetailsJsonStr = sh.makeServiceCall(eventDetailsUrl);
+
+                        JSONObject eventDetailsJsonObject = new JSONObject(eventDetailsJsonStr);
+
                         name = eventJs.getString("name");
-                        startDate = eventDetailsJsonObject.getString("startdate");
+                        startDate = eventDetailsJsonObject.getString("startdate")!=null ? eventDetailsJsonObject.getString("startdate") : "2016-07-07";
                         endDate = eventDetailsJsonObject.getString("enddate");
                         startTime = eventDetailsJsonObject.getString("starttime");
                         endTime=eventDetailsJsonObject.getString("endtime");
