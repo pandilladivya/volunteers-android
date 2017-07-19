@@ -1,4 +1,4 @@
-package vola.systers.com.volunteers_android.activities;
+package vola.systers.com.android.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,7 +37,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import vola.systers.com.volunteers_android.R;
+import vola.systers.com.android.R;
 
  /*
   * User can SignIn manually or through social in this activity.

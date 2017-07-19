@@ -1,4 +1,4 @@
-package vola.systers.com.volunteers_android;
+package vola.systers.com.android;
 
 import org.junit.Test;
 

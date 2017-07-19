@@ -1,4 +1,4 @@
-package vola.systers.com.volunteers_android.activities;
+package vola.systers.com.android.activities;
 
 import android.os.IBinder;
 import android.support.test.espresso.Root;

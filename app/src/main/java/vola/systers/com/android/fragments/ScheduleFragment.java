@@ -1,4 +1,4 @@
-package vola.systers.com.volunteers_android.fragments;
+package vola.systers.com.android.fragments;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -20,32 +20,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import vola.systers.com.volunteers_android.R;
-import vola.systers.com.volunteers_android.handler.HttpHandler;
+import vola.systers.com.android.R;
+import vola.systers.com.android.handler.HttpHandler;
 
-/*
- * @author divyapandilla
- * @since 2017-06-11
- */
+public class ScheduleFragment extends Fragment {
 
 
-public class EventsListFragment extends Fragment {
-
-
-    public EventsListFragment() {
+    public ScheduleFragment() {
     }
 
-    private String TAG = EventsListFragment.class.getSimpleName();
+    private String TAG = ScheduleFragment.class.getSimpleName();
 
     private ProgressDialog pDialog;
     private ListView lv;
     static String startDate, endDate, id,name,startTime,endTime;
 
     // URL to get events JSON
-    private static String listEventsUrl = "https://www.eiseverywhere.com/api/v2/global/listEvents.json?accesstoken=";
-    private static String eventUrl = "https://www.eiseverywhere.com/api/v2/ereg/getEvent.json?accesstoken=";
-    private static String gettingTokenUrl="https://www.eiseverywhere.com/api/v2/global/authorize.json?accountid=7157&key=74b7ba663ce4885fd0c1ecefbb57fe8580e2a932";
-    private static String token="";
+    private static String url = "http://divya-gsoc.esy.es/sample/data.json";
+    private static String url2 = "http://divya-gsoc.esy.es/sample/data2.json";
 
     ArrayList<HashMap<String, String>> eventList;
 
@@ -53,14 +45,12 @@ public class EventsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.eventslist_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.schedule_list_fragment, container, false);
         eventList = new ArrayList<>();
         lv = (ListView) rootView.findViewById(R.id.list);
         new GetEvents().execute();
         return rootView;
     }
-
-
 
     /**
      * Async task class to get json by making HTTP call
@@ -70,7 +60,7 @@ public class EventsListFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            
+
             // Showing progress dialog
             pDialog = new ProgressDialog(getActivity());
             pDialog.setMessage("Please wait...");
@@ -84,41 +74,26 @@ public class EventsListFragment extends Fragment {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String tokenJsonStr = sh.makeServiceCall(gettingTokenUrl);
+            String eventsJsonStr = sh.makeServiceCall(url);
+            String eventDetailsJsonStr = sh.makeServiceCall(url2);
+            Log.e(TAG, "Response from url: " + eventsJsonStr);
+            Log.e(TAG, "Response from url 2 : " + eventDetailsJsonStr);
 
-
-            Log.e(TAG,"Token Response : "+tokenJsonStr);
-
-            if(tokenJsonStr!=null)
-            {
+            if (eventsJsonStr != null && eventDetailsJsonStr != null) {
                 try {
-                    JSONObject tokenObject = new JSONObject(tokenJsonStr);
-                    token=tokenObject.getString("accesstoken");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+                    JSONObject eventsJsonObj = new JSONObject(eventsJsonStr);
+                    JSONObject eventDetailsJsonObject = new JSONObject(eventDetailsJsonStr);
 
-            String eventsJsonStr = sh.makeServiceCall(listEventsUrl+token);
-            Log.e("EVENTS", "Response from url: " + eventsJsonStr);
-
-            if (eventsJsonStr != null ) {
-                try {
-                  // Getting JSON Array node
-                    JSONArray events = new JSONArray(eventsJsonStr);
+                    // Getting JSON Array node
+                    JSONArray events = eventsJsonObj.getJSONArray("events");
 
                     // looping through All events
                     for (int i = 0; i < events.length(); i++) {
                         JSONObject eventJs = events.getJSONObject(i);
 
                         id = eventJs.getString("eventid");
-                        String eventDetailsUrl= eventUrl +token+ "&eventid=" + id;
-                        String eventDetailsJsonStr = sh.makeServiceCall(eventDetailsUrl);
-
-                        JSONObject eventDetailsJsonObject = new JSONObject(eventDetailsJsonStr);
-
                         name = eventJs.getString("name");
-                        startDate = eventDetailsJsonObject.getString("startdate")!=null ? eventDetailsJsonObject.getString("startdate") : "2016-07-07";
+                        startDate = eventDetailsJsonObject.getString("startdate");
                         endDate = eventDetailsJsonObject.getString("enddate");
                         startTime = eventDetailsJsonObject.getString("starttime");
                         endTime=eventDetailsJsonObject.getString("endtime");
@@ -129,10 +104,9 @@ public class EventsListFragment extends Fragment {
                         // adding each child node to HashMap key => value
                         event.put("id", id);
                         event.put("name", name);
-                        event.put("startDate", startDate);
-                        event.put("endDate", endDate);
-                        event.put("startTime",startTime);
-                        event.put("endTime",endTime);
+                        event.put("date", startDate+" to "+endDate);
+                        event.put("time",startTime+" to "+endTime);
+                        event.put("location","Orlando");
 
                         // adding event to event list
                         eventList.add(event);
@@ -180,7 +154,7 @@ public class EventsListFragment extends Fragment {
              * */
             ListAdapter adapter = new SimpleAdapter(
                     getActivity(), eventList,
-                    R.layout.events_list_item, new String[]{"name", "startDate", "endDate","startTime","endTime"}, new int[]{R.id.event_name, R.id.startDate, R.id.endDate,R.id.startTime,R.id.endTime});
+                    R.layout.schedule_list_item, new String[]{"name", "date", "time","location"}, new int[]{R.id.event_name, R.id.date, R.id.time,R.id.location});
 
             lv.setAdapter(adapter);
         }
