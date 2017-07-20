@@ -4,166 +4,160 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:focusable="True"
-    android:padding="@dimen/activity_horizontal_margin">
-
-
-    <TextView
-        android:id="@+id/event_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="4dip"
-        android:paddingTop="6dip"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="16sp"
-        android:textStyle="bold"
-
-        />
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:focusable="True"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/rel_layout_startDate"
-        android:layout_below="@+id/event_name"
-       >
-
-    <TextView
-        android:id="@+id/startDateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="@color/light_grey"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:text="Start Date :"
-        />
-        <TextView
-            android:id="@+id/startDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dip"
-            android:paddingTop="6dip"
-            android:textColor="@color/light_grey"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_toRightOf="@+id/startDateLabel"
-            />
-        <TextView
-            android:id="@+id/endDateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dip"
-            android:paddingTop="6dip"
-            android:textColor="@color/light_grey"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"
-            android:text="End Date :"
-            android:layout_toRightOf="@+id/startDate"
-            />
-        <TextView
-            android:id="@+id/endDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dip"
-            android:paddingTop="6dip"
-            android:textColor="@color/light_grey"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_toRightOf="@+id/endDateLabel"
-            android:layout_alignParentRight="true"
-            />
-    </RelativeLayout>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:id="@+id/rel_layout_endDate"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:focusable="True"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/rel_layout_startDate"
-        android:padding="@dimen/activity_horizontal_margin">
-
-        <TextView
-            android:id="@+id/startTimeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dip"
-            android:paddingTop="6dip"
-            android:textColor="@color/light_grey"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="Start Time:"
-            />
-        <TextView
-            android:id="@+id/startTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dip"
-            android:paddingTop="6dip"
-            android:textColor="@color/light_grey"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_toRightOf="@+id/startTimeLabel"
-            />
-        <TextView
-            android:id="@+id/endTimeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dip"
-            android:paddingTop="6dip"
-            android:textColor="@color/light_grey"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"
-            android:text="End Time :"
-            android:layout_toRightOf="@+id/startTime"
-            />
-        <TextView
-            android:id="@+id/endTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dip"
-            android:paddingTop="6dip"
-            android:textColor="@color/light_grey"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_toRightOf="@+id/endTimeLabel"
-            />
-    </RelativeLayout>
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    >
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:id="@+id/rel_layout_buttons"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:focusable="True"
-        android:layout_below="@+id/rel_layout_endDate"
-      >
+        >
 
-    <Button
-        android:id="@+id/read_more"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:focusable="False"
-        android:paddingTop="10dp"
-        android:text="@string/requireVolunteers"
-        android:textColor="@color/tangerine" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/header"
+            android:layout_alignParentTop="true">
 
-    <Button
-        android:id="@+id/submit"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_toRightOf="@+id/read_more"
-        android:focusable="False"
-        android:paddingTop="10dp"
-        android:layout_alignParentRight="true"
-        android:text="@string/readMore"
-        android:textColor="@color/colorPrimary" />
+            <TextView
+                android:id="@+id/event_name"
+                android:layout_width="@dimen/eventNameWidth"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_bottom"
+                android:paddingTop="@dimen/padding_top"
+                android:textColor="@color/colorPrimary_dark"
+                android:textSize="@dimen/font"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:focusable="True"
+            android:id="@+id/rel_layout_startDate"
+            android:layout_below="@+id/header"
+            android:padding="@dimen/padding"
+            android:layout_marginLeft="@dimen/margin_left"
+            >
+
+            <TextView
+                android:id="@+id/DateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_bottom"
+                android:paddingTop="@dimen/padding_top"
+                android:textColor="@color/list_item_title"
+                android:textSize="@dimen/font"
+                android:textStyle="bold"
+                android:text="@string/date"
+                />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_bottom"
+                android:paddingTop="@dimen/padding_top"
+                android:layout_marginLeft="@dimen/margin_left"
+                android:textColor="@color/light_grey"
+                android:textSize="@dimen/font"
+                android:textStyle="bold"
+                android:layout_toRightOf="@+id/DateLabel"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:id="@+id/rel_layout_Date"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:focusable="True"
+            android:layout_below="@+id/rel_layout_startDate"
+            android:padding="@dimen/padding"
+            android:layout_marginLeft="@dimen/margin_left"
+            >
+
+            <TextView
+                android:id="@+id/TimeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_bottom"
+                android:paddingTop="@dimen/padding_top"
+                android:textColor="@color/list_item_title"
+                android:textSize="@dimen/font"
+                android:textStyle="bold"
+                android:text="@string/time"
+                />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_bottom"
+                android:paddingTop="@dimen/padding_top"
+                android:textColor="@color/light_grey"
+                android:textSize="@dimen/font"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/margin_left"
+                android:layout_toRightOf="@+id/TimeLabel"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:id="@+id/rel_layout_loc"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:focusable="True"
+            android:layout_below="@+id/rel_layout_Date"
+            android:padding="@dimen/padding"
+            android:layout_marginLeft="@dimen/margin_left"
+            >
+
+            <TextView
+                android:id="@+id/locationLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_bottom"
+                android:paddingTop="@dimen/padding_top"
+                android:textColor="@color/list_item_title"
+                android:textSize="@dimen/font"
+                android:textStyle="bold"
+                android:text="@string/location"
+                />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_bottom"
+                android:paddingTop="@dimen/padding_top"
+                android:textColor="@color/light_grey"
+                android:textSize="@dimen/font"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/margin_left"
+                android:layout_toRightOf="@+id/locationLabel"
+                />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/register_volunteer"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/layoutMarginLeftText"
+            android:focusable="False"
+            android:paddingTop="@dimen/buttonMarginTop"
+            android:layout_below="@+id/rel_layout_loc"
+            android:text="@string/requireVolunteers"
+            android:textColor="@color/tangerine" />
     </RelativeLayout>
-</RelativeLayout> 
+
+</RelativeLayout>

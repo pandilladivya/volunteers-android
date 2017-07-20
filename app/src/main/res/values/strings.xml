@@ -29,7 +29,6 @@
     <string name="about_vola">About VOLA!</string>
     <string name="view">View</string>
     <string name="other">Other</string>
-
     <string name="google_maps_key">AIzaSyCB3hnpTnqYMdKSGfHJfU2ZYXWSGXOaYD8</string>
     <string name="nav_events">Events</string>
     <string name="nav_starred_events">Starred Events</string>
@@ -37,6 +36,12 @@
     <string name="nav_navigate">Navigate</string>
     <string name="nav_profile">Profile</string>
     <string name="nav_share">Share App</string>
+    <string name="json_error">Could not get json from server. Check LogCat for possible errors!</string>
+    <string name="parsing_error">Json parsing error: </string>
+    <string name="loading_message">Please wait ...</string>
+    <string name="date">Date :</string>
+    <string name="time">Time :</string>
+    <string name="location">Location :</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">
@@ -45,7 +50,6 @@
         <item>Schedule</item>
         <item>Navigate</item>
     </string-array>
-
 
     <string name="action_clear_all">Clear All</string>
     <string name="action_logout">Logout</string>

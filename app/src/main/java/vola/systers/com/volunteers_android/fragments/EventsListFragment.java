@@ -52,11 +52,10 @@ public class EventsListFragment extends Fragment {
         return rootView;
     }
 
-
-
     /**
      * Async task class to get json by making HTTP call
      */
+
     private class GetEvents extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -68,7 +67,6 @@ public class EventsListFragment extends Fragment {
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
-
         }
 
         @Override
@@ -78,8 +76,8 @@ public class EventsListFragment extends Fragment {
             // Making a request to url and getting response
             String eventsJsonStr = sh.makeServiceCall(url);
             String eventDetailsJsonStr = sh.makeServiceCall(url2);
-            Log.e(TAG, "Response from url: " + eventsJsonStr);
-            Log.e(TAG, "Response from url 2 : " + eventDetailsJsonStr);
+            Log.e(TAG, eventsJsonStr);
+            Log.e(TAG, eventDetailsJsonStr);
 
             if (eventsJsonStr != null && eventDetailsJsonStr != null) {
                 try {
@@ -106,21 +104,20 @@ public class EventsListFragment extends Fragment {
                         // adding each child node to HashMap key => value
                         event.put("id", id);
                         event.put("name", name);
-                        event.put("startDate", startDate);
-                        event.put("endDate", endDate);
-                        event.put("startTime",startTime);
-                        event.put("endTime",endTime);
+                        event.put("date", startDate+" to "+endDate);
+                        event.put("time",startTime+" to "+endTime);
+                        event.put("location","Orlando");
 
                         // adding event to event list
                         eventList.add(event);
                     }
                 } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    Log.e(TAG, String.valueOf(R.string.parsing_error) + e.getMessage());
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(getContext(),
-                                    "Json parsing error: " + e.getMessage(),
+                                    R.string.parsing_error + e.getMessage(),
                                     Toast.LENGTH_LONG)
                                     .show();
                         }
@@ -128,12 +125,12 @@ public class EventsListFragment extends Fragment {
 
                 }
             } else {
-                Log.e(TAG, "Couldn't get json from server.");
+                Log.e(TAG, String.valueOf(R.string.json_error));
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
+                                R.string.json_error,
                                 Toast.LENGTH_LONG)
                                 .show();
                     }
@@ -155,11 +152,13 @@ public class EventsListFragment extends Fragment {
             /**
              * Updating parsed JSON data into ListView
              * */
+
             ListAdapter adapter = new SimpleAdapter(
                     getActivity(), eventList,
-                    R.layout.list_item, new String[]{"name", "startDate", "endDate","startTime","endTime"}, new int[]{R.id.event_name, R.id.startDate, R.id.endDate,R.id.startTime,R.id.endTime});
+                    R.layout.list_item, new String[]{"name", "date", "time","location"}, new int[]{R.id.event_name, R.id.date, R.id.time,R.id.location});
 
             lv.setAdapter(adapter);
+
         }
 
     }
