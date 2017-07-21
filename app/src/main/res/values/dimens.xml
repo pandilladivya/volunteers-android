@@ -15,4 +15,5 @@
     <dimen name="font">16dp</dimen>
     <dimen name="padding_top">6dp</dimen>
     <dimen name="padding_bottom">6dp</dimen>
+    <dimen name="cardview_padding">8dp</dimen>
 </resources>
