@@ -216,6 +216,7 @@ public class EventsListFragment extends Fragment {
                     intent.putExtra("time",s.get("time").toString());
                     intent.putExtra("timeZone",s.get("timeZone").toString());
                     intent.putExtra("eventUrl",s.get("eventUrl").toString());
+                    intent.putExtra("eventId",s.get("id").toString());
                     startActivity(intent);
                 }
 

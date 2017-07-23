@@ -1,13 +1,10 @@
 <resources>
     <string name="app_name">VOLA</string>
-    <string name="action_settings">Settings</string>
 
     <!-- Button text -->
-    <string name="btn_logout_from_google">Logout from Google</string>
 
     <string name="btn_signin_with_facebook">Sign in with Facebook</string>
     <string name="btn_signin_with_google">Sign in with Google</string>
-    <string name="btn_revoke_access">Revoke Access</string>
     <string name="loading">Loading</string>
     <string name="facebook_app_id">1916034148612140</string>
     <string name="fb_login_protocol_scheme">fb1916034148612140</string>
@@ -22,7 +19,6 @@
     <string name="nav_navigate">Navigate</string>
     <string name="nav_profile">Profile</string>
     <string name="nav_share">Share App</string>
-    <string name="verifying">Verifying Account...</string>
     <string name="invalid_password">Password should atleast be 6 letters long</string>
     <string name="invalid_username">Please enter a valid Email</string>
     <!-- Toolbar titles when navigation menu item is selected -->
@@ -36,17 +32,18 @@
 
 
     <string name="register">REGISTER FOR THIS EVENT</string>
+    <string name="register_event">REGISTER</string>
+    <string name="fname_hint">Enter First Name</string>
+    <string name="lname_hint">Enter Last Name</string>
+    <string name="email_hint">Enter Email</string>
     <string name="action_clear_all">Clear All</string>
     <string name="action_logout">Logout</string>
     <string name="action_mark_all_read">Mark All as Read</string>
     <string name="openDrawer">open_drawer</string>
     <string name="closeDrawer">close_drawer</string>
     <string name="requireVolunteers">Require Volunteers!</string>
-    <string name="readMore">Read More</string>
-    <string name="json_error">Could not get json from server. Check LogCat for possible errors!</string>
-    <string name="parsing_error">Json parsing error: </string>
-    <string name="loading_message">Please wait ...</string>
     <string name="date">Date :</string>
     <string name="time">Time :</string>
     <string name="location">Location :</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
 </resources>

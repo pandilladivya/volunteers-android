@@ -221,6 +221,8 @@
                 android:layout_marginTop="@dimen/margin_left"
                 android:background="@color/colorPrimary"
                 android:padding="@dimen/padding_view"
+                android:clickable="true"
+                android:onClick="onRegisterClicked"
                 android:text="@string/register"
                 android:textColor="@color/text_white"
                 android:textSize="@dimen/textViewContent" />

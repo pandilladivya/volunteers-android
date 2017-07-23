@@ -75,12 +75,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.EventDetailView"
             android:label="Event Detail View"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.RegistrationActivity"
+            android:label="@string/title_activity_registration"
             android:theme="@style/AppTheme"></activity>
-
     </application>
 
 </manifest>

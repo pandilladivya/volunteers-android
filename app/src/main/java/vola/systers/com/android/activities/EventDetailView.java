@@ -15,7 +15,7 @@ import vola.systers.com.android.R;
 public class EventDetailView extends AppCompatActivity {
 
     private TextView eventName,eventDescription,locationName,locationCity,locationCountry,link_location_Details,eventTime,eventDate,eventTimeZone;
-    public static String url,eventUrl;
+    public static String url,eventUrl,eventId,name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class EventDetailView extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String name = getIntent().getStringExtra("eventName");
+        name = getIntent().getStringExtra("eventName");
         String description = getIntent().getStringExtra("eventDescription");
         String city = getIntent().getStringExtra("locationCity");
         String location = getIntent().getStringExtra("locationName");
@@ -35,6 +35,7 @@ public class EventDetailView extends AppCompatActivity {
         String time = getIntent().getStringExtra("time");
         String timeZone = getIntent().getStringExtra("timeZone");
         eventUrl=getIntent().getStringExtra("eventUrl");
+        eventId=getIntent().getStringExtra("eventId");
 
         eventName = (TextView) findViewById(R.id.event_name);
         eventDescription = (TextView)findViewById(R.id.event_description);
@@ -99,6 +100,13 @@ public class EventDetailView extends AppCompatActivity {
     public void onEventClicked(View view) {
         Intent intent = new Intent(EventDetailView.this,LocationDetails.class);
         intent.putExtra("url",eventUrl);
+        startActivity(intent);
+    }
+
+    public void onRegisterClicked(View view) {
+        Intent intent = new Intent(EventDetailView.this,RegistrationActivity.class);
+        intent.putExtra("id",eventId);
+        intent.putExtra("name",name);
         startActivity(intent);
     }
 
