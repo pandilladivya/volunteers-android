@@ -27,6 +27,10 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +40,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import vola.systers.com.android.R;
 
@@ -156,7 +162,28 @@ public class SignInActivity extends AppCompatActivity implements
         });
     }
 
-    public void signin(EditText email,EditText password) {
+    public String makeSHA1Hash(String input)
+    {
+        String hexStr = "";
+        try{
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            md.reset();
+            byte[] buffer = input.getBytes("UTF-8");
+            md.update(buffer);
+            byte[] digest = md.digest();
+
+
+            for (int i = 0; i < digest.length; i++) {
+                hexStr +=  Integer.toString( ( digest[i] & 0xff ) + 0x100, 16).substring( 1 );
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return hexStr;
+    }
+
+    public void signin(final EditText email, EditText password) {
 
         Log.d(TAG, "SignIn");
         final ProgressDialog progressDialog = new ProgressDialog(SignInActivity.this);
@@ -180,6 +207,12 @@ public class SignInActivity extends AppCompatActivity implements
                 }
                 else
                 {
+
+                    // Write a message to the database
+                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
+                    String hexStr = makeSHA1Hash(email.getText().toString());
+                    myRef.child(hexStr).child("email").setValue(email.getText().toString());
+
                     Toast.makeText(SignInActivity.this, R.string.auth_success,Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(SignInActivity.this,Menu.class);
                     startActivity(intent);

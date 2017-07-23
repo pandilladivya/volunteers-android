@@ -12,12 +12,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
 
 import vola.systers.com.android.R;
 import vola.systers.com.android.handler.HttpHandler;
@@ -58,6 +63,29 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private class Register extends AsyncTask<String, String, String> {
+
+        public String makeSHA1Hash(String input)
+        {
+            String hexStr = "";
+            try{
+                MessageDigest md = MessageDigest.getInstance("SHA1");
+                md.reset();
+                byte[] buffer = input.getBytes("UTF-8");
+                md.update(buffer);
+                byte[] digest = md.digest();
+
+
+                for (int i = 0; i < digest.length; i++) {
+                    hexStr +=  Integer.toString( ( digest[i] & 0xff ) + 0x100, 16).substring( 1 );
+                }
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return hexStr;
+        }
+
+
         @Override
         protected String doInBackground(String... args) {
             HttpHandler sh = new HttpHandler();
@@ -95,15 +123,23 @@ public class RegistrationActivity extends AppCompatActivity {
                         }
                         // uc.disconnect();
                         Log.i("$$$$$$", jsonString.toString());
+                        JSONObject jsonObj = new JSONObject(jsonString.toString());
                         Log.i("Response is ",String.valueOf(uc.getResponseCode()));
 
                         if(String.valueOf(uc.getResponseCode()).equals("200")){
+                            DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
+                            String hexStr = makeSHA1Hash(args[1]);
+                            myRef.child(hexStr).child("events").child(args[0]).child("name").setValue(eventName);
+                            myRef.child(hexStr).child("events").child(args[0]).child("attendee_id").setValue(jsonObj.get("attendeeid"));
+
+
                             Handler handler = new Handler(Looper.getMainLooper());
 
                             handler.post(new Runnable() {
 
                                 @Override
                                 public void run() {
+
                                     Toast.makeText(RegistrationActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
                                 }
                             });
