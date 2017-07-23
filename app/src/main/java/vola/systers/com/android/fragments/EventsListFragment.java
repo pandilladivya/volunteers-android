@@ -1,6 +1,7 @@
 package vola.systers.com.android.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,25 +9,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import vola.systers.com.android.R;
+import vola.systers.com.android.activities.EventDetailView;
 import vola.systers.com.android.handler.HttpHandler;
-
-/*
- * @author divyapandilla
- * @since 2017-06-11
- */
 
 
 public class EventsListFragment extends Fragment {
@@ -39,7 +34,7 @@ public class EventsListFragment extends Fragment {
 
     private ProgressDialog pDialog;
     private ListView lv;
-    static String startDate, endDate, id,name,startTime,endTime;
+    static String startDate, endDate, id,name,startTime,endTime,description,mapUrl,locationName,locationCity,locationCountry,timeZone,eventsUrl;
 
     // URL to get events JSON
     private static String listEventsUrl = "https://www.eiseverywhere.com/api/v2/global/listEvents.json?accesstoken=";
@@ -61,7 +56,6 @@ public class EventsListFragment extends Fragment {
     }
 
 
-
     /**
      * Async task class to get json by making HTTP call
      */
@@ -70,7 +64,7 @@ public class EventsListFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            
+
             // Showing progress dialog
             pDialog = new ProgressDialog(getActivity());
             pDialog.setMessage("Please wait...");
@@ -114,14 +108,29 @@ public class EventsListFragment extends Fragment {
                         id = eventJs.getString("eventid");
                         String eventDetailsUrl= eventUrl +token+ "&eventid=" + id;
                         String eventDetailsJsonStr = sh.makeServiceCall(eventDetailsUrl);
-
                         JSONObject eventDetailsJsonObject = new JSONObject(eventDetailsJsonStr);
+                        JSONObject location=null;
+                      if(eventDetailsJsonObject.has("location") && eventDetailsJsonObject.getString("location")!="null" && eventDetailsJsonObject.getString("location").isEmpty()==false )
+                     {location = eventDetailsJsonObject.getJSONObject("location");}
 
                         name = eventJs.getString("name");
                         startDate = eventDetailsJsonObject.getString("startdate")!=null ? eventDetailsJsonObject.getString("startdate") : "2016-07-07";
                         endDate = eventDetailsJsonObject.getString("enddate");
                         startTime = eventDetailsJsonObject.getString("starttime");
                         endTime=eventDetailsJsonObject.getString("endtime");
+                        description=eventDetailsJsonObject.getString("description");
+                        locationName=eventDetailsJsonObject.getString("locationname");
+                        locationCity=eventDetailsJsonObject.getString("city");
+                        locationCountry=eventDetailsJsonObject.getString("country");
+                        timeZone=eventDetailsJsonObject.getString("timezone");
+                        eventsUrl=eventDetailsJsonObject.getString("homepage");
+                        if(location==null)
+                        mapUrl="null";
+                        else
+                            if(location.has("map"))
+                            mapUrl=location.getString("map");
+                        else
+                            mapUrl=null;
 
                         // tmp hash map for single event
                         HashMap<String, String> event = new HashMap<>();
@@ -129,11 +138,15 @@ public class EventsListFragment extends Fragment {
                         // adding each child node to HashMap key => value
                         event.put("id", id);
                         event.put("name", name);
-                        event.put("startDate", startDate);
-                        event.put("endDate", endDate);
-                        event.put("startTime",startTime);
-                        event.put("endTime",endTime);
-
+                        event.put("date", startDate+" to "+endDate);
+                        event.put("time",startTime+" to "+endTime);
+                        event.put("description",description);
+                        event.put("url",mapUrl);
+                        event.put("locationCity",locationCity);
+                        event.put("locationName",locationName);
+                        event.put("locationCountry",locationCountry);
+                        event.put("timeZone",timeZone);
+                        event.put("eventUrl",eventsUrl);
                         // adding event to event list
                         eventList.add(event);
                     }
@@ -180,9 +193,33 @@ public class EventsListFragment extends Fragment {
              * */
             ListAdapter adapter = new SimpleAdapter(
                     getActivity(), eventList,
-                    R.layout.events_list_item, new String[]{"name", "startDate", "endDate","startTime","endTime"}, new int[]{R.id.event_name, R.id.startDate, R.id.endDate,R.id.startTime,R.id.endTime});
+                    R.layout.events_list_item, new String[]{"name", "date", "time","locationName"}, new int[]{R.id.event_name, R.id.date, R.id.time,R.id.location});
 
             lv.setAdapter(adapter);
+
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
+                {
+
+                    Object object = lv.getItemAtPosition(position);
+                    HashMap s = (HashMap) object;
+
+                    Intent intent = new Intent(getActivity(),EventDetailView.class);
+                    intent.putExtra("eventName", s.get("name").toString());
+                    intent.putExtra("eventDescription",s.get("description").toString());
+                    intent.putExtra("locationName",s.get("locationName").toString());
+                    intent.putExtra("locationCity",s.get("locationCity").toString());
+                    intent.putExtra("locationCountry",s.get("locationCountry").toString());
+                    intent.putExtra("url",s.get("url").toString());
+                    intent.putExtra("date",s.get("date").toString());
+                    intent.putExtra("time",s.get("time").toString());
+                    intent.putExtra("timeZone",s.get("timeZone").toString());
+                    intent.putExtra("eventUrl",s.get("eventUrl").toString());
+                    startActivity(intent);
+                }
+
+            });
         }
 
     }

@@ -15,4 +15,10 @@
     <dimen name="font">16dp</dimen>
     <dimen name="padding_top">6dp</dimen>
     <dimen name="padding_bottom">6dp</dimen>
+    <dimen name="eventNameWidth">300dp</dimen>
+    <dimen name="padding_view">8dp</dimen>
+    <dimen name="buttonMarginTop">10dp</dimen>
+    <dimen name="layoutMarginLeftText">190dp</dimen>
+    <dimen name="textViewHeading">22sp</dimen>
+    <dimen name="textViewContent">14sp</dimen>
 </resources>
