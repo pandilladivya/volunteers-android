@@ -1,5 +1,8 @@
 package vola.systers.com.android.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.ProgressDialog;
@@ -57,6 +60,7 @@ public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final int RC_GOOGLE_SIGN_IN = 007;
+    public static final String MyPREFERENCES = "MyPrefs" ;
     private static final int RC_FACEBOOK_SIGN_IN=64206;
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
@@ -212,6 +216,8 @@ public class SignInActivity extends AppCompatActivity implements
                     DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
                     String hexStr = makeSHA1Hash(email.getText().toString());
                     myRef.child(hexStr).child("email").setValue(email.getText().toString());
+//
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("email", email.getText().toString()).apply();
 
                     Toast.makeText(SignInActivity.this, R.string.auth_success,Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(SignInActivity.this,Menu.class);
