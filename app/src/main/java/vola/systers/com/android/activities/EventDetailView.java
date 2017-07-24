@@ -1,21 +1,35 @@
 package vola.systers.com.android.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.security.MessageDigest;
+
 import vola.systers.com.android.R;
+import vola.systers.com.android.fragments.EventsListFragment;
+import vola.systers.com.android.fragments.EventsMapFragment;
 
 public class EventDetailView extends AppCompatActivity {
 
     private TextView eventName,eventDescription,locationName,locationCity,locationCountry,link_location_Details,eventTime,eventDate,eventTimeZone;
     public static String url,eventUrl,eventId,name;
+    private FloatingActionButton fab;
+    public static String starred="false";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +60,7 @@ public class EventDetailView extends AppCompatActivity {
         eventTime=(TextView)findViewById(R.id.event_time);
         eventDate=(TextView)findViewById(R.id.event_date);
         eventTimeZone=(TextView)findViewById(R.id.event_timeZone);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
 
         eventName.setText(name);
@@ -89,6 +104,46 @@ public class EventDetailView extends AppCompatActivity {
         {
             eventTimeZone.setVisibility(View.GONE);
         }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(starred == "true")
+                {
+                    // TODO: Write Unstar an event
+                }
+                else {
+                    String email = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("email", "defaultStringIfNothingFound");
+                    Log.i("EMAIL", email);
+                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
+                    String hexStr = makeSHA1Hash(email);
+                    myRef.child(hexStr).child("starred_events").child(eventId).child("name").setValue(name);
+
+                }
+            }
+
+        });
+    }
+
+    public String makeSHA1Hash(String input)
+    {
+        String hexStr = "";
+        try{
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            md.reset();
+            byte[] buffer = input.getBytes("UTF-8");
+            md.update(buffer);
+            byte[] digest = md.digest();
+
+
+            for (int i = 0; i < digest.length; i++) {
+                hexStr +=  Integer.toString( ( digest[i] & 0xff ) + 0x100, 16).substring( 1 );
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return hexStr;
     }
 
     public void onLocationClicked(View view) {
