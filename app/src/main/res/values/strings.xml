@@ -11,7 +11,7 @@
     <string name="auth_failed">Sign In Failed.</string>
     <string name="auth_success">Logged in Successfully</string>
     <string name="desc_list_item_icon">Item Icon</string>
-    <string name="google_maps_key">AIzaSyCB3hnpTnqYMdKSGfHJfU2ZYXWSGXOaYD8</string>
+    <string name="google_maps_key">AIzaSyCBJHrbZRCngtHJ15UTBKJZ3wDFwHsVzC0</string>
     <string name="nav_events">Events</string>
     <string name="nav_starred_events">Starred Events</string>
     <string name="nav_schedule">Schedule</string>
