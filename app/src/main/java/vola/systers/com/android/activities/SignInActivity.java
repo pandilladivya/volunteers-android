@@ -1,7 +1,5 @@
 package vola.systers.com.android.activities;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +45,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import vola.systers.com.android.R;
+import vola.systers.com.android.manager.PrefManager;
 
  /*
   * User can SignIn manually or through social in this activity.
@@ -68,7 +67,7 @@ public class SignInActivity extends AppCompatActivity implements
     LoginButton btnLogin;
     CallbackManager callbackManager;
     private static final String TAG = SignInActivity.class.getSimpleName();
-
+    private PrefManager prefManager;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -80,7 +79,11 @@ public class SignInActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-
+        prefManager = new PrefManager(this);
+        if (!prefManager.isFirstTimeLaunch()) {
+            launchHomeScreen();
+            finish();
+        }
         btnSignIn = (Button) findViewById(R.id.btn_sign_in_google);
         btnLogin=(LoginButton) findViewById(R.id.usersettings_fragment_login_button) ;
         btnSignIn.setOnClickListener(this);
@@ -166,6 +169,12 @@ public class SignInActivity extends AppCompatActivity implements
         });
     }
 
+    private void launchHomeScreen() {
+        prefManager.setFirstTimeLaunch(false);
+        startActivity(new Intent(SignInActivity.this, Menu.class));
+        finish();
+    }
+
     public String makeSHA1Hash(String input)
     {
         String hexStr = "";
@@ -220,8 +229,7 @@ public class SignInActivity extends AppCompatActivity implements
                     PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("email", email.getText().toString()).apply();
 
                     Toast.makeText(SignInActivity.this, R.string.auth_success,Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SignInActivity.this,Menu.class);
-                    startActivity(intent);
+                    launchHomeScreen();
 
                 }
                 }
@@ -279,8 +287,7 @@ public class SignInActivity extends AppCompatActivity implements
             Log.e(TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " +personPhotoUrl);
 
-            Intent intent = new Intent(SignInActivity.this,Menu.class);
-            startActivity(intent);
+            launchHomeScreen();
 
         } else {
             // UnAuthenticated.
