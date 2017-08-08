@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/padding_bottom"
                 android:paddingTop="@dimen/padding_top"
-                android:textColor="@color/colorPrimary_dark"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/font"
                 android:textStyle="bold"
                 />

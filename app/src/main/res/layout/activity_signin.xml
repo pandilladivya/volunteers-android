@@ -94,7 +94,7 @@
         android:text="Click here to skip this step"
         android:gravity="center"
         android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/tangerine"
         android:textSize="16dip"/>
 
 
