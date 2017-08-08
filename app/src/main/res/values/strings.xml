@@ -21,6 +21,13 @@
     <string name="nav_share">Share App</string>
     <string name="invalid_password">Password should atleast be 6 letters long</string>
     <string name="invalid_username">Please enter a valid Email</string>
+    <string name="password_mismatch">Passwords should match</string>
+    <string name="skip">Click here to skip this step</string>
+    <string name="link_login">Already have an account? Login In here</string>
+    <string name="password_hint">Password</string>
+    <string name="cnf_password_hint">Confirm Password</string>
+    <string name="signup">SIGN UP</string>
+
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">
         <item>Events</item>
@@ -29,7 +36,6 @@
         <item>Requests</item>
         <item>Navigate</item>
     </string-array>
-
 
     <string name="register">REGISTER FOR THIS EVENT</string>
     <string name="register_event">REGISTER</string>
