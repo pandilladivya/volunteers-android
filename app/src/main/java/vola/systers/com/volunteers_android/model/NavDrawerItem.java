@@ -1,17 +1,11 @@
 package vola.systers.com.volunteers_android.model;
 
-/*
- * @author divyapandilla
- * @since 2017-06-06
- */
-
 public class NavDrawerItem {
 	
 	private String title;
 	private int icon;
 	private String count = "0";
 	// boolean to set visiblity of the counter
-
 	private boolean isCounterVisible = false;
 	
 	public NavDrawerItem(){}

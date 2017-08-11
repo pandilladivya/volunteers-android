@@ -4,29 +4,24 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_events"
-            android:icon="@drawable/events"
+            android:icon="@mipmap/event"
             android:title="@string/nav_events" />
         <item
             android:id="@+id/nav_starred_events"
-            android:icon="@drawable/star"
+            android:icon="@mipmap/star"
             android:title="@string/nav_starred_events" />
         <item
             android:id="@+id/nav_schedule"
-            android:icon="@drawable/schedule"
+            android:icon="@mipmap/schedule"
             android:title="@string/nav_schedule" />
 
         <item
-            android:id="@+id/nav_requests"
-            android:icon="@drawable/requests"
-            android:title="@string/nav_requests" />
-
-        <item
             android:id="@+id/nav_navigate"
-            android:icon="@drawable/navigate"
+            android:icon="@mipmap/navigate"
             android:title="@string/nav_navigate" />
     </group>
 
-    <item android:title="Other">
+    <item android:title="@string/other">
         <menu>
             <item
                 android:id="@+id/nav_profile"

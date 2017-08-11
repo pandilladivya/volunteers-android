@@ -20,14 +20,8 @@ import vola.systers.com.volunteers_android.R;
 import vola.systers.com.volunteers_android.fragments.EventsListFragment;
 import vola.systers.com.volunteers_android.fragments.EventsMapFragment;
 import vola.systers.com.volunteers_android.fragments.StarredEventsFragment;
-import vola.systers.com.volunteers_android.fragments.RequestsFragment;
 import vola.systers.com.volunteers_android.fragments.ScheduleFragment;
 import vola.systers.com.volunteers_android.fragments.NavigateFragment;
-
-/*
- * @author divyapandilla
- * @since 2017-06-06
- */
 
 
 public class Menu extends AppCompatActivity {
@@ -41,12 +35,10 @@ public class Menu extends AppCompatActivity {
     // index to identify current nav menu item
     public static int navItemIndex = 0;
 
-    // tags used to attach the fragments
     private static  String TAG_FAB ="list";
     private static final String TAG_EVENTS = "events";
     private static final String TAG_STARRED = "starred";
     private static final String TAG_SCHEDULE = "schedule";
-    private static final String TAG_REQUESTS = "requests";
     private static final String TAG_NAVIGATE = "navigate";
     public static String CURRENT_TAG = TAG_EVENTS;
 
@@ -55,7 +47,7 @@ public class Menu extends AppCompatActivity {
 
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
-    private Handler mHandler;
+    private Handler handler;
 
 
     @Override
@@ -64,18 +56,13 @@ public class Menu extends AppCompatActivity {
         setContentView(R.layout.menu);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        mHandler = new Handler();
-
+        handler = new Handler();
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-
-
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
-
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +79,6 @@ public class Menu extends AppCompatActivity {
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     ft.replace(R.id.frame, fragment);
                     ft.commit();
-
                 }
                 else if(TAG_FAB=="map")
                 {
@@ -106,12 +92,10 @@ public class Menu extends AppCompatActivity {
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     ft.replace(R.id.frame, fragment);
                     ft.commit();
-
                 }
             }
 
         });
-
 
         // initializing navigation menu
         setUpNavigationView();
@@ -119,25 +103,22 @@ public class Menu extends AppCompatActivity {
         if (savedInstanceState == null) {
             navItemIndex = 0;
             CURRENT_TAG = TAG_EVENTS;
-
             loadHomeFragment();
         }
     }
 
-    /***
+    /*
      * Returns respected fragment that user
      * selected from navigation menu
      */
 
     private void loadHomeFragment() {
-        // selecting appropriate nav menu item
+
         selectNavMenu();
 
-        // set toolbar title
         setToolbarTitle();
 
-        // if user select the current navigation menu again, don't do anything
-        // just close the navigation drawer
+        // if user select the current navigation menu again, close the navigation drawer
         if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
             drawer.closeDrawers();
 
@@ -146,10 +127,8 @@ public class Menu extends AppCompatActivity {
             return;
         }
 
-        // Sometimes, when fragment has huge data, screen seems hanging
-        // when switching between navigation menus
-        // So using runnable, the fragment is loaded with cross fade effect
-        // This effect can be seen in GMail app
+
+        // The fragment is loaded with cross fade effect using runnable
         Runnable mPendingRunnable = new Runnable() {
             @Override
             public void run() {
@@ -165,13 +144,11 @@ public class Menu extends AppCompatActivity {
 
         // If mPendingRunnable is not null, then add to the message queue
         if (mPendingRunnable != null) {
-            mHandler.post(mPendingRunnable);
+            handler.post(mPendingRunnable);
         }
 
-        // show or hide the fab button
         toggleFab();
 
-        //Closing drawer on item click
         drawer.closeDrawers();
 
         // refresh toolbar menu
@@ -181,7 +158,6 @@ public class Menu extends AppCompatActivity {
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
-                // events
                 if(TAG_FAB == "list")
                 {
                     EventsListFragment listFragment = new EventsListFragment();
@@ -194,21 +170,14 @@ public class Menu extends AppCompatActivity {
                 }
 
             case 1:
-                // starred fragment
                 StarredEventsFragment starredEventsFragment = new StarredEventsFragment();
                 return starredEventsFragment;
 
             case 2:
-                // schedule fragment
                 ScheduleFragment scheduleFragment = new ScheduleFragment();
                 return scheduleFragment;
-            case 3:
-                // requests fragment
-                RequestsFragment requestsFragment = new RequestsFragment();
-                return requestsFragment;
 
-            case 4:
-                // navigate fragment
+            case 3:
                 NavigateFragment navigateFragment = new NavigateFragment();
                 return navigateFragment;
             default:
@@ -225,16 +194,13 @@ public class Menu extends AppCompatActivity {
     }
 
     private void setUpNavigationView() {
-        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-            // This method will trigger on item Click of navigation menu
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-                //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
-                    //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.nav_events:
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_EVENTS;
@@ -247,19 +213,17 @@ public class Menu extends AppCompatActivity {
                         navItemIndex = 2;
                         CURRENT_TAG = TAG_SCHEDULE;
                         break;
-                    case R.id.nav_requests:
-                        navItemIndex = 3;
-                        CURRENT_TAG = TAG_REQUESTS;
-                        break;
                     case R.id.nav_navigate:
-                        navItemIndex = 4;
+                        navItemIndex = 3;
                         CURRENT_TAG = TAG_NAVIGATE;
                         break;
                     case R.id.nav_profile:
                         // launch new intent instead of loading fragment
+                        // TODO : Profile Page
 
                     case R.id.nav_share:
                         // launch new intent instead of loading fragment
+                        // TODO : Share APP
 
                     default:
                         navItemIndex = 0;
@@ -284,18 +248,15 @@ public class Menu extends AppCompatActivity {
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
                 super.onDrawerClosed(drawerView);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
                 super.onDrawerOpened(drawerView);
             }
         };
 
-        //Setting the actionbarToggle to drawer layout
         drawer.setDrawerListener(actionBarDrawerToggle);
 
         //calling sync state is necessary or else your hamburger icon wont show up
@@ -309,11 +270,7 @@ public class Menu extends AppCompatActivity {
             return;
         }
 
-        // This code loads home fragment when back key is pressed
-        // when user is in other fragment than home
         if (shouldLoadHomeFragOnBackPress) {
-            // checking if user is on other navigation menu
-            // rather than home
             if (navItemIndex != 0) {
                 navItemIndex = 0;
                 CURRENT_TAG = TAG_EVENTS;
@@ -321,7 +278,6 @@ public class Menu extends AppCompatActivity {
                 return;
             }
         }
-
         super.onBackPressed();
     }
 
@@ -334,36 +290,17 @@ public class Menu extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.main, menu);
         }
 
-        // when fragment is notifications, load the menu created for notifications
-        if (navItemIndex == 3) {
-            getMenuInflater().inflate(R.menu.notifications, menu);
-        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.logout, Toast.LENGTH_LONG).show();
             return true;
-        }
-
-        // user is in notifications fragment
-        // and selected 'Mark all as Read'
-        if (id == R.id.action_mark_all_read) {
-            Toast.makeText(getApplicationContext(), "All notifications marked as read!", Toast.LENGTH_LONG).show();
-        }
-
-        // user is in notifications fragment
-        // and selected 'Clear All'
-        if (id == R.id.action_clear_notifications) {
-            Toast.makeText(getApplicationContext(), "Clear all notifications!", Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);
