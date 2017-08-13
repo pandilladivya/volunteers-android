@@ -3,7 +3,7 @@
 
 ## Introduction
 
-Volunteers Android  is a mobile application which helps manage the Hoppers at the Grace Hopper Celebration. We want to provide Systers’s affinity groups a method of collaborating, organizing, and promoting their individual events (i.e. meetups, local workshops, etc). Systers can register, login, and volunteer for events in their local city. These volunteers work multiple shifts, up to eight hours, spread over the three days of the conference. They must commit to their assigned shifts, attend an orientation and be in the area during the conference week.
+Volunteers Android  is a mobile application which helps to manage the Volunteers at an event. We want to provide Systers’s affinity groups a method of collaborating, organizing, and promoting their individual events (i.e. meetups, local workshops, etc). Systers can register, login, and volunteer for events in their local city.
 
 
 You can learn more about the Systers organization, whose members work on the development of this app [here](http://anitaborg.org/get-involved/systers/) , join our mailing list [here](http://systers.org/mailman/listinfo/systers) and you can join our slack group. To get an invitation to the slack group [click here](http://systers.io/slack-systers-opensource/).
@@ -19,16 +19,8 @@ Download [Android Studio](http://developer.android.com/sdk/index.html) and the r
 
 ### Fork the Repository
 
-A fork is a copy of a repository.
-
-Forking a repository allows you to freely experiment with changes without affecting the original project.
-
-It is a simple two-step process.
 - On GitHub, navigate to the [Volunteers-Android](https://github.com/systers/volunteers-android/) Repository.
 - In the top-right corner of the page, click Fork.
-
-That's it! Now, you have a fork of the original Volunteers-Android repository.
-
 
 ### Clone the Repository
 
@@ -40,6 +32,18 @@ Go to your terminal and execute this command
 $ git clone https://github.com/YOUR_USERNAME/volunteers-android
 
 ```
+Here "YOUR_USERNAME" should be replaced with your actual user name in github!
+
+or
+
+You can directly clone the project into Android Studio.
+
+```
+File -> New -> Project from Version Control -> GitHub.
+```
+
+Then enter your github username and password. Select the repository and hit clone.
+The github repo will be created as a new project in android studio.
 
 
 ## Opening and Running
@@ -48,7 +52,7 @@ Now that you have cloned the repo:
 
 1. Launch android studio
 2. Click on File, then New and then Import Project Or from the welcome screen of android studio click on Import project. (If you wish to contribute, you can directly link to GitHub)
-3. Browse to the directory where you cloned (extracted the zip) Volunteers-Android App and take OK
+3. Browse to the directory where you cloned (extracted the zip) Volunteers-Android App and click  OK
 4. Let Android studio import the project, sync, run and build the Gradle.
 5. If Gradle finishes to build without error run the project by clicking on the play button on the tool bar.
 6. Wait for a few seconds and the app should start on your device(android phone or emulator)
