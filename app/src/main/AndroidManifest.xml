@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.Menu">
+        <activity android:name=".activities.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"
                     android:theme="@style/AppTheme.NoActionBar"/>

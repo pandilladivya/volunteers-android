@@ -8,20 +8,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import vola.systers.com.volunteers_android.R;
-import vola.systers.com.volunteers_android.handler.HttpHandler;
+import vola.systers.com.volunteers_android.model.Event;
+import vola.systers.com.volunteers_android.utils.HttpHandler;
+import vola.systers.com.volunteers_android.adapter.EventListAdapter;
 
 public class EventsListFragment extends Fragment {
 
@@ -32,14 +29,15 @@ public class EventsListFragment extends Fragment {
     private String TAG = EventsListFragment.class.getSimpleName();
 
     private ProgressDialog pDialog;
-    private ListView lv;
+    private ListView eventListView;
+    private static EventListAdapter eventListAdapter;
     static String startDate, endDate, id,name,startTime,endTime;
 
     // URL to get events JSON
-    private static String url = "http://divya-gsoc.esy.es/sample/data.json";
-    private static String url2 = "http://divya-gsoc.esy.es/sample/data2.json";
+    private static String eventsURL = "http://divya-gsoc.esy.es/sample/data.json";
+    private static String eventListURL = "http://divya-gsoc.esy.es/sample/data2.json";
 
-    ArrayList<HashMap<String, String>> eventList;
+    ArrayList<Event> eventList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +45,7 @@ public class EventsListFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.eventslist_fragment, container, false);
         eventList = new ArrayList<>();
-        lv = (ListView) rootView.findViewById(R.id.list);
+        eventListView = (ListView) rootView.findViewById(R.id.list);
         new GetEvents().execute();
         return rootView;
     }
@@ -71,11 +69,10 @@ public class EventsListFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String eventsJsonStr = sh.makeServiceCall(url);
-            String eventDetailsJsonStr = sh.makeServiceCall(url2);
+            String eventsJsonStr = HttpHandler.makeServiceCall(eventsURL);
+            String eventDetailsJsonStr = HttpHandler.makeServiceCall(eventListURL);
             Log.e(TAG, eventsJsonStr);
             Log.e(TAG, eventDetailsJsonStr);
 
@@ -98,18 +95,8 @@ public class EventsListFragment extends Fragment {
                         startTime = eventDetailsJsonObject.getString("starttime");
                         endTime=eventDetailsJsonObject.getString("endtime");
 
-                        // tmp hash map for single event
-                        HashMap<String, String> event = new HashMap<>();
+                        eventList.add(new Event(id, name, startDate,endDate,startTime,endTime));
 
-                        // adding each child node to HashMap key => value
-                        event.put("id", id);
-                        event.put("name", name);
-                        event.put("date", startDate+" to "+endDate);
-                        event.put("time",startTime+" to "+endTime);
-                        event.put("location","Orlando");
-
-                        // adding event to event list
-                        eventList.add(event);
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, String.valueOf(R.string.parsing_error) + e.getMessage());
@@ -137,7 +124,6 @@ public class EventsListFragment extends Fragment {
                 });
 
             }
-
             return null;
         }
 
@@ -149,16 +135,8 @@ public class EventsListFragment extends Fragment {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
-            /**
-             * Updating parsed JSON data into ListView
-             * */
-
-            ListAdapter adapter = new SimpleAdapter(
-                    getActivity(), eventList,
-                    R.layout.list_item, new String[]{"name", "date", "time","location"}, new int[]{R.id.event_name, R.id.date, R.id.time,R.id.location});
-
-            lv.setAdapter(adapter);
-
+            eventListAdapter = new EventListAdapter(eventList,getContext());
+            eventListView.setAdapter(eventListAdapter);
         }
 
     }

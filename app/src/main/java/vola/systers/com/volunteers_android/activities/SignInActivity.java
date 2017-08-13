@@ -15,7 +15,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -127,7 +126,7 @@ public class SignInActivity extends AppCompatActivity implements
                 parameters.putString("fields","id,name,email,gender,birthday");
                 request.setParameters(parameters);
                 request.executeAsync();
-                Intent intent = new Intent(SignInActivity.this,Menu.class);
+                Intent intent = new Intent(SignInActivity.this,MenuActivity.class);
                 startActivity(intent);
             }
 
@@ -187,7 +186,7 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     public void onSkipClicked() {
-        Intent intent = new Intent(SignInActivity.this,Menu.class);
+        Intent intent = new Intent(SignInActivity.this,MenuActivity.class);
         startActivity(intent);
     }
 
@@ -216,7 +215,7 @@ public class SignInActivity extends AppCompatActivity implements
             Log.i(TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " +personPhotoUrl);
 
-            Intent intent = new Intent(SignInActivity.this,Menu.class);
+            Intent intent = new Intent(SignInActivity.this,MenuActivity.class);
             startActivity(intent);
 
         } else {

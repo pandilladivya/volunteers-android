@@ -24,7 +24,7 @@ import vola.systers.com.volunteers_android.fragments.ScheduleFragment;
 import vola.systers.com.volunteers_android.fragments.NavigateFragment;
 
 
-public class Menu extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -47,7 +47,7 @@ public class Menu extends AppCompatActivity {
 
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
-    private Handler handler;
+    private Handler menuHandler;
 
 
     @Override
@@ -56,7 +56,7 @@ public class Menu extends AppCompatActivity {
         setContentView(R.layout.menu);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        handler = new Handler();
+        menuHandler = new Handler();
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -144,7 +144,7 @@ public class Menu extends AppCompatActivity {
 
         // If mPendingRunnable is not null, then add to the message queue
         if (mPendingRunnable != null) {
-            handler.post(mPendingRunnable);
+            menuHandler.post(mPendingRunnable);
         }
 
         toggleFab();

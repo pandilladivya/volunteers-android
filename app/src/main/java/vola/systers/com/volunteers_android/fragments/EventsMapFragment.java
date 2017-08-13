@@ -36,6 +36,7 @@ public class EventsMapFragment extends Fragment implements OnMapReadyCallback {
         LatLng sydney = new LatLng(-34, 151);
         map.addMarker(new MarkerOptions().position(sydney).title("Some XYZ Event"));
         map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //TODO : Set up markers as per event's location.
     }
 }
 

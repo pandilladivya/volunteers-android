@@ -7,31 +7,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     >
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:focusable="True"
-        >
-
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/event_name"
+            android:layout_alignParentTop="true"
+            android:layout_width="@dimen/eventNameWidth"
             android:layout_height="wrap_content"
-            android:id="@+id/header"
-            android:layout_alignParentTop="true">
-
-            <TextView
-                android:id="@+id/event_name"
-                android:layout_width="@dimen/eventNameWidth"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/padding_bottom"
-                android:paddingTop="@dimen/padding_top"
-                android:textColor="@color/colorPrimary_dark"
-                android:textSize="@dimen/font"
-                android:textStyle="bold"
-                />
-
-        </LinearLayout>
+            android:paddingBottom="@dimen/padding_bottom"
+            android:paddingTop="@dimen/padding_top"
+            android:textColor="@color/colorPrimary_dark"
+            android:textSize="@dimen/font"
+            android:textStyle="bold"
+            />
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
@@ -39,7 +25,7 @@
             android:orientation="horizontal"
             android:focusable="True"
             android:id="@+id/rel_layout_startDate"
-            android:layout_below="@+id/header"
+            android:layout_below="@+id/event_name"
             android:padding="@dimen/padding"
             android:layout_marginLeft="@dimen/margin_left"
             >
@@ -158,6 +144,6 @@
             android:layout_below="@+id/rel_layout_loc"
             android:text="@string/requireVolunteers"
             android:textColor="@color/tangerine" />
-    </RelativeLayout>
+
 
 </RelativeLayout>
