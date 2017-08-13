@@ -1,4 +1,5 @@
 <resources>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
@@ -8,12 +9,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="profile_width">75dp</dimen>
     <dimen name="profile_height">75dp</dimen>
-    <dimen name="padding">4dp</dimen>
-    <dimen name="margin_left">20dp</dimen>
-    <dimen name="padding_card_view">2dp</dimen>
-    <dimen name="font">16dp</dimen>
-    <dimen name="padding_top">6dp</dimen>
-    <dimen name="padding_bottom">6dp</dimen>
     <dimen name="heightImageLogo">150dp</dimen>
     <dimen name="margin_left">20dp</dimen>
     <dimen name="padding_card_view">2dp</dimen>
@@ -28,6 +23,7 @@
     <dimen name="dimenMarginRight">30dp</dimen>
     <dimen name="dimenLayoutMargin">16dp</dimen>
     <dimen name="tabLayoutHeight">56dp</dimen>
+    <dimen name="cardview_padding">8dp</dimen>
     <dimen name="textSize">16dp</dimen>
     <dimen name="textNavItem">12dp</dimen>
     <dimen name="dividerHeight">1dp</dimen>
