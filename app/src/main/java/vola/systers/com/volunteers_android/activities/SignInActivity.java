@@ -147,7 +147,7 @@ public class SignInActivity extends AppCompatActivity implements
         Log.d(TAG, "SignIn");
         final ProgressDialog progressDialog = new ProgressDialog(SignInActivity.this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
+        progressDialog.setMessage("Verifying User..");
         progressDialog.show();
 
         mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
@@ -167,6 +167,8 @@ public class SignInActivity extends AppCompatActivity implements
                 else
                 {
                     Toast.makeText(SignInActivity.this, R.string.auth_success,Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignInActivity.this,MenuActivity.class);
+                    startActivity(intent);
                 }
                 }
             });

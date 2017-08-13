@@ -10,8 +10,6 @@
     <string name="loading">Loading</string>
     <string name="facebook_app_id">444164775953522</string>
     <string name="fb_login_protocol_scheme">fb1916034148612140</string>
-    <string name="auth_failed">Sign In Failed.</string>
-    <string name="auth_success">Logged in Successfully</string>
     <string name="cancelled_request">Cancelled Request</string>
     <string name="error">Error in making Request!</string>
     <string name="skip_login">Click here to skip this step</string>
@@ -21,6 +19,8 @@
     <string name="logout">Logout</string>
     <string name="list_view">LIST VIEW</string>
     <string name="map_view">MAP VIEW</string>
+    <string name="auth_failed">Sign In Failed.</string>
+    <string name="auth_success">Logged in Successfully</string>
     <string name="desc_list_item_icon">Item Icon</string>
     <string name="recents">Recents</string>
     <string name="hint_email">Email</string>
@@ -42,6 +42,7 @@
     <string name="date">Date :</string>
     <string name="time">Time :</string>
     <string name="location">Location :</string>
+    <string name="verifying">Verifying Account...</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">
