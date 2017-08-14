@@ -36,17 +36,21 @@ public class SignInActivityTest {
 
     }
 
-    private String invalidEmail = "divya@123.com";
+    private String incorrectEmail = "divya@123.com";
     private String invalidPassword="divya@1234";
     private String email = "divya@systers.com";
-    private String password="divya1234";
+    private String password ="divya1234";
+    private String emptyPassword="";
+    private String emptyEmail ="";
+    private String invalidEmail="123456//.com";
+
     @Test
     public void testWithInvalidCredentials()
     {
         // input some text in the edit text
-        onView(withId(R.id.input_email)).perform(typeText(invalidEmail));
+        onView(withId(R.id.input_email)).perform(typeText(incorrectEmail));
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.input_password)).perform(typeText(invalidPassword));
-        // close soft keyboard
         Espresso.closeSoftKeyboard();
         // perform button click
         onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
@@ -57,8 +61,8 @@ public class SignInActivityTest {
     {
         // input some text in the edit text
         onView(withId(R.id.input_email)).perform(typeText(email));
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.input_password)).perform(typeText(password));
-        // close soft keyboard
         Espresso.closeSoftKeyboard();
         // perform button click
         onView(withId(R.id.btn_login)).perform(click());
@@ -66,6 +70,57 @@ public class SignInActivityTest {
         onView(withId(R.id.fab)).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void testWithNoPassword()
+    {
+        // input some text in the edit text
+        onView(withId(R.id.input_email)).perform(typeText(email));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.input_password)).perform(typeText(emptyPassword));
+        Espresso.closeSoftKeyboard();
+        // perform button click
+        onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testWithNoEmailNoPassword()
+    {
+        // input some text in the edit text
+        onView(withId(R.id.input_email)).perform(typeText(emptyEmail));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.input_password)).perform(typeText(emptyPassword));
+        Espresso.closeSoftKeyboard();
+        // perform button click
+        onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testWithNoEmail()
+    {
+        // input some text in the edit text
+        onView(withId(R.id.input_email)).perform(typeText(emptyEmail));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.input_password)).perform(typeText(password));
+        Espresso.closeSoftKeyboard();
+        // perform button click
+        onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testWithInvalidEmail()
+    {
+        // input some text in the edit text
+        onView(withId(R.id.input_email)).perform(typeText(invalidEmail));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.input_password)).perform(typeText(password));
+        Espresso.closeSoftKeyboard();
+        // perform button click
+        onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
+    }
 
     @After
     public void tearDown() throws Exception {
