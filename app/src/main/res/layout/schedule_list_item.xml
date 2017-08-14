@@ -91,7 +91,7 @@
                 android:textColor="@color/light_grey"
                 android:textSize="@dimen/font"
                 android:textStyle="bold"
-                android:text="Date :"
+                android:text="@string/date"
                 />
 
             <TextView
@@ -129,7 +129,7 @@
                 android:textColor="@color/light_grey"
                 android:textSize="@dimen/font"
                 android:textStyle="bold"
-                android:text="Time:"
+                android:text="@string/time"
                 />
 
             <TextView
@@ -167,7 +167,7 @@
                 android:textColor="@color/light_grey"
                 android:textSize="@dimen/font"
                 android:textStyle="bold"
-                android:text="Location:"
+                android:text="@string/location"
                 />
 
             <TextView
