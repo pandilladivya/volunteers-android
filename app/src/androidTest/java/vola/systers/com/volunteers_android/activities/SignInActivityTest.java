@@ -1,5 +1,6 @@
 package vola.systers.com.volunteers_android.activities;
 
+import android.os.SystemClock;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 
@@ -61,6 +62,7 @@ public class SignInActivityTest {
         Espresso.closeSoftKeyboard();
         // perform button click
         onView(withId(R.id.btn_login)).perform(click());
+        SystemClock.sleep(3000);
         onView(withId(R.id.fab)).check(matches(isDisplayed()));
     }
 

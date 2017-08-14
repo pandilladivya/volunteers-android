@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:18689589026:android:c3ed4e73071e770f",
+        "mobilesdk_app_id": "1:341524951998:android:1b0d8c89449c765d",
         "android_client_info": {
           "package_name": "com.systers.vola"
         }
@@ -71,17 +71,17 @@
           "client_type": 1,
           "android_info": {
             "package_name": "vola.systers.com.volunteers_android",
-            "certificate_hash": "07a0c02753a7bbe129e3b047bd420b981b1b5029"
+            "certificate_hash": "e927a38fe2380e9ccfe8132bc2845e167bde3ab3"
           }
         },
         {
-          "client_id": "18689589026-angj6sbik95utt3mviidil99medum0l0.apps.googleusercontent.com",
+          "client_id": "341524951998-226dg65jfgrraltjgv2ogaghkek85i0q.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB_T14rmUSnQkbxo11PWa0NPe4BoQTNYmA"
+          "current_key": "AIzaSyAcj0OEhsA3b5c9EyHPuiP7aMWfJb_vtpU"
         }
       ],
       "services": {
