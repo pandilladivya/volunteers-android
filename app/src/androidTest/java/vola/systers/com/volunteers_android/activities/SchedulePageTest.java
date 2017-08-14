@@ -8,6 +8,7 @@ import android.support.test.espresso.action.Swipe;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
 import android.view.View;
 
 import org.hamcrest.Matcher;
@@ -42,7 +43,7 @@ import static org.junit.Assert.*;
 
 public class SchedulePageTest {
     @Rule
-    public ActivityTestRule<Menu> NavigationMenuTestRule = new ActivityTestRule<Menu>(Menu.class);
+    public ActivityTestRule<MenuActivity> NavigationMenuTestRule = new ActivityTestRule<MenuActivity>(MenuActivity.class);
 
     private static ViewAction actionOpenDrawer() {
         return new ViewAction() {
