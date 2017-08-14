@@ -15,26 +15,14 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.core.AllOf.allOf;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 
 
 public class SignInActivityTest {
 
     @Rule
     public ActivityTestRule<SignInActivity> signInActivityTestRule = new ActivityTestRule<SignInActivity>(SignInActivity.class);
-
-    @Before
-    public void setUp() throws Exception {
-
-    }
 
     private String incorrectEmail = "divya@123.com";
     private String invalidPassword="divya@1234";
@@ -121,10 +109,4 @@ public class SignInActivityTest {
         onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
         onView(withId(R.id.btn_login)).perform(click()).check(matches(isDisplayed()));
     }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
 }
