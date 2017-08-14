@@ -107,7 +107,7 @@ public class SignInActivity extends AppCompatActivity implements
                 }
 
                 if (!isValidPassword(pass)) {
-                    passwordText.setError(getText(R.string.invalid_password));
+                    passwordText.setError(getText(R.string.empty_password));
                 }
 
                 if(isValidEmail(email) && isValidPassword(pass))
@@ -342,7 +342,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     // validating password with retype password
     private boolean isValidPassword(String pass) {
-        if (pass != null && pass.length() > 6) {
+        if (pass != null && pass.length() > 0) {
             return true;
         }
         return false;
