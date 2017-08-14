@@ -35,10 +35,4 @@
     <dimen name="navLayoutWidth">240dp</dimen>
     <dimen name="buttonMarginTop">10dp</dimen>
     <dimen name="layoutMarginLeftText">190dp</dimen>
-    <dimen name="padding">4dp</dimen>
-    <dimen name="margin_left">20dp</dimen>
-    <dimen name="padding_card_view">2dp</dimen>
-    <dimen name="font">16dp</dimen>
-    <dimen name="padding_top">6dp</dimen>
-    <dimen name="padding_bottom">6dp</dimen>
 </resources>

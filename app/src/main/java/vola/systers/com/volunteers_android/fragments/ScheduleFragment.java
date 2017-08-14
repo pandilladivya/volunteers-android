@@ -22,9 +22,6 @@ import vola.systers.com.volunteers_android.model.Event;
 
 public class ScheduleFragment extends Fragment {
 
-import vola.systers.com.volunteers_android.R;
-import vola.systers.com.volunteers_android.handler.HttpHandler;
-
     public ScheduleFragment() {
     }
 
