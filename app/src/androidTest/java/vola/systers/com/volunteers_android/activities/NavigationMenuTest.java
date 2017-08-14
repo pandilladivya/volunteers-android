@@ -1,5 +1,6 @@
 package vola.systers.com.volunteers_android.activities;
 
+import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.UiController;
@@ -19,28 +20,18 @@ import vola.systers.com.volunteers_android.R;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.swipeLeft;
-import static android.support.test.espresso.action.ViewActions.swipeRight;
-import static android.support.test.espresso.action.ViewActions.swipeUp;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import android.support.test.espresso.contrib.NavigationViewActions;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.core.AllOf.allOf;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 
 import static org.junit.Assert.*;
 
 public class NavigationMenuTest {
     @Rule
-    public ActivityTestRule<Menu> NavigationMenuTestRule = new ActivityTestRule<Menu>(Menu.class);
+    public ActivityTestRule<MenuActivity> NavigationMenuTestRule = new ActivityTestRule<MenuActivity>(MenuActivity.class);
 
     private static ViewAction actionOpenDrawer() {
         return new ViewAction() {
@@ -80,11 +71,6 @@ public class NavigationMenuTest {
         };
     }
 
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
     @Test
     public void testIfTheNavigationDrawerIsHiddenInitially()
     {
@@ -92,14 +78,13 @@ public class NavigationMenuTest {
     }
 
     @Test
-    public void testNavigationDrawer()
+    public void testOpenNavigationDrawer()
     {
         onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
+        SystemClock.sleep(1000);
         onView(withId(R.id.nav_view)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.drawer_layout)).perform(actionCloseDrawer());
-        onView(withId(R.id.nav_view)).check(matches(not(isDisplayed())));
     }
+
 
 
     @Test
@@ -121,9 +106,6 @@ public class NavigationMenuTest {
         onView(withId(R.id.list)).check(matches(isDisplayed()));
     }
 
-    @After
-    public void tearDown() throws Exception {
 
-    }
     
 }
