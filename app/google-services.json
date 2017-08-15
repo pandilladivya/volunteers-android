@@ -1,39 +1,43 @@
 {
   "project_info": {
-    "project_number": "341524951998",
-    "firebase_url": "https://volunteers-android.firebaseio.com",
-    "project_id": "volunteers-android",
-    "storage_bucket": "volunteers-android.appspot.com"
+    "project_number": "713910804615",
+    "firebase_url": "https://vola-583a0.firebaseio.com",
+    "project_id": "vola-583a0",
+    "storage_bucket": "vola-583a0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:341524951998:android:1b0d8c89449c765d",
+        "mobilesdk_app_id": "1:713910804615:android:dde5c9ce3d6b4eb0",
         "android_client_info": {
-          "package_name": "com.systers.vola"
+          "package_name": "vola.systers.com.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "341524951998-r4cjbmshlrignngk7qj0k482dkego4i1.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "341524951998-qm74kqkugrlurg4ieib4g3i0l1cqnsnk.apps.googleusercontent.com",
+          "client_id": "713910804615-q7riu3mfgndlbv706rr5md385713rt6l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.systers.vola",
+            "package_name": "vola.systers.com.android",
             "certificate_hash": "e927a38fe2380e9ccfe8132bc2845e167bde3ab3"
           }
         },
         {
-          "client_id": "341524951998-226dg65jfgrraltjgv2ogaghkek85i0q.apps.googleusercontent.com",
+          "client_id": "713910804615-abfgopqua9gftvdjd74stfg0d3p2ipnh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vola.systers.com.android",
+            "certificate_hash": "8d8fa7f012962c31e743aa3e4518677b3bb1b13f"
+          }
+        },
+        {
+          "client_id": "713910804615-7qk27ekaj13ujmhb5sdi7mvpmrgtqfe7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAcj0OEhsA3b5c9EyHPuiP7aMWfJb_vtpU"
+          "current_key": "AIzaSyDWv7cwvtUbj3yvdB7Ewzk6nAILNnG8sL4"
         }
       ],
       "services": {
@@ -44,56 +48,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "341524951998-r4cjbmshlrignngk7qj0k482dkego4i1.apps.googleusercontent.com",
+              "client_id": "713910804615-7qk27ekaj13ujmhb5sdi7mvpmrgtqfe7.apps.googleusercontent.com",
               "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:341524951998:android:c3ed4e73071e770f",
-        "android_client_info": {
-          "package_name": "vola.systers.com.volunteers_android"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "341524951998-r4cjbmshlrignngk7qj0k482dkego4i1.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "341524951998-5bifb9718o6897uv8s9sj3hspd9r8j1j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "vola.systers.com.volunteers_android",
-            "certificate_hash": "e927a38fe2380e9ccfe8132bc2845e167bde3ab3"
-          }
-        },
-        {
-          "client_id": "341524951998-226dg65jfgrraltjgv2ogaghkek85i0q.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAcj0OEhsA3b5c9EyHPuiP7aMWfJb_vtpU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
+            },
             {
-              "client_id": "341524951998-r4cjbmshlrignngk7qj0k482dkego4i1.apps.googleusercontent.com",
-              "client_type": 3
+              "client_id": "713910804615-7ge0i9fopjh6tgbtm2f1nduv6g8p826r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.systers.vola.VOLA"
+              }
             }
           ]
         },

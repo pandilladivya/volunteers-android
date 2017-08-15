@@ -5,4 +5,4 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="vola.systers.com.volunteers_android.fragments.EventsMapFragment" />
+    tools:context="vola.systers.com.android.fragments.EventsMapFragment" />

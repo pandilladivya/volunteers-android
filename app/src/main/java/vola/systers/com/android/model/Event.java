@@ -1,4 +1,4 @@
-package vola.systers.com.volunteers_android.model;
+package vola.systers.com.android.model;
 
 public class Event {
     private String id;

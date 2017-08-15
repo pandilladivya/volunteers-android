@@ -1,4 +1,4 @@
-package vola.systers.com.volunteers_android.fragments;
+package vola.systers.com.android.fragments;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -15,36 +15,37 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
-import vola.systers.com.volunteers_android.R;
-import vola.systers.com.volunteers_android.adapter.ScheduleEventsListAdapter;
-import vola.systers.com.volunteers_android.utils.HttpHandler;
-import vola.systers.com.volunteers_android.model.Event;
+import vola.systers.com.android.R;
+import vola.systers.com.android.model.Event;
+import vola.systers.com.android.utils.HttpHandler;
+import vola.systers.com.android.adapter.EventListAdapter;
 
-public class ScheduleFragment extends Fragment {
+public class EventsListFragment extends Fragment {
 
-    public ScheduleFragment() {
+
+    public EventsListFragment() {
     }
 
-    private String TAG = ScheduleFragment.class.getSimpleName();
+    private String TAG = EventsListFragment.class.getSimpleName();
 
     private ProgressDialog pDialog;
-    private ListView eventsListView;
-    static String startDate,endDate,id,name,startTime,endTime;
-    private static ScheduleEventsListAdapter eventListAdapter;
+    private ListView eventListView;
+    private static EventListAdapter eventListAdapter;
+    static String startDate, endDate, id,name,startTime,endTime;
 
     // URL to get events JSON
     private static String eventsURL = "http://divya-gsoc.esy.es/sample/data.json";
-    private static String eventDetailsURL = "http://divya-gsoc.esy.es/sample/data2.json";
+    private static String eventListURL = "http://divya-gsoc.esy.es/sample/data2.json";
 
-    ArrayList<Event> eventList;
+    ArrayList<Event> eventList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.schedule_list_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.eventslist_fragment, container, false);
         eventList = new ArrayList<>();
-        eventsListView = (ListView) rootView.findViewById(R.id.list);
+        eventListView = (ListView) rootView.findViewById(R.id.list);
         new GetEvents().execute();
         return rootView;
     }
@@ -52,25 +53,28 @@ public class ScheduleFragment extends Fragment {
     /**
      * Async task class to get json by making HTTP call
      */
+
     private class GetEvents extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            
             // Showing progress dialog
             pDialog = new ProgressDialog(getActivity());
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
-
         }
 
         @Override
         protected Void doInBackground(Void... arg0) {
+
             // Making a request to url and getting response
             String eventsJsonStr = HttpHandler.makeServiceCall(eventsURL);
-            String eventDetailsJsonStr = HttpHandler.makeServiceCall(eventDetailsURL);
+            String eventDetailsJsonStr = HttpHandler.makeServiceCall(eventListURL);
+            Log.e(TAG, eventsJsonStr);
+            Log.e(TAG, eventDetailsJsonStr);
 
             if (eventsJsonStr != null && eventDetailsJsonStr != null) {
                 try {
@@ -92,14 +96,15 @@ public class ScheduleFragment extends Fragment {
                         endTime=eventDetailsJsonObject.getString("endtime");
 
                         eventList.add(new Event(id, name, startDate,endDate,startTime,endTime));
+
                     }
                 } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    Log.e(TAG, String.valueOf(R.string.parsing_error) + e.getMessage());
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(getContext(),
-                                    "Json parsing error: " + e.getMessage(),
+                                    R.string.parsing_error + e.getMessage(),
                                     Toast.LENGTH_LONG)
                                     .show();
                         }
@@ -107,19 +112,18 @@ public class ScheduleFragment extends Fragment {
 
                 }
             } else {
-                Log.e(TAG, "Couldn't get json from server.");
+                Log.e(TAG, String.valueOf(R.string.json_error));
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
+                                R.string.json_error,
                                 Toast.LENGTH_LONG)
                                 .show();
                     }
                 });
 
             }
-
             return null;
         }
 
@@ -131,8 +135,8 @@ public class ScheduleFragment extends Fragment {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
-            eventListAdapter = new ScheduleEventsListAdapter(eventList,getContext());
-            eventsListView.setAdapter(eventListAdapter);
+            eventListAdapter = new EventListAdapter(eventList,getContext());
+            eventListView.setAdapter(eventListAdapter);
         }
 
     }

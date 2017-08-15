@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="vola.systers.com.volunteers_android">
+    package="vola.systers.com.android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
@@ -17,10 +17,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
         <permission
-            android:name="vola.systers.com.volunteers_android.permission.MAPS_RECEIVE"
+            android:name="vola.systers.com.android.permission.MAPS_RECEIVE"
             android:protectionLevel="signature" />
 
-        <uses-permission android:name="vola.systers.com.volunteers_android.permission.MAPS_RECEIVE" />
+        <uses-permission android:name="vola.systers.com.android.permission.MAPS_RECEIVE" />
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
         <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.MenuActivity">
+        <activity android:name="vola.systers.com.android.activities.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"
                     android:theme="@style/AppTheme.NoActionBar"/>
@@ -62,7 +62,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.SignInActivity">
+        <activity android:name="vola.systers.com.android.activities.SignInActivity">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
                     <category android:name="android.intent.category.LAUNCHER" />

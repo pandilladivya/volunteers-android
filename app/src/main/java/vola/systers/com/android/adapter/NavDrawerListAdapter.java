@@ -1,4 +1,4 @@
-package vola.systers.com.volunteers_android.adapter;
+package vola.systers.com.android.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import vola.systers.com.volunteers_android.R;
-import vola.systers.com.volunteers_android.model.NavDrawerItem;
+import vola.systers.com.android.R;
+import vola.systers.com.android.model.NavDrawerItem;
 
 public class NavDrawerListAdapter extends BaseAdapter {
 	

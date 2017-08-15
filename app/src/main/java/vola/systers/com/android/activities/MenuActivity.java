@@ -1,4 +1,4 @@
-package vola.systers.com.volunteers_android.activities;
+package vola.systers.com.android.activities;
 
 
 import android.support.v4.app.Fragment;
@@ -16,12 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
-import vola.systers.com.volunteers_android.R;
-import vola.systers.com.volunteers_android.fragments.EventsListFragment;
-import vola.systers.com.volunteers_android.fragments.EventsMapFragment;
-import vola.systers.com.volunteers_android.fragments.StarredEventsFragment;
-import vola.systers.com.volunteers_android.fragments.ScheduleFragment;
-import vola.systers.com.volunteers_android.fragments.NavigateFragment;
+import vola.systers.com.android.R;
+import vola.systers.com.android.fragments.EventsListFragment;
+import vola.systers.com.android.fragments.EventsMapFragment;
+import vola.systers.com.android.fragments.StarredEventsFragment;
+import vola.systers.com.android.fragments.ScheduleFragment;
+import vola.systers.com.android.fragments.NavigateFragment;
 
 
 public class MenuActivity extends AppCompatActivity {

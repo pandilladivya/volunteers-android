@@ -1,4 +1,4 @@
-package vola.systers.com.volunteers_android.adapter;
+package vola.systers.com.android.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +8,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import vola.systers.com.volunteers_android.R;
-import vola.systers.com.volunteers_android.model.Event;
+import vola.systers.com.android.R;
+import vola.systers.com.android.model.Event;
 
-public class ScheduleEventsListAdapter extends ArrayAdapter<Event>{
+public class EventListAdapter extends ArrayAdapter<Event>{
 
     private ArrayList<Event> dataSet;
     Context mContext;
@@ -24,8 +24,8 @@ public class ScheduleEventsListAdapter extends ArrayAdapter<Event>{
         TextView location;
     }
 
-    public ScheduleEventsListAdapter(ArrayList<Event> data, Context context) {
-        super(context, R.layout.schedule_list_item, data);
+    public EventListAdapter(ArrayList<Event> data, Context context) {
+        super(context, R.layout.list_item, data);
         this.dataSet = data;
         this.mContext=context;
     }
@@ -41,7 +41,7 @@ public class ScheduleEventsListAdapter extends ArrayAdapter<Event>{
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.schedule_list_item, parent, false);
+            convertView = inflater.inflate(R.layout.list_item, parent, false);
             viewHolder.eventName = (TextView) convertView.findViewById(R.id.event_name);
             viewHolder.date = (TextView) convertView.findViewById(R.id.date);
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);

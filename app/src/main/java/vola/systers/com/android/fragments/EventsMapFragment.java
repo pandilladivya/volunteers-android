@@ -1,4 +1,4 @@
-package vola.systers.com.volunteers_android.fragments;
+package vola.systers.com.android.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import vola.systers.com.volunteers_android.R;
+import vola.systers.com.android.R;
 
 public class EventsMapFragment extends Fragment implements OnMapReadyCallback {
 

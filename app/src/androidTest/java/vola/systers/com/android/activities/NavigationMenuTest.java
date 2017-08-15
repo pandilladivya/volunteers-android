@@ -1,34 +1,29 @@
-package vola.systers.com.volunteers_android.activities;
+package vola.systers.com.android.activities;
 
+import android.os.SystemClock;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.View;
+
 import org.hamcrest.Matcher;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.Description;
 
-import vola.systers.com.volunteers_android.R;
-import vola.systers.com.volunteers_android.model.Event;
+import vola.systers.com.android.R;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.Matchers.equalTo;
 import android.support.test.espresso.contrib.NavigationViewActions;
+import static org.hamcrest.CoreMatchers.not;
 
-public class SchedulePageTest {
+public class NavigationMenuTest {
     @Rule
     public ActivityTestRule<MenuActivity> NavigationMenuTestRule = new ActivityTestRule<MenuActivity>(MenuActivity.class);
 
@@ -51,35 +46,60 @@ public class SchedulePageTest {
         };
     }
 
-    private static Matcher<Object> getEventItemName(final Matcher<String> itemMatcher){
-
-        return new BoundedMatcher<Object, Event>(Event.class) {
+    private static ViewAction actionCloseDrawer() {
+        return new ViewAction() {
             @Override
-            public void describeTo(org.hamcrest.Description description) {
-                description.appendText("Event with name: ");
-                itemMatcher.describeTo(description);
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(DrawerLayout.class);
             }
 
             @Override
-            protected boolean matchesSafely(Event event) {
-                return itemMatcher.matches(event.getName());
+            public String getDescription() {
+                return "close drawer";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                ((DrawerLayout) view).closeDrawer(GravityCompat.START);
             }
         };
     }
 
     @Test
-    public void testPerformOnScroll(){
-        onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
-        onData(getEventItemName(equalTo
-                ("etouches Test 15FEB"))).inAdapterView(withId(R.id.list)).perform(click());
-
+    public void testIfTheNavigationDrawerIsHiddenInitially()
+    {
+        onView(withId(R.id.nav_view)).check(matches(not(isDisplayed())));
     }
 
     @Test
-    public void testOpenNavigationDrawerInSchedulePage() {
-        onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer()).check(matches(isDisplayed()));
+    public void testOpenNavigationDrawer()
+    {
+        onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
+        SystemClock.sleep(1000);
+        onView(withId(R.id.nav_view)).check(matches(isDisplayed()));
     }
 
+
+
+    @Test
+    public void testFabButton()
+    {
+        onView(withId(R.id.fab)).perform(click());
+        onView(withId(R.id.map)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.fab)).perform(click());
+        onView(withId(R.id.list)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testClickOnNavigationItem() {
+
+        onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
+        onView(withId(R.id.list)).check(matches(isDisplayed()));
+    }
+
+
+    
 }
