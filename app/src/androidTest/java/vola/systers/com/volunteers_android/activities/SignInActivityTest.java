@@ -24,10 +24,10 @@ public class SignInActivityTest {
     @Rule
     public ActivityTestRule<SignInActivity> signInActivityTestRule = new ActivityTestRule<SignInActivity>(SignInActivity.class);
 
-    private String incorrectEmail = "divya@123.com";
-    private String invalidPassword="divya@1234";
-    private String email = "divya@systers.com";
-    private String password ="divya1234";
+    private String incorrectEmail = "invalid_mail@gmail.com";
+    private String invalidPassword="incorrect@1234";
+    private String email = "testing@systers.com";
+    private String password ="testing1234";
     private String emptyPassword="";
     private String emptyEmail ="";
     private String invalidEmail="123456//.com";
