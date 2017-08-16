@@ -89,16 +89,15 @@
             android:textColor="@color/text_black"
             android:textSize="@dimen/textSize"/>
 
-        <TextView android:id="@+id/link_skip"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimenMarginBottom"
-            android:text="@string/skip_login"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
-            android:clickable="true"
-            android:textSize="@dimen/textSize"/>
+    <TextView android:id="@+id/link_skip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="Click here to skip this step"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/tangerine"
+        android:textSize="16dip"/>
 
     </LinearLayout>
 
