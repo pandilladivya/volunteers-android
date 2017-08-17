@@ -44,4 +44,7 @@
     <dimen name="heightImageLogo">150dp</dimen>
     <dimen name="dimenMarginLeft">30dp</dimen>
     <dimen name="buttonMargin">30dp</dimen>
+    <dimen name="padding_view">8dp</dimen>
+    <dimen name="textViewHeading">22sp</dimen>
+    <dimen name="textViewContent">14sp</dimen>
 </resources>

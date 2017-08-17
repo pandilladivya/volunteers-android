@@ -91,7 +91,7 @@ public class ScheduleFragment extends Fragment {
                         startTime = eventDetailsJsonObject.getString("starttime");
                         endTime=eventDetailsJsonObject.getString("endtime");
 
-                        eventList.add(new Event(id, name, startDate,endDate,startTime,endTime,"orlando"));
+                        eventList.add(new Event(id, name, startDate,endDate,startTime,endTime,"orlando","description","city","country","lat","lon"));
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());

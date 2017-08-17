@@ -3,7 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:focusable="True"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     >
 
@@ -25,7 +24,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:focusable="True"
             android:id="@+id/rel_layout_startDate"
             android:layout_below="@+id/event_name"
             android:padding="@dimen/padding"
@@ -61,7 +59,6 @@
             android:id="@+id/rel_layout_Date"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:focusable="True"
             android:layout_below="@+id/rel_layout_startDate"
             android:padding="@dimen/padding"
             android:layout_marginLeft="@dimen/margin_left"
@@ -98,7 +95,6 @@
             android:id="@+id/rel_layout_loc"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:focusable="True"
             android:layout_below="@+id/rel_layout_Date"
             android:padding="@dimen/padding"
             android:layout_marginLeft="@dimen/margin_left"

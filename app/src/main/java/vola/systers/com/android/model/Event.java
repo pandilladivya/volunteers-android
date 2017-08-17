@@ -1,6 +1,8 @@
 package vola.systers.com.android.model;
 
-public class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable {
     private String id;
     private String name;
     private String startDate;
@@ -8,8 +10,13 @@ public class Event {
     private String startTime;
     private String endTime;
     private String locationName;
+    private String description;
+    private String city;
+    private String latitude;
+    private String longitude;
+    private String country;
 
-    public Event(String id, String name, String startDate, String endDate, String startTime,String endTime,String locationName ) {
+    public Event(String id, String name, String startDate, String endDate, String startTime,String endTime,String locationName, String description,String city,String country,String longitude,String latitude) {
         this.id=id;
         this.name=name;
         this.startDate=startDate;
@@ -17,6 +24,9 @@ public class Event {
         this.startTime=startTime;
         this.endTime=endTime;
         this.locationName=locationName;
+        this.description=description;
+        this.city=city;
+        this.country=country;
     }
 
     public String getId() {
@@ -44,4 +54,10 @@ public class Event {
     }
 
     public String getLocationName() { return locationName; }
+
+    public String getDescription() { return description; }
+
+    public String getCity() { return city; }
+
+    public String getCountry() { return country; }
 }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import vola.systers.com.android.R;
 import vola.systers.com.android.model.Event;
 
-public class EventListAdapter extends ArrayAdapter<Event>{
+public class EventListAdapter extends ArrayAdapter<Event> {
 
     private ArrayList<Event> dataSet;
     Context mContext;

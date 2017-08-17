@@ -1,6 +1,7 @@
 package vola.systers.com.android.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,9 +24,12 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import vola.systers.com.android.R;
+import vola.systers.com.android.activities.EventDetailView;
 import vola.systers.com.android.model.Event;
 import vola.systers.com.android.utils.HttpHandler;
 import vola.systers.com.android.adapter.EventListAdapter;
@@ -40,7 +45,7 @@ public class EventsListFragment extends Fragment {
     private ProgressDialog pDialog;
     private ListView eventListView;
     private static EventListAdapter eventListAdapter;
-    static String startDate, endDate, id,name,startTime,endTime,locationName;
+    static String startDate, endDate, id,name,startTime,endTime,locationName,description,latitude,longitude,status,max_attendees,city,country;
 
     ArrayList<Event> eventList = new ArrayList<>();
 
@@ -64,7 +69,7 @@ public class EventsListFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            
+
             // Showing progress dialog
             pDialog = new ProgressDialog(getActivity());
             pDialog.setMessage("Please wait...");
@@ -82,6 +87,7 @@ public class EventsListFragment extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot data_snap : dataSnapshot.getChildren()) {
+
                         id = data_snap.getKey();
                         name = data_snap.child("name").getValue().toString();
                         startDate = data_snap.child("startdate").getValue().toString();
@@ -89,11 +95,26 @@ public class EventsListFragment extends Fragment {
                         startTime = data_snap.child("starttime").getValue().toString();
                         endTime=data_snap.child("endtime").getValue().toString();
                         locationName=data_snap.child("location").child("name").getValue().toString();
+                        description=data_snap.child("description").getValue().toString();
+                        city=data_snap.child("location").child("city").getValue().toString();
+                        country=data_snap.child("location").child("country").getValue().toString();
+                        latitude=data_snap.child("location").child("latitude").getValue().toString();
+                        longitude=data_snap.child("location").child("longitude").getValue().toString();
 
-                        eventList.add(new Event(id, name, startDate,endDate,startTime,endTime,locationName));
+                        eventList.add(new Event(id, name, startDate,endDate,startTime,endTime,locationName,description,city,country,latitude,longitude));
+
                     }
                     eventListAdapter = new EventListAdapter(eventList,getContext());
                     eventListView.setAdapter(eventListAdapter);
+                    eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Event selectedEvent= eventList.get(position);
+                            Intent intent = new Intent(getActivity(),EventDetailView.class);
+                            intent.putExtra("selectedEvent",selectedEvent);
+                            startActivity(intent);
+                        }
+                    });
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -101,7 +122,6 @@ public class EventsListFragment extends Fragment {
                 }
             };
             eventsRef.addValueEventListener(valueEventListener);
-
             return null;
         }
 
