@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,10 +19,12 @@ import java.util.regex.Pattern;
 
 import vola.systers.com.android.R;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements
+        View.OnClickListener{
 
     private EditText editTextEmail,editTextPassword,editTextCnfPassword;
     private Button buttonSignup;
+    private TextView skipLink,loginLink;
     private ProgressDialog progressDialog;
 
     //defining firebaseauth object
@@ -37,57 +40,57 @@ public class SignUpActivity extends AppCompatActivity {
 
         editTextEmail = (EditText) findViewById(R.id.input_email);
         editTextPassword = (EditText) findViewById(R.id.input_password);
-        editTextCnfPassword = (EditText)findViewById(R.id.input_cnf_password);
+        editTextCnfPassword = (EditText) findViewById(R.id.input_cnf_password);
         buttonSignup = (Button) findViewById(R.id.btn_signup);
+        skipLink = (TextView)findViewById(R.id.link_skip);
+        loginLink=(TextView)findViewById(R.id.link_login);
         progressDialog = new ProgressDialog(this);
+        buttonSignup.setOnClickListener(this);
+        skipLink.setOnClickListener(this);
+        loginLink.setOnClickListener(this);
 
+        buttonSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = editTextEmail.getText().toString().trim();
+                String password = editTextPassword.getText().toString().trim();
+                String cnfPassword = editTextCnfPassword.getText().toString().trim();
+                if(!isValidEmail(email)) {
+                    editTextEmail.setError(getText(R.string.invalid_username));
+                }
+                else if(!isValidPassword(password)) {
+                    editTextPassword.setError(getText(R.string.invalid_password));
+                }
+                else if(!cnfPassword.equals(password)){
+                    editTextCnfPassword.setError(getText(R.string.password_mismatch));
+                }
+                else{
+                    progressDialog.setMessage("Registering Please Wait...");
+                    progressDialog.show();
+                    createNewUSer(email,password);
+                }
+            }
+        });
     }
 
-    private void registerUser(){
-
-        String email = editTextEmail.getText().toString().trim();
-        String password  = editTextPassword.getText().toString().trim();
-        String cnfPassword = editTextCnfPassword.getText().toString().trim();
-
-        if (!isValidEmail(email)) {
-            editTextEmail.setError(getText(R.string.invalid_username));
-        }
-
-        else if (!isValidPassword(password)) {
-            editTextPassword.setError(getText(R.string.invalid_password));
-        }
-
-        else if (!cnfPassword.equals(password)) {
-            editTextCnfPassword.setError(getText(R.string.password_mismatch));
-        }
-
-        else
-        {
-
-            progressDialog.setMessage("Registering Please Wait...");
-            progressDialog.show();
-
+    private void createNewUSer(String email,String password) {
         //creating a new user
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
                         //checking if success
-                        if(task.isSuccessful()){
-                            //display some message here
-                            Toast.makeText(SignUpActivity.this,"Successfully registered!! Please Login to continue.",Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(SignUpActivity.this,SignInActivity.class);
+                        if (task.isSuccessful()) {
+                            Toast.makeText(SignUpActivity.this, "Successfully registered!! Please Login to continue.", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                             startActivity(intent);
-                        }else{
-                            //display some message here
-                            Toast.makeText(SignUpActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Registration Error", Toast.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();
 
                     }
                 });
-        }
     }
 
     private boolean isValidEmail(String email) {
@@ -101,24 +104,22 @@ public class SignUpActivity extends AppCompatActivity {
 
     // validating password with retype password
     private boolean isValidPassword(String pass) {
-        if (pass != null && pass.length() > 6) {
+        if (pass != null && pass.length() >= 6) {
             return true;
         }
         return false;
     }
 
-
-    public void onClick(View view) {
-        registerUser();
-    }
-
-    public void Login(View view) {
-        startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
-        finish();
-    }
-
-    public void Skip(View view) {
-        startActivity(new Intent(SignUpActivity.this, MenuActivity.class));
-        finish();
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.link_login:
+                startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
+                break;
+            case R.id.link_skip:
+                startActivity(new Intent(SignUpActivity.this, MenuActivity.class));
+                break;
+        }
     }
 }

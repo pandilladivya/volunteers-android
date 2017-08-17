@@ -80,15 +80,15 @@
             android:background="@color/colorPrimary"
             android:text="@string/sign_in_button_text"/>
 
-    <TextView android:id="@+id/link_signup"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:text="@string/signup_text"
-        android:gravity="center"
-        android:onClick="SignUp"
-        android:textColor="@color/text_black"
-        android:textSize="16dip"/>
+        <TextView android:id="@+id/link_signup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_bottom"
+            android:text="@string/signup_text"
+            android:gravity="center"
+            android:onClick="SignUp"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/textSize"/>
 
         <TextView android:id="@+id/link_skip"
             android:layout_width="fill_parent"

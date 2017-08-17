@@ -247,15 +247,12 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         int id = v.getId();
-
         switch (id) {
-
             case R.id.btn_sign_in_google:
                 googleSignIn();
                 break;
             case R.id.link_skip:
                 onSkipClicked();
-
         }
     }
 
