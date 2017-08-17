@@ -348,4 +348,8 @@ public class SignInActivity extends AppCompatActivity implements
         return false;
     }
 
+    public void SignUp(View view) {
+        startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
+        finish();
+    }
 }
