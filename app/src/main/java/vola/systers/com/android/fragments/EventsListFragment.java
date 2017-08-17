@@ -10,6 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,11 +40,7 @@ public class EventsListFragment extends Fragment {
     private ProgressDialog pDialog;
     private ListView eventListView;
     private static EventListAdapter eventListAdapter;
-    static String startDate, endDate, id,name,startTime,endTime;
-
-    // URL to get events JSON
-    private static String eventsURL = "http://divya-gsoc.esy.es/sample/data.json";
-    private static String eventListURL = "http://divya-gsoc.esy.es/sample/data2.json";
+    static String startDate, endDate, id,name,startTime,endTime,locationName;
 
     ArrayList<Event> eventList = new ArrayList<>();
 
@@ -70,60 +75,33 @@ public class EventsListFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... arg0) {
 
-            // Making a request to url and getting response
-            String eventsJsonStr = HttpHandler.makeServiceCall(eventsURL);
-            String eventDetailsJsonStr = HttpHandler.makeServiceCall(eventListURL);
-            Log.e(TAG, eventsJsonStr);
-            Log.e(TAG, eventDetailsJsonStr);
+            FirebaseDatabase eventsDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference eventsRef = eventsDatabase.getReference("events");
 
-            if (eventsJsonStr != null && eventDetailsJsonStr != null) {
-                try {
-                    JSONObject eventsJsonObj = new JSONObject(eventsJsonStr);
-                    JSONObject eventDetailsJsonObject = new JSONObject(eventDetailsJsonStr);
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot data_snap : dataSnapshot.getChildren()) {
+                        id = data_snap.getKey();
+                        name = data_snap.child("name").getValue().toString();
+                        startDate = data_snap.child("startdate").getValue().toString();
+                        endDate = data_snap.child("enddate").getValue().toString();
+                        startTime = data_snap.child("starttime").getValue().toString();
+                        endTime=data_snap.child("endtime").getValue().toString();
+                        locationName=data_snap.child("location").child("name").getValue().toString();
 
-                    // Getting JSON Array node
-                    JSONArray events = eventsJsonObj.getJSONArray("events");
-
-                    // looping through All events
-                    for (int i = 0; i < events.length(); i++) {
-                        JSONObject eventJs = events.getJSONObject(i);
-
-                        id = eventJs.getString("eventid");
-                        name = eventJs.getString("name");
-                        startDate = eventDetailsJsonObject.getString("startdate");
-                        endDate = eventDetailsJsonObject.getString("enddate");
-                        startTime = eventDetailsJsonObject.getString("starttime");
-                        endTime=eventDetailsJsonObject.getString("endtime");
-
-                        eventList.add(new Event(id, name, startDate,endDate,startTime,endTime));
-
+                        eventList.add(new Event(id, name, startDate,endDate,startTime,endTime,locationName));
                     }
-                } catch (final JSONException e) {
-                    Log.e(TAG, String.valueOf(R.string.parsing_error) + e.getMessage());
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getContext(),
-                                    R.string.parsing_error + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    });
-
+                    eventListAdapter = new EventListAdapter(eventList,getContext());
+                    eventListView.setAdapter(eventListAdapter);
                 }
-            } else {
-                Log.e(TAG, String.valueOf(R.string.json_error));
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(),
-                                R.string.json_error,
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w(TAG, "Failed to read value.", databaseError.toException());
+                }
+            };
+            eventsRef.addValueEventListener(valueEventListener);
 
-            }
             return null;
         }
 
@@ -135,10 +113,7 @@ public class EventsListFragment extends Fragment {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
-            eventListAdapter = new EventListAdapter(eventList,getContext());
-            eventListView.setAdapter(eventListAdapter);
         }
-
     }
 
 }

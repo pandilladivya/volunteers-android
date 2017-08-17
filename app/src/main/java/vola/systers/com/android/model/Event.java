@@ -7,14 +7,16 @@ public class Event {
     private String endDate;
     private String startTime;
     private String endTime;
+    private String locationName;
 
-    public Event(String id, String name, String startDate, String endDate, String startTime,String endTime ) {
+    public Event(String id, String name, String startDate, String endDate, String startTime,String endTime,String locationName ) {
         this.id=id;
         this.name=name;
         this.startDate=startDate;
         this.endDate=endDate;
         this.startTime=startTime;
         this.endTime=endTime;
+        this.locationName=locationName;
     }
 
     public String getId() {
@@ -40,4 +42,6 @@ public class Event {
     public String getEndTime() {
         return endTime;
     }
+
+    public String getLocationName() { return locationName; }
 }

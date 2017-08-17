@@ -1,5 +1,6 @@
 package vola.systers.com.android.adapter;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class EventListAdapter extends ArrayAdapter<Event>{
         viewHolder.eventName.setText(event.getName());
         viewHolder.date.setText(event.getStartDate()+" to "+event.getEndDate());
         viewHolder.time.setText(event.getStartTime()+" to "+event.getEndTime());
-        viewHolder.location.setText("Orlando");
+        viewHolder.location.setText(event.getLocationName());
 
         // Return the completed view to render on screen
         return convertView;
