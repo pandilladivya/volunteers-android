@@ -134,8 +134,7 @@ public class SignInActivity extends AppCompatActivity implements
                 parameters.putString("fields","id,name,email,gender,birthday");
                 request.setParameters(parameters);
                 request.executeAsync();
-                Intent intent = new Intent(SignInActivity.this,MenuActivity.class);
-                startActivity(intent);
+                launchHomeScreen();
             }
 
             @Override
