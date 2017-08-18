@@ -33,19 +33,19 @@
             android:drawableLeft="@drawable/google_plus"/>
 
 
-    <com.facebook.login.widget.LoginButton
-        xmlns:fb="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/btn_fb_sign_in"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimenMarginLeft"
-        android:layout_marginBottom="@dimen/dimenMarginBottom"
-        android:layout_marginRight="@dimen/dimenMarginRight"
-        android:paddingTop="@dimen/paddingFbButton"
-        android:paddingBottom="@dimen/paddingFbButton"
-        fb:com_facebook_login_text="@string/btn_signin_with_facebook"
-        fb:com_facebook_logout_text="@string/logout"
-        style="@style/FacebookLoginButton" />
+        <com.facebook.login.widget.LoginButton
+            xmlns:fb="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/btn_fb_sign_in"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimenMarginLeft"
+            android:layout_marginBottom="@dimen/dimenMarginBottom"
+            android:layout_marginRight="@dimen/dimenMarginRight"
+            android:paddingTop="@dimen/paddingFbButton"
+            android:paddingBottom="@dimen/paddingFbButton"
+            fb:com_facebook_login_text="@string/btn_signin_with_facebook"
+            fb:com_facebook_logout_text="@string/logout"
+            style="@style/FacebookLoginButton" />
 
         <View
             android:layout_width="match_parent"
@@ -96,9 +96,8 @@
             android:text="@string/skip_login"
             android:gravity="center"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
-            android:clickable="true"
-            android:textSize="@dimen/textSize"/>
+            android:textColor="@color/tangerine"
+            android:textSize="@dimen/font"/>
 
     </LinearLayout>
 
