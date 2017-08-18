@@ -72,8 +72,10 @@ public class SignInActivity extends AppCompatActivity implements
         LoginButton btnFacebookLogin=(LoginButton) findViewById(R.id.btn_fb_sign_in) ;
         Button btnGoogleLogin = (Button) findViewById(R.id.btn_sign_in_google);
         TextView skipLink = (TextView)findViewById(R.id.link_skip);
+        TextView signUpLink = (TextView)findViewById(R.id.link_signup);
         btnGoogleLogin.setOnClickListener(this);
         skipLink.setOnClickListener(this);
+        signUpLink.setOnClickListener(this);
 
         emailText= (EditText)findViewById(R.id.input_email) ;
         passwordText= (EditText)findViewById(R.id.input_password);
@@ -208,6 +210,11 @@ public class SignInActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    public void signUp() {
+        Intent intent = new Intent(SignInActivity.this,SignUpActivity.class);
+        startActivity(intent);
+    }
+
     private void handleGoogleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -253,6 +260,9 @@ public class SignInActivity extends AppCompatActivity implements
                 break;
             case R.id.link_skip:
                 onSkipClicked();
+               break;
+            case R.id.link_signup:
+                signUp();
         }
     }
 
@@ -343,10 +353,5 @@ public class SignInActivity extends AppCompatActivity implements
             return true;
         }
         return false;
-    }
-
-    public void SignUp(View view) {
-        startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
-        finish();
     }
 }

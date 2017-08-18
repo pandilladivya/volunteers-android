@@ -12,9 +12,7 @@
     <dimen name="drawerLayoutHeight">100dp</dimen>
     <dimen name="dimenMarginBottom">20dp</dimen>
     <dimen name="dimenMarginTop">20dp</dimen>
-    <dimen name="dimenMarginLeft">30dp</dimen>
     <dimen name="labelMarginLeft">10dp</dimen>
-    <dimen name="eventNameWidth">300dp</dimen>
     <dimen name="dimenMarginRight">30dp</dimen>
     <dimen name="dimenLayoutMargin">16dp</dimen>
     <dimen name="tabLayoutHeight">56dp</dimen>
