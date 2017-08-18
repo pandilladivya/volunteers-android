@@ -11,27 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import vola.systers.com.android.R;
-import vola.systers.com.android.activities.EventDetailView;
+import vola.systers.com.android.activities.EventDetailViewActivity;
 import vola.systers.com.android.model.Event;
-import vola.systers.com.android.utils.HttpHandler;
 import vola.systers.com.android.adapter.EventListAdapter;
 
 public class EventsListFragment extends Fragment {
@@ -110,7 +101,7 @@ public class EventsListFragment extends Fragment {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             Event selectedEvent= eventList.get(position);
-                            Intent intent = new Intent(getActivity(),EventDetailView.class);
+                            Intent intent = new Intent(getActivity(),EventDetailViewActivity.class);
                             intent.putExtra("selectedEvent",selectedEvent);
                             startActivity(intent);
                         }

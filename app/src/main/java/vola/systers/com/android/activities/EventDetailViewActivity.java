@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -14,7 +15,7 @@ import com.facebook.login.widget.LoginButton;
 import vola.systers.com.android.R;
 import vola.systers.com.android.model.Event;
 
-public class EventDetailView extends AppCompatActivity {
+public class EventDetailViewActivity extends AppCompatActivity {
 
     private TextView eventName,eventDescription,locationName,locationCity,locationCountry,eventTime,eventDate;
 
@@ -23,10 +24,17 @@ public class EventDetailView extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail_view);
+        Event event = (Event) getIntent().getSerializableExtra("selectedEvent");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(event.getName());
         setSupportActionBar(toolbar);
 
-        Event event = (Event) getIntent().getSerializableExtra("selectedEvent");
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+
         String name = event.getName();
         String description = event.getDescription();
         String city = "CITY : " +event.getCity();
@@ -51,4 +59,15 @@ public class EventDetailView extends AppCompatActivity {
         eventDate.setText(date);
         eventTime.setText(time);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

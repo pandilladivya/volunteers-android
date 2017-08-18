@@ -65,7 +65,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-        <activity android:name="vola.systers.com.android.activities.EventDetailView">
+        <activity android:name="vola.systers.com.android.activities.EventDetailViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

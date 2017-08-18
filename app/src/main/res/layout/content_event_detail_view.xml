@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="vola.systers.com.android.activities.EventDetailView"
+    tools:context="vola.systers.com.android.activities.EventDetailViewActivity"
     tools:showIn="@layout/activity_event_detail_view">
 
     <LinearLayout
