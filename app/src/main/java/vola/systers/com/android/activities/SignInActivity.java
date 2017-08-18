@@ -81,6 +81,7 @@ public class SignInActivity extends AppCompatActivity implements
         passwordText= (EditText)findViewById(R.id.input_password);
 
         login =(Button)findViewById(R.id.btn_login) ;
+        login.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -97,25 +98,6 @@ public class SignInActivity extends AppCompatActivity implements
             }
         };
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                final String email = emailText.getText().toString();
-                final String pass = passwordText.getText().toString();
-
-                if (!isValidEmail(email)) {
-                    emailText.setError(getText(R.string.invalid_username));
-                }
-
-                if (!isValidPassword(pass)) {
-                    passwordText.setError(getText(R.string.empty_password));
-                }
-
-                if(isValidEmail(email) && isValidPassword(pass))
-                    signin(emailText,passwordText);
-            }
-        });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -158,6 +140,22 @@ public class SignInActivity extends AppCompatActivity implements
                 Toast.makeText(SignInActivity.this,R.string.error,Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void SignIn() {
+        final String email = emailText.getText().toString();
+        final String pass = passwordText.getText().toString();
+
+        if (!isValidEmail(email)) {
+            emailText.setError(getText(R.string.invalid_username));
+        }
+
+        if (!isValidPassword(pass)) {
+            passwordText.setError(getText(R.string.empty_password));
+        }
+
+        if(isValidEmail(email) && isValidPassword(pass))
+            signin(emailText,passwordText);
     }
 
     public void signin(EditText email,EditText password) {
@@ -263,6 +261,10 @@ public class SignInActivity extends AppCompatActivity implements
                break;
             case R.id.link_signup:
                 signUp();
+                break;
+            case R.id.btn_login:
+                SignIn();
+                break;
         }
     }
 

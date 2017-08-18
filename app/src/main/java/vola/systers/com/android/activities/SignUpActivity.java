@@ -42,35 +42,12 @@ public class SignUpActivity extends AppCompatActivity implements
         editTextPassword = (EditText) findViewById(R.id.input_password);
         editTextCnfPassword = (EditText) findViewById(R.id.input_cnf_password);
         buttonSignup = (Button) findViewById(R.id.btn_signup);
-        skipLink = (TextView)findViewById(R.id.link_skip);
-        loginLink=(TextView)findViewById(R.id.link_login);
+        skipLink = (TextView) findViewById(R.id.link_skip);
+        loginLink = (TextView) findViewById(R.id.link_login);
         progressDialog = new ProgressDialog(this);
         buttonSignup.setOnClickListener(this);
         skipLink.setOnClickListener(this);
         loginLink.setOnClickListener(this);
-
-        buttonSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = editTextEmail.getText().toString().trim();
-                String password = editTextPassword.getText().toString().trim();
-                String cnfPassword = editTextCnfPassword.getText().toString().trim();
-                if(!isValidEmail(email)) {
-                    editTextEmail.setError(getText(R.string.invalid_username));
-                }
-                else if(!isValidPassword(password)) {
-                    editTextPassword.setError(getText(R.string.invalid_password));
-                }
-                else if(!cnfPassword.equals(password)){
-                    editTextCnfPassword.setError(getText(R.string.password_mismatch));
-                }
-                else{
-                    progressDialog.setMessage("Registering Please Wait...");
-                    progressDialog.show();
-                    createNewUSer(email,password);
-                }
-            }
-        });
     }
 
     private void createNewUSer(String email,String password) {
@@ -93,6 +70,25 @@ public class SignUpActivity extends AppCompatActivity implements
                 });
     }
 
+    private void SignUp() {
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+        String cnfPassword = editTextCnfPassword.getText().toString().trim();
+        if(!isValidEmail(email)) {
+            editTextEmail.setError(getText(R.string.invalid_username));
+        }
+        else if(!isValidPassword(password)) {
+            editTextPassword.setError(getText(R.string.invalid_password));
+        }
+        else if(!cnfPassword.equals(password)){
+            editTextCnfPassword.setError(getText(R.string.password_mismatch));
+        }
+        else{
+            progressDialog.setMessage("Registering Please Wait...");
+            progressDialog.show();
+            createNewUSer(email,password);
+        }
+    }
     private boolean isValidEmail(String email) {
         String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -120,6 +116,8 @@ public class SignUpActivity extends AppCompatActivity implements
             case R.id.link_skip:
                 startActivity(new Intent(SignUpActivity.this, MenuActivity.class));
                 break;
+            case R.id.btn_signup:
+                SignUp();
         }
     }
 }
