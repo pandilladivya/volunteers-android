@@ -1,23 +1,30 @@
 package vola.systers.com.android.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.facebook.login.widget.LoginButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
 import vola.systers.com.android.R;
 import vola.systers.com.android.model.Event;
 
-public class EventDetailViewActivity extends AppCompatActivity {
+public class EventDetailViewActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView eventName,eventDescription,locationName,locationCity,locationCountry,eventTime,eventDate;
+    private Button register;
+    final static FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +41,6 @@ public class EventDetailViewActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-
         String name = event.getName();
         String description = event.getDescription();
         String city = "CITY : " +event.getCity();
@@ -50,6 +56,8 @@ public class EventDetailViewActivity extends AppCompatActivity {
         locationCountry = (TextView) findViewById(R.id.event_location_state);
         eventTime=(TextView)findViewById(R.id.event_time);
         eventDate=(TextView)findViewById(R.id.event_date);
+        register=(Button)findViewById(R.id.btn_register);
+        register.setOnClickListener(this);
 
         eventName.setText(name);
         eventDescription.setText(description);
@@ -70,4 +78,46 @@ public class EventDetailViewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void registerEvent(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Event event = (Event) getIntent().getSerializableExtra("selectedEvent");
+            Intent i=new Intent(EventDetailViewActivity.this,RegistrationActivity.class);
+            i.putExtra("event",event);
+            startActivity(i);
+        }
+        else
+        {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("You Need to Login to register for an Event!")
+                    .setMessage("Do You want to Login?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent i=new Intent(EventDetailViewActivity.this,SignInActivity.class);
+                            startActivity(i);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.btn_register:
+                registerEvent();
+                break;
+        }
+    }
 }
