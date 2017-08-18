@@ -12,9 +12,7 @@
     <dimen name="drawerLayoutHeight">100dp</dimen>
     <dimen name="dimenMarginBottom">20dp</dimen>
     <dimen name="dimenMarginTop">20dp</dimen>
-    <dimen name="dimenMarginLeft">30dp</dimen>
     <dimen name="labelMarginLeft">10dp</dimen>
-    <dimen name="eventNameWidth">300dp</dimen>
     <dimen name="dimenMarginRight">30dp</dimen>
     <dimen name="dimenLayoutMargin">16dp</dimen>
     <dimen name="tabLayoutHeight">56dp</dimen>
@@ -34,11 +32,8 @@
     <dimen name="padding_top">6dp</dimen>
     <dimen name="padding_bottom">6dp</dimen>
     <dimen name="eventNameWidth">300dp</dimen>
-    <dimen name="padding_view">8dp</dimen>
     <dimen name="buttonMarginTop">10dp</dimen>
     <dimen name="layoutMarginLeftText">190dp</dimen>
-    <dimen name="textViewHeading">22sp</dimen>
-    <dimen name="textViewContent">14sp</dimen>
     <dimen name="textviewMargin">24dp</dimen>
     <dimen name="cardview_padding">8dp</dimen>
     <dimen name="heightImageLogo">150dp</dimen>
