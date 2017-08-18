@@ -22,8 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -36,9 +34,11 @@ import java.util.regex.Pattern;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import vola.systers.com.android.R;
 
@@ -98,8 +98,8 @@ public class SignInActivity extends AppCompatActivity implements
             }
         };
 
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -107,7 +107,6 @@ public class SignInActivity extends AppCompatActivity implements
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
 
         callbackManager = CallbackManager.Factory.create();
         btnFacebookLogin.setReadPermissions(Arrays.asList("public_profile", "email"));
@@ -203,6 +202,7 @@ public class SignInActivity extends AppCompatActivity implements
         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
     }
 
+
     public void onSkipClicked() {
         Intent intent = new Intent(SignInActivity.this,MenuActivity.class);
         startActivity(intent);
@@ -213,41 +213,30 @@ public class SignInActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private void handleGoogleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully.
-            Toast.makeText(this,R.string.sign_in_success,Toast.LENGTH_LONG).show();
-            GoogleSignInAccount acct = result.getSignInAccount();
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
-            Log.i(TAG, "display name: " + acct.getDisplayName());
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Intent intent = new Intent(SignInActivity.this,MenuActivity.class);
+                            startActivity(intent);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(SignInActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
 
-            String personName = acct.getDisplayName();
-            String personPhotoUrl;
-            if(acct.getPhotoUrl()==null)
-            {
-                personPhotoUrl = null;
-            }
-            else
-            {
-                 personPhotoUrl = acct.getPhotoUrl().toString();
-            }
-
-            String email = acct.getEmail();
-
-            Log.i(TAG, "Name: " + personName + ", email: " + email
-                    + ", Image: " +personPhotoUrl);
-
-            Intent intent = new Intent(SignInActivity.this,MenuActivity.class);
-            startActivity(intent);
-
-        } else {
-            // UnAuthenticated.
-            Toast.makeText(this,R.string.sign_in_failure,Toast.LENGTH_LONG).show();
-        }
-
+                    }
+                });
     }
-
 
     @Override
     public void onClick(View v) {
@@ -274,9 +263,15 @@ public class SignInActivity extends AppCompatActivity implements
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_GOOGLE_SIGN_IN) {
-            Log.d(TAG, "signin");
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleGoogleSignInResult(result);
+            if (result.isSuccess()) {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
+            } else {
+                Log.i(TAG,"failure");
+                // Google Sign In failed.
+            }
         }
         else if( requestCode == RC_FACEBOOK_SIGN_IN){
             super.onActivityResult(requestCode, resultCode, data);
@@ -284,30 +279,11 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
-            Log.d(TAG, "Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            handleGoogleSignInResult(result);
-        } else {
-            // If the user has not previously signed in on this device or the sign-in has expired,
-            // this asynchronous branch will attempt to sign in the user silently.
-
-            showProgressDialog();
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
-                    hideProgressDialog();
-                    handleGoogleSignInResult(googleSignInResult);
-                }
-            });
-        }
     }
 
     @Override
