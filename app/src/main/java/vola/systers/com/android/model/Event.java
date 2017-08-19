@@ -14,6 +14,7 @@ public class Event implements Serializable {
     private String city;
     private String latitude;
     private String longitude;
+    private String status;
     private String country;
     private String status;
 

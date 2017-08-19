@@ -16,19 +16,26 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import vola.systers.com.android.R;
 
 import static android.content.ContentValues.TAG;
+import static vola.systers.com.android.fragments.ScheduleFragment.database;
 
 public class EventsMapFragment extends Fragment implements OnMapReadyCallback{
 
     private GoogleMap map;
+    ArrayList registeredEvents = new ArrayList();
+    public static String userToken="",status="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +44,25 @@ public class EventsMapFragment extends Fragment implements OnMapReadyCallback{
         View rootView = inflater.inflate(R.layout.eventsmap_fragment, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager()
                 .findFragmentById(R.id.map);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userToken = user.getUid();
+        }
+        DatabaseReference usersRef = database.getReference("event_registrations").child(userToken);
+        ValueEventListener vs = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.i("EVENT IDS", ds.getKey().toString());
+                    registeredEvents.add(ds.getKey().toString());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+            }
+        };
+        usersRef.addValueEventListener(vs);
         mapFragment.getMapAsync(this);
         return rootView;
     }
@@ -51,11 +77,16 @@ public class EventsMapFragment extends Fragment implements OnMapReadyCallback{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 BitmapDescriptor event_icon = BitmapDescriptorFactory.fromResource(R.drawable.mapicon);
                 BitmapDescriptor event_reqVolunteers_icon = BitmapDescriptorFactory.fromResource(R.drawable.mapicon_volunteers);
+                BitmapDescriptor event_registered_icon = BitmapDescriptorFactory.fromResource(R.drawable.mapicon_registered);
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
                     Log.i(TAG,ds.toString());
                     LatLng marker = new LatLng(Double.parseDouble(ds.child("location").child("latitude").getValue().toString()), Double.parseDouble(ds.child("location").child("longitude").getValue().toString()));
-                    if(ds.child("needs_volunteers").getValue().toString()=="true")
+                    if(registeredEvents.contains(ds.getKey()))
+                    {
+                        map.addMarker(new MarkerOptions().position(marker).icon(event_registered_icon).title(ds.child("name").getValue().toString()));
+                    }
+                    else if(ds.child("needs_volunteers").getValue().toString()=="true")
                     {
                         map.addMarker(new MarkerOptions().position(marker).icon(event_reqVolunteers_icon).title(ds.child("name").getValue().toString()));
                     }

@@ -82,9 +82,24 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             Event event = (Event) getIntent().getSerializableExtra("selectedEvent");
-            Intent i=new Intent(EventDetailViewActivity.this,RegistrationActivity.class);
-            i.putExtra("event",event);
-            startActivity(i);
+            if(event.getStatus().equals("Registered"))
+            {
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle("You are already Registered for this event!")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent i=new Intent(EventDetailViewActivity.this,SignInActivity.class);
+                                startActivity(i);
+                            }
+                        })
+                        .show();
+            }
+            else{
+                Intent i=new Intent(EventDetailViewActivity.this,RegistrationActivity.class);
+                i.putExtra("event",event);
+                startActivity(i);
+            }
         }
         else
         {
