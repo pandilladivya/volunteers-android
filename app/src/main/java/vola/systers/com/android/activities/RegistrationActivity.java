@@ -73,6 +73,8 @@ public class RegistrationActivity extends AppCompatActivity {
         title=(TextView) findViewById(R.id.title);
         btnRegister = (Button) findViewById(R.id.btn_register);
         attendeeTypeGroup= (RadioGroup)findViewById(R.id.radioAttendee);
+        email.setEnabled(false);
+
         Event event = (Event) getIntent().getSerializableExtra("event");
         eventId = event.getId();
         eventName = event.getName();
