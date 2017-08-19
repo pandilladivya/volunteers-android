@@ -54,7 +54,7 @@ public class ScheduleEventsListAdapter extends ArrayAdapter<Event>{
         viewHolder.eventName.setText(event.getName());
         viewHolder.date.setText(event.getStartDate()+" to "+event.getEndDate());
         viewHolder.time.setText(event.getStartTime()+" to "+event.getEndTime());
-        viewHolder.location.setText("Orlando");
+        viewHolder.location.setText(event.getLocationName());
 
         // Return the completed view to render on screen
         return convertView;
