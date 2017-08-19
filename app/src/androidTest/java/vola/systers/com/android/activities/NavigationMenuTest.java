@@ -46,25 +46,6 @@ public class NavigationMenuTest {
         };
     }
 
-    private static ViewAction actionCloseDrawer() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(DrawerLayout.class);
-            }
-
-            @Override
-            public String getDescription() {
-                return "close drawer";
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                ((DrawerLayout) view).closeDrawer(GravityCompat.START);
-            }
-        };
-    }
-
     @Test
     public void testIfTheNavigationDrawerIsHiddenInitially()
     {
@@ -74,6 +55,7 @@ public class NavigationMenuTest {
     @Test
     public void testOpenNavigationDrawer()
     {
+        SystemClock.sleep(2000);
         onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
         SystemClock.sleep(1000);
         onView(withId(R.id.nav_view)).check(matches(isDisplayed()));
