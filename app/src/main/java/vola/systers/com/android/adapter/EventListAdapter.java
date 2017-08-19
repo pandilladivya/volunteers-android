@@ -1,5 +1,6 @@
 package vola.systers.com.android.adapter;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         TextView date;
         TextView time;
         TextView location;
+        TextView status;
     }
 
     public EventListAdapter(ArrayList<Event> data, Context context) {
@@ -47,6 +49,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
             viewHolder.date = (TextView) convertView.findViewById(R.id.date);
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);
             viewHolder.location = (TextView) convertView.findViewById(R.id.location);
+            viewHolder.status=(TextView)convertView.findViewById(R.id.status);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -56,6 +59,19 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         viewHolder.date.setText(event.getStartDate()+" to "+event.getEndDate());
         viewHolder.time.setText(event.getStartTime()+" to "+event.getEndTime());
         viewHolder.location.setText(event.getLocationName());
+        viewHolder.status.setText(event.getStatus());
+        if(event.getStatus().equals("Require Volunteers"))
+        {
+            viewHolder.status.setTextColor(Color.parseColor("#F89728"));
+        }
+        else if(event.getStatus().equals("Registered"))
+        {
+            viewHolder.status.setTextColor(Color.parseColor("#00833E"));
+        }
+        else {
+            viewHolder.status.setVisibility(View.GONE);
+        }
+
 
         // Return the completed view to render on screen
         return convertView;

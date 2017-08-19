@@ -124,17 +124,15 @@
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/register_volunteer"
-            style="@style/Widget.AppCompat.Button.Borderless"
+        <TextView
+            android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/layoutMarginLeftText"
-            android:focusable="False"
-            android:paddingTop="@dimen/buttonMarginTop"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/buttonMarginTop"
+            android:layout_marginRight="@dimen/dimenMarginRight"
             android:layout_below="@+id/rel_layout_loc"
-            android:text="@string/requireVolunteers"
-            android:textColor="@color/tangerine" />
-
+            android:textColor="@color/emerald"
+            android:textStyle="bold"/>
 
 </RelativeLayout>

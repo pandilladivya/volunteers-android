@@ -41,7 +41,7 @@ public class ScheduleFragment extends Fragment {
 
     private ProgressDialog pDialog;
     private ListView eventsListView;
-    static String startDate, endDate, id,name,startTime,endTime,locationName,description,latitude,longitude,status,max_attendees,city,country;
+    static String startDate, endDate, id,name,startTime,endTime,locationName,description,latitude,longitude,status="",max_attendees,city,country;
     public static String userToken="";
     private static ScheduleEventsListAdapter eventListAdapter;
     private TextView eventsLabel;
@@ -86,9 +86,6 @@ public class ScheduleFragment extends Fragment {
         return rootView;
     }
 
-    /**
-     * Async task class to get json by making HTTP call
-     */
     private class GetEvents extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -120,7 +117,7 @@ public class ScheduleFragment extends Fragment {
                             latitude = data_snap.child("location").child("latitude").getValue().toString();
                             longitude = data_snap.child("location").child("longitude").getValue().toString();
 
-                            eventList.add(new Event(id, name, startDate, endDate, startTime, endTime, locationName, description, city, country, latitude, longitude));
+                            eventList.add(new Event(id, name, startDate, endDate, startTime, endTime, locationName, description, city, country, latitude, longitude,status));
                         }
 
                     }
