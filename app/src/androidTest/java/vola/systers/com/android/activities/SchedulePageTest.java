@@ -1,5 +1,6 @@
 package vola.systers.com.android.activities;
 
+import android.os.SystemClock;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.matcher.BoundedMatcher;
@@ -66,10 +67,12 @@ public class SchedulePageTest {
     @Test
     public void testPerformOnScroll(){
         onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
+        SystemClock.sleep(1000);
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
+        SystemClock.sleep(1000);
         onData(getEventItemName(equalTo
-                ("etouches Test 15FEB"))).inAdapterView(withId(R.id.list)).perform(click());
+                ("Event Gsoc Testing"))).inAdapterView(withId(R.id.list)).perform(click());
 
     }
 

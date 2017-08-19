@@ -95,17 +95,19 @@ public class EventsListFragment extends Fragment {
                         eventList.add(new Event(id, name, startDate,endDate,startTime,endTime,locationName,description,city,country,latitude,longitude));
 
                     }
-                    eventListAdapter = new EventListAdapter(eventList,getContext());
-                    eventListView.setAdapter(eventListAdapter);
-                    eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Event selectedEvent= eventList.get(position);
-                            Intent intent = new Intent(getActivity(),EventDetailViewActivity.class);
-                            intent.putExtra("selectedEvent",selectedEvent);
-                            startActivity(intent);
-                        }
-                    });
+                    if(getContext()!=null) {
+                        eventListAdapter = new EventListAdapter(eventList, getContext());
+                        eventListView.setAdapter(eventListAdapter);
+                        eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Event selectedEvent = eventList.get(position);
+                                Intent intent = new Intent(getActivity(), EventDetailViewActivity.class);
+                                intent.putExtra("selectedEvent", selectedEvent);
+                                startActivity(intent);
+                            }
+                        });
+                    }
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
