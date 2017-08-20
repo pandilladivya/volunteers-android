@@ -45,7 +45,7 @@ import vola.systers.com.android.model.Event;
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText fname, lname, email, affiliations;
-    public static String userToken="",emailId="";
+    public static String userToken="",emailId="",first_name="",last_name="";
     private TextView title;
     private Button btnRegister;
     private RadioGroup attendeeTypeGroup;
@@ -76,12 +76,37 @@ public class RegistrationActivity extends AppCompatActivity {
         Event event = (Event) getIntent().getSerializableExtra("event");
         eventId = event.getId();
         eventName = event.getName();
-
+        email.setEnabled(false);
         title.setText("Register to "+ eventName);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             emailId = user.getEmail();
             userToken = user.getUid();
+            if(user.getDisplayName()!=null)
+            {
+                String[] name= user.getDisplayName().split(" ");
+                fname.setText(name[0]);
+                lname.setText(name[1]);
+            }
+            else
+            {
+                FirebaseDatabase eventsDatabase = FirebaseDatabase.getInstance();
+                final DatabaseReference eventsRef = eventsDatabase.getReference("users");
+                ValueEventListener valueEventListener = new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        lname.setText(dataSnapshot.child(userToken).child("last_name").getValue().toString());
+                        fname.setText(dataSnapshot.child(userToken).child("first_name").getValue().toString());
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("TAG", "Failed to read value.", databaseError.toException());
+                    }
+                };
+                eventsRef.addValueEventListener(valueEventListener);
+            }
+
         }
         email.setText(emailId);
     }

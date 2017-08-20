@@ -85,6 +85,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             email.setText(emailId);
+            email.setEnabled(false);
+            lname.setEnabled(false);
+            fname.setEnabled(false);
         }
     }
 
