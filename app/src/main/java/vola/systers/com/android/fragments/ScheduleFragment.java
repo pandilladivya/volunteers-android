@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import vola.systers.com.android.R;
+import vola.systers.com.android.activities.EventDetailViewActivity;
+import vola.systers.com.android.adapter.EventListAdapter;
 import vola.systers.com.android.adapter.ScheduleEventsListAdapter;
 import vola.systers.com.android.model.Event;
 
@@ -58,7 +60,7 @@ public class ScheduleFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.schedule_list_fragment, container, false);
         eventList = new ArrayList<>();
         eventsListView = (ListView) rootView.findViewById(R.id.list);
-        eventsLabel=(TextView)rootView.findViewById(R.id.noeventslabel);
+        eventsLabel=(TextView)rootView.findViewById(R.id.noEventsLabel);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userToken = user.getUid();
@@ -129,6 +131,15 @@ public class ScheduleFragment extends Fragment {
                     if (getContext()!=null){
                         eventListAdapter = new ScheduleEventsListAdapter(eventList,getContext());
                         eventsListView.setAdapter(eventListAdapter);
+                        eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Event selectedEvent = eventList.get(position);
+                                    Intent intent = new Intent(getActivity(), EventDetailViewActivity.class);
+                                    intent.putExtra("selectedEvent", selectedEvent);
+                                    startActivity(intent);
+                                }
+                            });
                     }
                 }
                 @Override

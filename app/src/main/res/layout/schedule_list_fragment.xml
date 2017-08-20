@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/no_registrations"
-        android:id="@+id/noeventslabel"
+        android:id="@+id/noEventsLabel"
         android:textSize="@dimen/font_headings"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"/>
