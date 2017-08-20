@@ -92,7 +92,7 @@ public class EventsListFragment extends Fragment {
                         latitude=data_snap.child("location").child("latitude").getValue().toString();
                         longitude=data_snap.child("location").child("longitude").getValue().toString();
 
-                        eventList.add(new Event(id, name, startDate,endDate,startTime,endTime,locationName,description,city,country,latitude,longitude));
+                        eventList.add(new Event(id, name, startDate,endDate,startTime,endTime,locationName,description,city,country,latitude,longitude,"status"));
 
                     }
                     if(getContext()!=null) {

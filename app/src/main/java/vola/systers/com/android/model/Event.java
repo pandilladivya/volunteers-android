@@ -15,8 +15,9 @@ public class Event implements Serializable {
     private String latitude;
     private String longitude;
     private String country;
+    private String status;
 
-    public Event(String id, String name, String startDate, String endDate, String startTime,String endTime,String locationName, String description,String city,String country,String longitude,String latitude) {
+    public Event(String id, String name, String startDate, String endDate, String startTime,String endTime,String locationName, String description,String city,String country,String longitude,String latitude,String status) {
         this.id=id;
         this.name=name;
         this.startDate=startDate;
@@ -27,6 +28,7 @@ public class Event implements Serializable {
         this.description=description;
         this.city=city;
         this.country=country;
+        this.status=status;
     }
 
     public String getId() {
@@ -60,4 +62,6 @@ public class Event implements Serializable {
     public String getCity() { return city; }
 
     public String getCountry() { return country; }
+
+    public String getStatus() { return status; }
 }

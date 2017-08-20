@@ -26,6 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import vola.systers.com.android.R;
 import vola.systers.com.android.adapter.ScheduleEventsListAdapter;
@@ -47,7 +49,7 @@ public class ScheduleFragment extends Fragment {
     private TextView eventsLabel;
 
     ArrayList<Event> eventList;
-    ArrayList registeredEvents = new ArrayList();
+    Map<String,String> registeredEvents = new HashMap<String, String>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,7 +69,7 @@ public class ScheduleFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Log.i("EVENT IDS", ds.getKey().toString());
-                    registeredEvents.add(ds.getKey().toString());
+                    registeredEvents.put(ds.getKey().toString(),ds.child("attendee_type").getValue().toString());
                 }
                 if(registeredEvents.size()!=0)
                 {
@@ -107,7 +109,7 @@ public class ScheduleFragment extends Fragment {
                     for (DataSnapshot data_snap : dataSnapshot.getChildren()) {
 
                         id = data_snap.getKey();
-                        if(registeredEvents.contains(id)) {
+                        if(registeredEvents.containsKey(id)) {
                             name = data_snap.child("name").getValue().toString();
                             startDate = data_snap.child("startdate").getValue().toString();
                             endDate = data_snap.child("enddate").getValue().toString();
@@ -119,8 +121,8 @@ public class ScheduleFragment extends Fragment {
                             country = data_snap.child("location").child("country").getValue().toString();
                             latitude = data_snap.child("location").child("latitude").getValue().toString();
                             longitude = data_snap.child("location").child("longitude").getValue().toString();
-
-                            eventList.add(new Event(id, name, startDate, endDate, startTime, endTime, locationName, description, city, country, latitude, longitude));
+                            status=registeredEvents.get(id);
+                            eventList.add(new Event(id, name, startDate, endDate, startTime, endTime, locationName, description, city, country, latitude, longitude,status));
                         }
 
                     }

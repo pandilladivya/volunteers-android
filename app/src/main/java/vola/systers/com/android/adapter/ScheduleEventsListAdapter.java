@@ -22,6 +22,7 @@ public class ScheduleEventsListAdapter extends ArrayAdapter<Event>{
         TextView date;
         TextView time;
         TextView location;
+        TextView status;
     }
 
     public ScheduleEventsListAdapter(ArrayList<Event> data, Context context) {
@@ -46,6 +47,7 @@ public class ScheduleEventsListAdapter extends ArrayAdapter<Event>{
             viewHolder.date = (TextView) convertView.findViewById(R.id.date);
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);
             viewHolder.location = (TextView) convertView.findViewById(R.id.location);
+            viewHolder.status = (TextView)convertView.findViewById(R.id.status);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -55,6 +57,7 @@ public class ScheduleEventsListAdapter extends ArrayAdapter<Event>{
         viewHolder.date.setText(event.getStartDate()+" to "+event.getEndDate());
         viewHolder.time.setText(event.getStartTime()+" to "+event.getEndTime());
         viewHolder.location.setText(event.getLocationName());
+        viewHolder.status.setText(event.getStatus());
 
         // Return the completed view to render on screen
         return convertView;
