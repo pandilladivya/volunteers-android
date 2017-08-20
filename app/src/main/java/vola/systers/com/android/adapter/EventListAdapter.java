@@ -64,7 +64,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         {
             viewHolder.status.setTextColor(Color.parseColor("#F89728"));
         }
-        else if(event.getStatus().equals("Registered"))
+        else if(event.getStatus()!="")
         {
             viewHolder.status.setTextColor(Color.parseColor("#00833E"));
         }

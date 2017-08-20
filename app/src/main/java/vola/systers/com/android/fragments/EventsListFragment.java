@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import vola.systers.com.android.R;
 import vola.systers.com.android.activities.EventDetailViewActivity;
@@ -44,7 +46,7 @@ public class EventsListFragment extends Fragment {
     static String startDate, endDate, id,name,startTime,endTime,locationName,description,latitude,longitude,status,max_attendees,city,country;
 
     ArrayList<Event> eventList = new ArrayList<>();
-    ArrayList registeredEvents = new ArrayList();
+    Map<String,String> registeredEvents = new HashMap<String, String>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +66,7 @@ public class EventsListFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Log.i("EVENT IDS", ds.getKey().toString());
-                    registeredEvents.add(ds.getKey().toString());
+                    registeredEvents.put(ds.getKey().toString(),ds.child("attendee_type").getValue().toString());
                 }
                 new GetEvents().execute();
             }
@@ -116,9 +118,10 @@ public class EventsListFragment extends Fragment {
                         latitude=data_snap.child("location").child("latitude").getValue().toString();
                         longitude=data_snap.child("location").child("longitude").getValue().toString();
 
-                        if(registeredEvents.contains(id))
+                        if(registeredEvents.containsKey(id))
                         {
-                            status="Registered";
+                            status="Registered as "+registeredEvents.get(id);
+                            Log.d(TAG,status);
                         }
                         else if(data_snap.child("needs_volunteers").getValue().toString()=="true")
                         {

@@ -82,7 +82,7 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             Event event = (Event) getIntent().getSerializableExtra("selectedEvent");
-            if(event.getStatus().equals("Registered"))
+            if(!event.getStatus().equals("Require Volunteers") && !event.getStatus().equals(""))
             {
                 AlertDialog.Builder builder;
                 builder = new AlertDialog.Builder(this);
@@ -92,8 +92,7 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
                                 Intent i=new Intent(EventDetailViewActivity.this,SignInActivity.class);
                                 startActivity(i);
                             }
-                        })
-                        .show();
+                        }).show();
             }
             else{
                 Intent i=new Intent(EventDetailViewActivity.this,RegistrationActivity.class);
