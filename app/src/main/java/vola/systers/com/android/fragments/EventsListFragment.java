@@ -64,9 +64,11 @@ public class EventsListFragment extends Fragment {
         ValueEventListener vs = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.i("EVENT IDS", ds.getKey().toString());
-                    registeredEvents.put(ds.getKey().toString(),ds.child("attendee_type").getValue().toString());
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Log.i("EVENT IDS", ds.getKey().toString());
+                        registeredEvents.put(ds.getKey().toString(),ds.child("attendee_type").getValue().toString());
+                    }
                 }
                 new GetEvents().execute();
             }

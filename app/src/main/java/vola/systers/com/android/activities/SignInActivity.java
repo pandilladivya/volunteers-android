@@ -52,8 +52,9 @@ public class SignInActivity extends AppCompatActivity implements
 
     private static final int RC_GOOGLE_SIGN_IN = 007;
     private static final int RC_FACEBOOK_SIGN_IN=64206;
+    ProgressDialog progressDialog ;
     private GoogleApiClient mGoogleApiClient;
-    private ProgressDialog mProgressDialog;
+    private static ProgressDialog mProgressDialog;
     CallbackManager callbackManager;
     private static final String TAG = SignInActivity.class.getSimpleName();
     private PrefManager prefManager;
@@ -69,6 +70,7 @@ public class SignInActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         prefManager = new PrefManager(this);
+        progressDialog = new ProgressDialog(SignInActivity.this);
 
         if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
@@ -164,6 +166,9 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         startActivity(new Intent(SignInActivity.this, MenuActivity.class));
         finish();
     }
@@ -171,7 +176,6 @@ public class SignInActivity extends AppCompatActivity implements
     public void signin(EditText email,EditText password) {
 
         Log.d(TAG, "SignIn");
-        final ProgressDialog progressDialog = new ProgressDialog(SignInActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Verifying User..");
         progressDialog.show();
@@ -197,13 +201,6 @@ public class SignInActivity extends AppCompatActivity implements
                 }
                 }
             });
-
-        new android.os.Handler().postDelayed(
-            new Runnable() {
-                public void run() {
-                    progressDialog.dismiss();
-                }
-            }, 3000);
     }
 
 

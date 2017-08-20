@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="vola.systers.com.android">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -53,8 +54,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
-        <activity android:name="vola.systers.com.android.activities.MenuActivity">
+        <activity android:name=".activities.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,24 +64,27 @@
         <activity android:name=".activities.SignUpActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity android:name="vola.systers.com.android.activities.EventDetailViewActivity">
+        <activity android:name=".activities.EventDetailViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity android:name="vola.systers.com.android.activities.SignInActivity">
+        <activity android:name=".activities.SignInActivity">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
                     <category android:name="android.intent.category.LAUNCHER" />
                 </intent-filter>
             </activity>
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme"></activity>
 
         <activity
             android:name=".activities.RegistrationActivity"

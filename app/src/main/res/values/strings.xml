@@ -50,6 +50,7 @@
     <string name="attendee_type">Attendee Type : </string>
     <string name="volunteer">Volunteer</string>
     <string name="student">Student</string>
+    <string name="profile">PROFILE</string>
     <string name="others">Others</string>
 
     <string name="email">Email : </string>
@@ -78,5 +79,6 @@
     <string name="date">Date :</string>
     <string name="time">Time :</string>
     <string name="location">Location :</string>
+    <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_registration">RegistrationActivity</string>
 </resources>

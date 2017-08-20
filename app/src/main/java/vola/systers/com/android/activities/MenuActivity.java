@@ -1,6 +1,7 @@
 package vola.systers.com.android.activities;
 
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -218,9 +219,9 @@ public class MenuActivity extends AppCompatActivity {
                         CURRENT_TAG = TAG_NAVIGATE;
                         break;
                     case R.id.nav_profile:
-                        // launch new intent instead of loading fragment
-                        // TODO : Profile Page
-
+                        startActivity(new Intent(MenuActivity.this, ProfileActivity.class));
+                        drawer.closeDrawers();
+                        return true;
                     case R.id.nav_share:
                         // launch new intent instead of loading fragment
                         // TODO : Share APP
