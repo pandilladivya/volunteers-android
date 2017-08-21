@@ -62,13 +62,16 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         viewHolder.status.setText(event.getStatus());
         if(event.getStatus().equals("Require Volunteers"))
         {
+            // Events that Require Volunteers
             viewHolder.status.setTextColor(Color.parseColor("#F89728"));
         }
         else if(event.getStatus()!="")
         {
+            // Events that are already registered by the user.
             viewHolder.status.setTextColor(Color.parseColor("#00833E"));
         }
         else {
+            // Other events which neither require volunteers nor are registered by the user.
             viewHolder.status.setVisibility(View.GONE);
         }
 
