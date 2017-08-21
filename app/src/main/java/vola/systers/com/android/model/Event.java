@@ -16,7 +16,6 @@ public class Event implements Serializable {
     private String longitude;
     private String status;
     private String country;
-    private String status;
 
     public Event(String id, String name, String startDate, String endDate, String startTime,String endTime,String locationName, String description,String city,String country,String longitude,String latitude,String status) {
         this.id=id;
