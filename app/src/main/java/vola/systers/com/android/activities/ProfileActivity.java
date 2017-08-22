@@ -1,12 +1,17 @@
 package vola.systers.com.android.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.Tag;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,9 +35,12 @@ import vola.systers.com.android.model.Event;
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
     private String emailId, userToken,displayName;
-    private EditText fname,lname,email;
-    private Button logout;
+    private EditText fname,lname,email,affiliations,role;
+    private Button logout,saveProfile;
     private PrefManager prefManager;
+    FirebaseDatabase usersDatabase = FirebaseDatabase.getInstance();
+    final DatabaseReference usersRef = usersDatabase.getReference("users");
+    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
     @Override
@@ -48,48 +56,70 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             emailId = user.getEmail();
             userToken = user.getUid();
             displayName = user.getDisplayName();
+
             fname = (EditText) findViewById(R.id.input_fname);
             lname = (EditText) findViewById(R.id.input_lname);
             email = (EditText) findViewById(R.id.input_email);
+            affiliations=(EditText)findViewById(R.id.input_affiliations);
+            role=(EditText)findViewById(R.id.role);
+
             logout = (Button) findViewById(R.id.btn_logout);
+            saveProfile=(Button)findViewById(R.id.saveProfile);
 
+            FetchUserData();
+
+            saveProfile.setOnClickListener(this);
             logout.setOnClickListener(this);
-            if(user.getDisplayName()!=null)
-            {
-                String[] name= displayName.split(" ");
-                fname.setText(name[0]);
-                lname.setText(name[1]);
-            }
-            else
-            {
-                FirebaseDatabase eventsDatabase = FirebaseDatabase.getInstance();
-                final DatabaseReference eventsRef = eventsDatabase.getReference("users");
-                ValueEventListener valueEventListener = new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                            lname.setText(dataSnapshot.child(userToken).child("last_name").getValue().toString());
-                            fname.setText(dataSnapshot.child(userToken).child("first_name").getValue().toString());
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w("TAG", "Failed to read value.", databaseError.toException());
-                    }
-                };
-                eventsRef.addValueEventListener(valueEventListener);
-            }
-
+            saveProfile.setVisibility(View.GONE);
+            fname.addTextChangedListener(tw);
+            lname.addTextChangedListener(tw);
+            affiliations.addTextChangedListener(tw);
+            role.addTextChangedListener(tw);
             email.setText(emailId);
             email.setEnabled(false);
-            lname.setEnabled(false);
-            fname.setEnabled(false);
         }
     }
+
+    TextWatcher tw = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            saveProfile.setVisibility(View.GONE);
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(fname.getText().toString().equals(dataSnapshot.child(userToken).child("first_name").getValue().toString())
+                        && lname.getText().toString().equals(dataSnapshot.child(userToken).child("last_name").getValue().toString())
+                        && role.getText().toString().equals(dataSnapshot.child(userToken).child("title").getValue().toString())
+                        && affiliations.getText().toString().equals(dataSnapshot.child(userToken).child("affiliations").getValue().toString()))
+                    {
+                        saveProfile.setVisibility(View.GONE);
+                    }
+                    else {
+                        saveProfile.setVisibility(View.VISIBLE);
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w("TAG", "Failed to read value.", databaseError.toException());
+                }
+            };
+            usersRef.addValueEventListener(valueEventListener);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -110,6 +140,72 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(i);
     }
 
+    public void saveProfileButtonClick()
+    {
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure you want to update?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveProfile.setVisibility(View.GONE);
+                        saveProfileDetails();
+
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                        FetchUserData();
+                        saveProfile.setVisibility(View.GONE);
+                    }
+                })
+                .show();
+    }
+
+    public void saveProfileDetails()
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("users");
+        usersRef.child(userToken).child("affiliations").setValue(affiliations.getText().toString());
+        usersRef.child(userToken).child("first_name").setValue(fname.getText().toString());
+        usersRef.child(userToken).child("last_name").setValue(lname.getText().toString());
+        usersRef.child(userToken).child("title").setValue(role.getText().toString());
+    }
+
+
+    public void FetchUserData()
+    {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                lname.setText(dataSnapshot.child(userToken).child("last_name").getValue().toString());
+                fname.setText(dataSnapshot.child(userToken).child("first_name").getValue().toString());
+                if(dataSnapshot.child(userToken).hasChild("title"))
+                {
+                    role.setText(dataSnapshot.child(userToken).child("title").getValue().toString());
+                }
+                else {
+                    role.setText("");
+                }
+                if(dataSnapshot.child(userToken).hasChild("affiliations"))
+                {
+                    affiliations.setText(dataSnapshot.child(userToken).child("affiliations").getValue().toString());
+                }
+                else {
+                    affiliations.setText("");
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "Failed to read value.", databaseError.toException());
+            }
+        };
+        usersRef.addValueEventListener(valueEventListener);
+
+    }
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -117,6 +213,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btn_logout:
                 logoutUser();
                 break;
+            case R.id.saveProfile:
+                saveProfileButtonClick();
         }
 
     }

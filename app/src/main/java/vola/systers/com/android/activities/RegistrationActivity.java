@@ -82,15 +82,7 @@ public class RegistrationActivity extends AppCompatActivity {
         if (user != null) {
             emailId = user.getEmail();
             userToken = user.getUid();
-            if(user.getDisplayName()!=null)
-            {
-                String[] name= user.getDisplayName().split(" ");
-                fname.setText(name[0]);
-                lname.setText(name[1]);
-            }
-            else
-            {
-                FirebaseDatabase eventsDatabase = FirebaseDatabase.getInstance();
+            FirebaseDatabase eventsDatabase = FirebaseDatabase.getInstance();
                 final DatabaseReference eventsRef = eventsDatabase.getReference("users");
                 ValueEventListener valueEventListener = new ValueEventListener() {
 
@@ -98,6 +90,13 @@ public class RegistrationActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         lname.setText(dataSnapshot.child(userToken).child("last_name").getValue().toString());
                         fname.setText(dataSnapshot.child(userToken).child("first_name").getValue().toString());
+                        if(dataSnapshot.child(userToken).hasChild("affiliations"))
+                        {
+                            affiliations.setText(dataSnapshot.child(userToken).child("affiliations").getValue().toString());
+                        }
+                        else {
+                            affiliations.setText("");
+                        }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -106,8 +105,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 };
                 eventsRef.addValueEventListener(valueEventListener);
             }
-
-        }
         email.setText(emailId);
     }
 

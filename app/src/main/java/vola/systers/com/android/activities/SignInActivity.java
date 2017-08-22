@@ -38,6 +38,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import vola.systers.com.android.R;
 import vola.systers.com.android.manager.PrefManager;
@@ -231,6 +233,13 @@ public class SignInActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            String userToken = user.getUid();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference usersRef = database.getReference("users");
+                            String[] name= user.getDisplayName().split(" ");
+                            usersRef.child(userToken).child("first_name").setValue(name[0]);
+                            usersRef.child(userToken).child("last_name").setValue(name[1]);
                             launchHomeScreen();
                         } else {
                             // If sign in fails, display a message to the user.

@@ -95,6 +95,27 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/roleTitle"
+                android:layout_width="@dimen/formLabelWidth"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:text="@string/roleTitle"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/font_headings" />
+
+            <EditText
+                android:id="@+id/role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
                 android:id="@+id/affiliationsLabel"
                 android:layout_width="@dimen/formLabelWidth"
                 android:layout_height="wrap_content"
@@ -119,6 +140,21 @@
             android:textColor="@color/text_white"
             android:background="@color/colorPrimary"
             android:text="@string/logout"/>
+
+        <Button
+            android:id="@+id/saveProfile"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimenMarginTop"
+            android:layout_marginRight="@dimen/dimenMarginTop"
+            android:layout_marginTop="@dimen/dimenMarginTop"
+            android:layout_marginBottom="@dimen/padding"
+            android:visibility="gone"
+            android:textSize="@dimen/textSize"
+            android:textColor="@color/text_white"
+            android:background="@color/tangerine"
+            android:text="@string/save"/>
+
 
     </LinearLayout>
 
