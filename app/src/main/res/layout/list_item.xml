@@ -133,6 +133,7 @@
             android:layout_marginRight="@dimen/dimenMarginRight"
             android:layout_below="@+id/rel_layout_loc"
             android:textColor="@color/emerald"
+            android:visibility="gone"
             android:textStyle="bold"/>
 
 </RelativeLayout>

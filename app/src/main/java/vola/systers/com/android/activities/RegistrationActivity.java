@@ -19,26 +19,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import vola.systers.com.android.R;
-import vola.systers.com.android.handler.HttpHandler;
 import vola.systers.com.android.model.Event;
 
 
@@ -50,6 +39,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button btnRegister;
     private RadioGroup attendeeTypeGroup;
     private RadioButton attendeeTypeButton;
+    private RadioButton volunteer;
     public static String eventId,eventName;
     final static FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -73,9 +63,16 @@ public class RegistrationActivity extends AppCompatActivity {
         title=(TextView) findViewById(R.id.title);
         btnRegister = (Button) findViewById(R.id.btn_register);
         attendeeTypeGroup= (RadioGroup)findViewById(R.id.radioAttendee);
+        volunteer = (RadioButton)findViewById(R.id.radioVolunteer);
+
         Event event = (Event) getIntent().getSerializableExtra("event");
         eventId = event.getId();
         eventName = event.getName();
+        String status=event.getStatus();
+        if(!status.equals("Require Volunteers"))
+        {
+            volunteer.setEnabled(false);
+        }
         email.setEnabled(false);
         title.setText("Register to "+ eventName);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
