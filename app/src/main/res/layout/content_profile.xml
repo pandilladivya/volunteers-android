@@ -12,7 +12,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="8dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp">
 
         <TextView
             android:id="@+id/profile"
@@ -43,7 +45,8 @@
                 android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:maxLines="1"/>
 
         </LinearLayout>
 
@@ -64,7 +67,8 @@
             <EditText
                 android:id="@+id/input_fname"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLines="1"/>
 
         </LinearLayout>
 
@@ -85,7 +89,8 @@
             <EditText
                 android:id="@+id/input_lname"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLines="1"/>
 
         </LinearLayout>
 

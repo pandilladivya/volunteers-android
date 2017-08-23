@@ -36,10 +36,12 @@
             android:text="@string/email"
             android:textColor="@color/text_black"/>
 
-        <EditText android:id="@+id/input_email"
+        <EditText
+            android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:maxLines="1"/>
 
     </LinearLayout>
 
@@ -59,7 +61,8 @@
 
         <EditText android:id="@+id/input_fname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:maxLines="1"/>
 
     </LinearLayout>
 
@@ -79,7 +82,8 @@
 
         <EditText android:id="@+id/input_lname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:maxLines="1"/>
 
     </LinearLayout>
 

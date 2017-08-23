@@ -179,7 +179,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 lname.setText(dataSnapshot.child(userToken).child("last_name").getValue().toString());
                 fname.setText(dataSnapshot.child(userToken).child("first_name").getValue().toString());
                 if(dataSnapshot.child(userToken).hasChild("title"))

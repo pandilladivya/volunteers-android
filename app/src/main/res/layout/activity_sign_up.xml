@@ -25,19 +25,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="@string/email_hint" />
+            android:hint="@string/email_hint"
+            android:maxLines="1"/>
 
         <EditText
             android:id="@+id/input_fname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/fname_hint" />
+            android:hint="@string/fname_hint"
+            android:maxLines="1"/>
 
         <EditText
             android:id="@+id/input_lname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/lname_hint" />
+            android:hint="@string/lname_hint"
+            android:maxLines="1"/>
 
         <EditText
             android:id="@+id/input_password"
