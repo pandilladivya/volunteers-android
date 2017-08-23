@@ -99,8 +99,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(fname.getText().toString().equals(dataSnapshot.child(userToken).child("first_name").getValue().toString())
                         && lname.getText().toString().equals(dataSnapshot.child(userToken).child("last_name").getValue().toString())
-                        && role.getText().toString().equals(dataSnapshot.child(userToken).child("title").getValue().toString())
-                        && affiliations.getText().toString().equals(dataSnapshot.child(userToken).child("affiliations").getValue().toString()))
+                        && (dataSnapshot.child(userToken).hasChild("title") ? role.getText().toString().equals(dataSnapshot.child(userToken).child("title").getValue().toString()) :role.getText().toString().equals(""))
+                        && (dataSnapshot.child(userToken).hasChild("affiliations") ? affiliations.getText().toString().equals(dataSnapshot.child(userToken).child("affiliations").getValue().toString()) : affiliations.getText().toString().equals("")))
                     {
                         saveProfile.setVisibility(View.GONE);
                     }

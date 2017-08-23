@@ -72,7 +72,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
             viewHolder.status.setTextColor(Color.parseColor("#00833E"));
             viewHolder.status.setVisibility(View.VISIBLE);
         }
-        
+
         // Return the completed view to render on screen
         return convertView;
     }
