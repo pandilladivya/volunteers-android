@@ -35,7 +35,6 @@
     <string name="nav_events">Events</string>
     <string name="nav_starred_events">Starred Events</string>
     <string name="nav_schedule">Schedule</string>
-    <string name="nav_navigate">Navigate</string>
     <string name="nav_profile">Profile</string>
     <string name="nav_share">Share App</string>
     <string name="verifying">Verifying Account...</string>

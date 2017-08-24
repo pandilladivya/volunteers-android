@@ -15,14 +15,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import vola.systers.com.android.R;
 import vola.systers.com.android.fragments.EventsListFragment;
 import vola.systers.com.android.fragments.EventsMapFragment;
 import vola.systers.com.android.fragments.StarredEventsFragment;
 import vola.systers.com.android.fragments.ScheduleFragment;
-import vola.systers.com.android.fragments.NavigateFragment;
 
 
 public class MenuActivity extends AppCompatActivity {
@@ -178,9 +176,6 @@ public class MenuActivity extends AppCompatActivity {
                 ScheduleFragment scheduleFragment = new ScheduleFragment();
                 return scheduleFragment;
 
-            case 3:
-                NavigateFragment navigateFragment = new NavigateFragment();
-                return navigateFragment;
             default:
                 return new EventsListFragment();
         }
@@ -213,10 +208,6 @@ public class MenuActivity extends AppCompatActivity {
                     case R.id.nav_schedule:
                         navItemIndex = 2;
                         CURRENT_TAG = TAG_SCHEDULE;
-                        break;
-                    case R.id.nav_navigate:
-                        navItemIndex = 3;
-                        CURRENT_TAG = TAG_NAVIGATE;
                         break;
                     case R.id.nav_profile:
                         startActivity(new Intent(MenuActivity.this, ProfileActivity.class));
@@ -300,7 +291,6 @@ public class MenuActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_logout) {
-            Toast.makeText(getApplicationContext(), R.string.logout, Toast.LENGTH_LONG).show();
             return true;
         }
 

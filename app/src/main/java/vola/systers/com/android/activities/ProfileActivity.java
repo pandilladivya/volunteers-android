@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -84,6 +82,29 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             email.setText(emailId);
             email.setEnabled(false);
         }
+        else {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("You Need to Login to view your profile!")
+                    .setMessage("Do You want to Login?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent i=new Intent(ProfileActivity.this,SignInActivity.class);
+                            startActivity(i);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent i=new Intent(ProfileActivity.this,MenuActivity.class);
+                            startActivity(i);
+                        }
+                    })
+                    .show();
+        }
     }
 
     TextWatcher tw = new TextWatcher() {
@@ -154,7 +175,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
                         FetchUserData();
                         saveProfile.setVisibility(View.GONE);
                     }

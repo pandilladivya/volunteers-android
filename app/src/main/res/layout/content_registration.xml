@@ -8,6 +8,9 @@
     tools:context="vola.systers.com.android.activities.RegistrationActivity"
     tools:showIn="@layout/activity_registration">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -164,5 +167,7 @@
             android:onClick="registerToEvent"
             android:text="@string/register_event"/>
     </LinearLayout>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
