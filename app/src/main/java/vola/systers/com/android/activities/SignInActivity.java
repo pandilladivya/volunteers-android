@@ -186,13 +186,24 @@ public class SignInActivity extends AppCompatActivity implements
     private void SignIn() {
         final String email = emailText.getText().toString();
         final String pass = passwordText.getText().toString();
-
-        if (!isValidEmail(email)) {
-            emailText.setError(getText(R.string.invalid_username));
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+            snackbar.show();
         }
+        else {
+            if (!isValidEmail(email)) {
+                emailText.setError(getText(R.string.invalid_username));
+            }
 
-        if (!isValidPassword(pass)) {
-            passwordText.setError(getText(R.string.empty_password));
+            if (!isValidPassword(pass)) {
+                passwordText.setError(getText(R.string.empty_password));
+            }
+
+            if (isValidEmail(email) && isValidPassword(pass))
+                signin(emailText, passwordText);
         }
 
         if (isValidEmail(email) && isValidPassword(pass))
@@ -250,7 +261,16 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+            snackbar.show();
+        }
+        else {
+            startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+        }
     }
 
 

@@ -97,6 +97,8 @@
 
         </LinearLayout>
 
+    </android.support.design.widget.CoordinatorLayout>
+
     </ScrollView>
 
     </android.support.design.widget.CoordinatorLayout>
