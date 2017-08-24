@@ -141,7 +141,12 @@ public class RegistrationActivity extends AppCompatActivity {
                 eventsRef.child(userToken).child(eventId).child("email").setValue(emailId);
                 eventsRef.child(userToken).child(eventId).child("affiliation").setValue(affiliations.getText().toString());
 
-                Toast.makeText(this, "Registration Successfull!", Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Registration Successfull!", Snackbar.LENGTH_LONG);
+                View sbView = snackbar.getView();
+                sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+                snackbar.show();
+
                 Intent i = new Intent(RegistrationActivity.this,MenuActivity.class);
                 startActivity(i);
             }

@@ -92,12 +92,23 @@ public class SignUpActivity extends AppCompatActivity implements
                             eventsRef.child(userToken).child("first_name").setValue(fname);
                             eventsRef.child(userToken).child("last_name").setValue(lname);
 
-                            Toast.makeText(SignUpActivity.this, "Successfully registered!! Please Login to continue.", Toast.LENGTH_LONG).show();
+                            Snackbar snackbar = Snackbar
+                                    .make(coordinatorLayout, "Successfully registered!! Please Login to continue.", Snackbar.LENGTH_LONG);
+                            View sbView = snackbar.getView();
+                            sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                            snackbar.show();
+
                             Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                             startActivity(intent);
 
                         } else {
-                            Toast.makeText(SignUpActivity.this, "Registration Error", Toast.LENGTH_LONG).show();
+
+                            Snackbar snackbar = Snackbar
+                                    .make(coordinatorLayout, "Registration Error", Snackbar.LENGTH_LONG);
+                            View sbView = snackbar.getView();
+                            sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                            snackbar.show();
+
                         }
                         progressDialog.dismiss();
 
