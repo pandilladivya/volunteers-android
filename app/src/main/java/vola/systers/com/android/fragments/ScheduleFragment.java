@@ -1,10 +1,14 @@
 package vola.systers.com.android.fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +35,8 @@ import java.util.Map;
 
 import vola.systers.com.android.R;
 import vola.systers.com.android.activities.EventDetailViewActivity;
+import vola.systers.com.android.activities.MenuActivity;
+import vola.systers.com.android.activities.SignInActivity;
 import vola.systers.com.android.adapter.EventListAdapter;
 import vola.systers.com.android.adapter.ScheduleEventsListAdapter;
 import vola.systers.com.android.model.Event;
@@ -64,28 +70,55 @@ public class ScheduleFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userToken = user.getUid();
-        }
-        DatabaseReference usersRef = database.getReference("event_registrations").child(userToken);
-        ValueEventListener vs = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.i("EVENT IDS", ds.getKey().toString());
-                    registeredEvents.put(ds.getKey().toString(),ds.child("attendee_type").getValue().toString());
-                }
-                if(registeredEvents.size()!=0)
-                {
-                    eventsLabel.setVisibility(View.GONE);
-                }
-                new GetEvents().execute();
 
+            DatabaseReference usersRef = database.getReference("event_registrations").child(userToken);
+            ValueEventListener vs = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Log.i("EVENT IDS", ds.getKey().toString());
+                        registeredEvents.put(ds.getKey().toString(), ds.child("attendee_type").getValue().toString());
+                    }
+                    if (registeredEvents.size() != 0) {
+                        eventsLabel.setVisibility(View.GONE);
+                    }
+                    new GetEvents().execute();
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w(TAG, "Failed to read value.", databaseError.toException());
+                }
+            };
+            usersRef.addValueEventListener(vs);
+        }
+        else {
+            eventsLabel.setVisibility(View.GONE);
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(getActivity());
+            } else {
+                builder = new AlertDialog.Builder(getActivity());
             }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "Failed to read value.", databaseError.toException());
-            }
-        };
-        usersRef.addValueEventListener(vs);
+            builder.setTitle("Login Required!")
+                    .setMessage("You Need to Login to see your registered Events. Do you want to Login?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent i = new Intent(getActivity(), SignInActivity.class);
+                            startActivity(i);
+                            ((Activity) getActivity()).overridePendingTransition(0,0);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent i = new Intent(getActivity(), MenuActivity.class);
+                            startActivity(i);
+                            ((Activity) getActivity()).overridePendingTransition(0,0);
+                        }
+                    })
+                    .show();
+        }
 
         return rootView;
     }
