@@ -3,6 +3,9 @@ package vola.systers.com.android.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import vola.systers.com.android.R;
+import vola.systers.com.android.utils.NetworkConnectivity;
 
 public class SignUpActivity extends AppCompatActivity implements
         View.OnClickListener{
@@ -29,6 +33,7 @@ public class SignUpActivity extends AppCompatActivity implements
     private EditText editTextEmail,editTextPassword,editTextCnfPassword,editTextFname,editTextLname;
     private Button buttonSignup;
     private TextView skipLink,loginLink;
+    private CoordinatorLayout coordinatorLayout;
     private ProgressDialog progressDialog;
     final static FirebaseDatabase database = FirebaseDatabase.getInstance();
     public static String userToken="";
@@ -40,6 +45,15 @@ public class SignUpActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
+        }
 
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -98,19 +112,29 @@ public class SignUpActivity extends AppCompatActivity implements
         String fname = editTextFname.getText().toString().trim();
         String lname = editTextLname.getText().toString().trim();
 
-        if(!isValidEmail(email)) {
-            editTextEmail.setError(getText(R.string.invalid_username));
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
         }
-        else if(!isValidPassword(password)) {
-            editTextPassword.setError(getText(R.string.invalid_password));
-        }
-        else if(!cnfPassword.equals(password)){
-            editTextCnfPassword.setError(getText(R.string.password_mismatch));
-        }
-        else{
-            progressDialog.setMessage("Registering Please Wait...");
-            progressDialog.show();
-            createNewUSer(email,password,fname,lname);
+
+        else {
+            if(!isValidEmail(email)) {
+                editTextEmail.setError(getText(R.string.invalid_username));
+            }
+            else if(!isValidPassword(password)) {
+                editTextPassword.setError(getText(R.string.invalid_password));
+            }
+            else if(!cnfPassword.equals(password)){
+                editTextCnfPassword.setError(getText(R.string.password_mismatch));
+            }
+            else{
+                progressDialog.setMessage("Registering Please Wait...");
+                progressDialog.show();
+                createNewUSer(email,password,fname,lname);
+            }
         }
     }
     private boolean isValidEmail(String email) {

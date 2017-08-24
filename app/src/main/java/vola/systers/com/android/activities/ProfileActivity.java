@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,11 +32,13 @@ import vola.systers.com.android.R;
 import vola.systers.com.android.adapter.EventListAdapter;
 import vola.systers.com.android.manager.PrefManager;
 import vola.systers.com.android.model.Event;
+import vola.systers.com.android.utils.NetworkConnectivity;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
     private String emailId, userToken,displayName;
     private EditText fname,lname,email,affiliations,role;
+    private CoordinatorLayout coordinatorLayout;
     private Button logout,saveProfile;
     private PrefManager prefManager;
     FirebaseDatabase usersDatabase = FirebaseDatabase.getInstance();
@@ -48,11 +53,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Profile");
         setSupportActionBar(toolbar);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         prefManager = new PrefManager(this);
 
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
         }
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -154,32 +169,50 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public void logoutUser()
     {
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
-        fAuth.signOut();
-        prefManager.setFirstTimeLaunch(true);
-        Intent i=new Intent(ProfileActivity.this,SignInActivity.class);
-        startActivity(i);
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
+        }
+        else {
+            FirebaseAuth fAuth = FirebaseAuth.getInstance();
+            fAuth.signOut();
+            prefManager.setFirstTimeLaunch(true);
+            Intent i=new Intent(ProfileActivity.this,SignInActivity.class);
+            startActivity(i);
+        }
     }
 
     public void saveProfileButtonClick()
     {
-        AlertDialog.Builder builder;
-        builder = new AlertDialog.Builder(this);
-        builder.setTitle("Are you sure you want to update?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        saveProfile.setVisibility(View.GONE);
-                        saveProfileDetails();
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
+        }
+        else {
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(this);
+            builder.setTitle("Are you sure you want to update?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            saveProfile.setVisibility(View.GONE);
+                            saveProfileDetails();
 
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        FetchUserData();
-                        saveProfile.setVisibility(View.GONE);
-                    }
-                })
-                .show();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            FetchUserData();
+                            saveProfile.setVisibility(View.GONE);
+                        }
+                    })
+                    .show();
+        }
     }
 
     public void saveProfileDetails()

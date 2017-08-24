@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import vola.systers.com.android.R;
 import vola.systers.com.android.model.Event;
+import vola.systers.com.android.utils.NetworkConnectivity;
 
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -39,6 +43,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button btnRegister;
     private RadioGroup attendeeTypeGroup;
     private RadioButton attendeeTypeButton;
+    private CoordinatorLayout coordinatorLayout;
     private RadioButton volunteer;
     public static String eventId,eventName;
     final static FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -48,12 +53,21 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         toolbar.setTitle("Event Registration");
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
         }
 
         fname = (EditText) findViewById(R.id.input_fname);
@@ -75,6 +89,7 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         email.setEnabled(false);
         title.setText("Register to "+ eventName);
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             emailId = user.getEmail();
@@ -106,21 +121,30 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public void registerToEvent(View view) {
-        if (emailId != "") {
-            int selectedId = attendeeTypeGroup.getCheckedRadioButtonId();
-            attendeeTypeButton = (RadioButton) findViewById(selectedId);
-            String selectedAttendeeType = attendeeTypeButton.getText().toString();
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
+        }
+        else {
+            if (emailId != "") {
+                int selectedId = attendeeTypeGroup.getCheckedRadioButtonId();
+                attendeeTypeButton = (RadioButton) findViewById(selectedId);
+                String selectedAttendeeType = attendeeTypeButton.getText().toString();
 
-            DatabaseReference eventsRef = database.getReference("event_registrations");
-            eventsRef.child(userToken).child(eventId).child("attendee_type").setValue(selectedAttendeeType);
-            eventsRef.child(userToken).child(eventId).child("first_name").setValue(fname.getText().toString());
-            eventsRef.child(userToken).child(eventId).child("last_name").setValue(lname.getText().toString());
-            eventsRef.child(userToken).child(eventId).child("email").setValue(emailId);
-            eventsRef.child(userToken).child(eventId).child("affiliation").setValue(affiliations.getText().toString());
+                DatabaseReference eventsRef = database.getReference("event_registrations");
+                eventsRef.child(userToken).child(eventId).child("attendee_type").setValue(selectedAttendeeType);
+                eventsRef.child(userToken).child(eventId).child("first_name").setValue(fname.getText().toString());
+                eventsRef.child(userToken).child(eventId).child("last_name").setValue(lname.getText().toString());
+                eventsRef.child(userToken).child(eventId).child("email").setValue(emailId);
+                eventsRef.child(userToken).child(eventId).child("affiliation").setValue(affiliations.getText().toString());
 
-            Toast.makeText(this, "Registration Successfull!", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(RegistrationActivity.this,MenuActivity.class);
-            startActivity(i);
+                Toast.makeText(this, "Registration Successfull!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(RegistrationActivity.this,MenuActivity.class);
+                startActivity(i);
+            }
         }
     }
 

@@ -4,6 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:textAlignment="center"
+        android:id="@+id/coordinator_layout">
+
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
@@ -20,4 +26,7 @@
         android:textSize="@dimen/font_headings"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
 </RelativeLayout>

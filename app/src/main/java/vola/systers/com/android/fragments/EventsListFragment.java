@@ -4,7 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +31,7 @@ import vola.systers.com.android.R;
 import vola.systers.com.android.activities.EventDetailViewActivity;
 import vola.systers.com.android.model.Event;
 import vola.systers.com.android.adapter.EventListAdapter;
+import vola.systers.com.android.utils.NetworkConnectivity;
 
 import static vola.systers.com.android.fragments.ScheduleFragment.database;
 
@@ -41,6 +45,7 @@ public class EventsListFragment extends Fragment {
 
     private ProgressDialog pDialog;
     private ListView eventListView;
+    private CoordinatorLayout coordinatorLayout;
     private static EventListAdapter eventListAdapter;
     public static String userToken="";
     static String startDate, endDate, id,name,startTime,endTime,locationName,description,latitude,longitude,status,max_attendees,city,country;
@@ -55,11 +60,21 @@ public class EventsListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.eventslist_fragment, container, false);
         eventList = new ArrayList<>();
         eventListView = (ListView) rootView.findViewById(R.id.list);
+        coordinatorLayout = (CoordinatorLayout) rootView.findViewById(R.id.coordinator_layout);
+
+        if(! new NetworkConnectivity().checkConnectivity(getActivity())) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+            snackbar.show();
+        }
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userToken = user.getUid();
         }
+        Log.d("TOKEN",userToken);
         DatabaseReference usersRef = database.getReference("event_registrations").child(userToken);
         ValueEventListener vs = new ValueEventListener() {
             @Override

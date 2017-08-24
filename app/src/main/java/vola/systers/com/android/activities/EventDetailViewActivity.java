@@ -4,6 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,11 +22,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import vola.systers.com.android.R;
 import vola.systers.com.android.model.Event;
+import vola.systers.com.android.utils.NetworkConnectivity;
 
 public class EventDetailViewActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView eventName,eventDescription,locationName,locationCity,locationCountry,eventTime,eventDate;
     private Button register;
+    private CoordinatorLayout coordinatorLayout;
     final static FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
@@ -31,6 +36,16 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail_view);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
+        }
+
         Event event = (Event) getIntent().getSerializableExtra("selectedEvent");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(event.getName());
@@ -84,35 +99,45 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
     }
 
     private void registerEvent(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            Event event = (Event) getIntent().getSerializableExtra("selectedEvent");
+
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
+        }
+        else {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                Event event = (Event) getIntent().getSerializableExtra("selectedEvent");
                 Intent i=new Intent(EventDetailViewActivity.this,RegistrationActivity.class);
                 i.putExtra("event",event);
                 startActivity(i);
-        }
-        else
-        {
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(this);
-            } else {
-                builder = new AlertDialog.Builder(this);
             }
-            builder.setTitle("You Need to Login to register for an Event!")
-                    .setMessage("Do You want to Login?")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent i=new Intent(EventDetailViewActivity.this,SignInActivity.class);
-                            startActivity(i);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
-                        }
-                    })
-                    .show();
+            else
+            {
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this);
+                } else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle("You Need to Login to register for an Event!")
+                        .setMessage("Do You want to Login?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent i=new Intent(EventDetailViewActivity.this,SignInActivity.class);
+                                startActivity(i);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .show();
+            }
         }
     }
 

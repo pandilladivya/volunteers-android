@@ -1,6 +1,10 @@
 package vola.systers.com.android.activities;
 
-import android.preference.PreferenceManager;
+import vola.systers.com.android.utils.NetworkConnectivity;
+
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.ProgressDialog;
@@ -58,6 +62,7 @@ public class SignInActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private static ProgressDialog mProgressDialog;
     CallbackManager callbackManager;
+    private CoordinatorLayout coordinatorLayout;
     private static final String TAG = SignInActivity.class.getSimpleName();
     private PrefManager prefManager;
     private FirebaseAuth mAuth;
@@ -73,10 +78,19 @@ public class SignInActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_signin);
         prefManager = new PrefManager(this);
         progressDialog = new ProgressDialog(SignInActivity.this);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
         if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
             finish();
+        }
+
+         if(! new NetworkConnectivity().checkConnectivity(this)) {
+             Snackbar snackbar = Snackbar
+                     .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+             View sbView = snackbar.getView();
+             sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+             snackbar.show();
         }
 
         LoginButton btnFacebookLogin=(LoginButton) findViewById(R.id.btn_fb_sign_in) ;
@@ -94,16 +108,27 @@ public class SignInActivity extends AppCompatActivity implements
         login.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
 
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                if(! new NetworkConnectivity().checkConnectivity(getApplicationContext())) {
+                    Snackbar snackbar = Snackbar
+                            .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+                    View sbView = snackbar.getView();
+                    sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                    snackbar.show();
+                }
+                else
+                {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        // User is signed in
+                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    } else {
+                        // User is signed out
+                        Log.d(TAG, "onAuthStateChanged:signed_out");
+                    }
                 }
             }
         };
@@ -140,12 +165,21 @@ public class SignInActivity extends AppCompatActivity implements
 
             @Override
             public void onCancel() {
-                Toast.makeText(SignInActivity.this,R.string.cancelled_request,Toast.LENGTH_LONG).show();
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, R.string.cancelled_request, Snackbar.LENGTH_LONG);
+                View sbView = snackbar.getView();
+                sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                snackbar.show();
+
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(SignInActivity.this,R.string.error,Toast.LENGTH_LONG).show();
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, R.string.error, Snackbar.LENGTH_LONG);
+                View sbView = snackbar.getView();
+                sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                snackbar.show();
             }
         });
     }
@@ -153,17 +187,25 @@ public class SignInActivity extends AppCompatActivity implements
     private void SignIn() {
         final String email = emailText.getText().toString();
         final String pass = passwordText.getText().toString();
-
-        if (!isValidEmail(email)) {
-            emailText.setError(getText(R.string.invalid_username));
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+            snackbar.show();
         }
+        else {
+            if (!isValidEmail(email)) {
+                emailText.setError(getText(R.string.invalid_username));
+            }
 
-        if (!isValidPassword(pass)) {
-            passwordText.setError(getText(R.string.empty_password));
+            if (!isValidPassword(pass)) {
+                passwordText.setError(getText(R.string.empty_password));
+            }
+
+            if (isValidEmail(email) && isValidPassword(pass))
+                signin(emailText, passwordText);
         }
-
-        if(isValidEmail(email) && isValidPassword(pass))
-            signin(emailText,passwordText);
     }
 
     private void launchHomeScreen() {
@@ -177,38 +219,56 @@ public class SignInActivity extends AppCompatActivity implements
 
     public void signin(EditText email,EditText password) {
 
-        Log.d(TAG, "SignIn");
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Verifying User..");
-        progressDialog.show();
+            Log.d(TAG, "SignIn");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Verifying User..");
+            progressDialog.show();
 
-        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+            mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
-                // If sign in fails, display a message to the user. If sign in succeeds
-                // the auth state listener will be notified and logic to handle the
-                // signed in user can be handled in the listener.
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
 
-                if (!task.isSuccessful()) {
-                    Log.w(TAG, "signInWithEmail:failed", task.getException());
-                    Toast.makeText(SignInActivity.this, R.string.auth_failed,Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    Toast.makeText(SignInActivity.this, R.string.auth_success,Toast.LENGTH_LONG).show();
-                    launchHomeScreen();
-                }
-                }
-            });
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "signInWithEmail:failed", task.getException());
+                                Snackbar snackbar = Snackbar
+                                        .make(coordinatorLayout, R.string.auth_failed, Snackbar.LENGTH_LONG);
+                                View sbView = snackbar.getView();
+                                sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                                snackbar.show();
+                            }
+                            else
+                            {
+                                Snackbar snackbar = Snackbar
+                                        .make(coordinatorLayout, R.string.auth_success, Snackbar.LENGTH_LONG);
+                                View sbView = snackbar.getView();
+                                sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                                snackbar.show();
+                                launchHomeScreen();
+                            }
+                        }
+                    });
+
     }
 
 
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+            snackbar.show();
+        }
+        else {
+            startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+        }
     }
 
 
@@ -244,8 +304,12 @@ public class SignInActivity extends AppCompatActivity implements
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(SignInActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Snackbar snackbar = Snackbar
+                                    .make(coordinatorLayout, "Authentication failed.", Snackbar.LENGTH_LONG);
+                            View sbView = snackbar.getView();
+                            sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                            snackbar.show();
+
                         }
 
                     }
@@ -284,8 +348,12 @@ public class SignInActivity extends AppCompatActivity implements
                 firebaseAuthWithGoogle(account);
             } else {
                 Log.i(TAG,"failure");
-                Toast.makeText(SignInActivity.this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Authentication failed.", Snackbar.LENGTH_LONG);
+                View sbView = snackbar.getView();
+                sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                snackbar.show();
+
             }
         }
         else if( requestCode == RC_FACEBOOK_SIGN_IN){
