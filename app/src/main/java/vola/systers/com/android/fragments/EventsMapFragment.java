@@ -84,14 +84,14 @@ public class EventsMapFragment extends Fragment implements OnMapReadyCallback{
                     LatLng marker = new LatLng(Double.parseDouble(ds.child("location").child("latitude").getValue().toString()), Double.parseDouble(ds.child("location").child("longitude").getValue().toString()));
                     if(registeredEvents.contains(ds.getKey()))
                     {
-                        map.addMarker(new MarkerOptions().position(marker).icon(event_registered_icon).title(ds.child("name").getValue().toString()));
+                        map.addMarker(new MarkerOptions().position(marker).icon(event_registered_icon).title(ds.child("name").getValue().toString()).snippet(ds.child("location").child("name").getValue().toString()));
                     }
                     else if(ds.child("needs_volunteers").getValue().toString()=="true")
                     {
-                        map.addMarker(new MarkerOptions().position(marker).icon(event_reqVolunteers_icon).title(ds.child("name").getValue().toString()));
+                        map.addMarker(new MarkerOptions().position(marker).icon(event_reqVolunteers_icon).title(ds.child("name").getValue().toString()).snippet(ds.child("location").child("name").getValue().toString()));
                     }
                     else {
-                        map.addMarker(new MarkerOptions().position(marker).icon(event_icon).title(ds.child("name").getValue().toString()));
+                        map.addMarker(new MarkerOptions().position(marker).icon(event_icon).title(ds.child("name").getValue().toString()).snippet(ds.child("location").child("name").getValue().toString()));
                     }
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker,14));
 

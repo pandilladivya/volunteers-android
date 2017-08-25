@@ -323,7 +323,7 @@ public class SignInActivity extends AppCompatActivity implements
                 SignIn();
                 break;
         }
-       
+
     }
 
     @Override
