@@ -25,4 +25,5 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/textNavItem"
         tools:text="@string/recents" />
+
 </LinearLayout>

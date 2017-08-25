@@ -58,9 +58,8 @@ public class SignInActivity extends AppCompatActivity implements
 
     private static final int RC_GOOGLE_SIGN_IN = 007;
     private static final int RC_FACEBOOK_SIGN_IN=64206;
-    ProgressDialog progressDialog ;
+    ProgressDialog verifyingAuthProgressDialog ;
     private GoogleApiClient mGoogleApiClient;
-    private static ProgressDialog mProgressDialog;
     CallbackManager callbackManager;
     private CoordinatorLayout coordinatorLayout;
     private static final String TAG = SignInActivity.class.getSimpleName();
@@ -77,7 +76,7 @@ public class SignInActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         prefManager = new PrefManager(this);
-        progressDialog = new ProgressDialog(SignInActivity.this);
+        verifyingAuthProgressDialog = new ProgressDialog(SignInActivity.this);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
         if (!prefManager.isFirstTimeLaunch()) {
@@ -202,8 +201,8 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
+        if (verifyingAuthProgressDialog != null && verifyingAuthProgressDialog.isShowing()) {
+            verifyingAuthProgressDialog.dismiss();
         }
         startActivity(new Intent(SignInActivity.this, MenuActivity.class));
         finish();
@@ -212,9 +211,9 @@ public class SignInActivity extends AppCompatActivity implements
     public void signin(EditText email,EditText password) {
 
             Log.d(TAG, "SignIn");
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Verifying User..");
-            progressDialog.show();
+            verifyingAuthProgressDialog.setIndeterminate(true);
+            verifyingAuthProgressDialog.setMessage("Verifying User..");
+            verifyingAuthProgressDialog.show();
 
             mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -308,22 +307,23 @@ public class SignInActivity extends AppCompatActivity implements
             sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             snackbar.show();
         }
-        int id = v.getId();
-        switch (id) {
-            case R.id.btn_sign_in_google:
-                googleSignIn();
-                break;
-            case R.id.link_skip:
-                onSkipClicked();
-                break;
-            case R.id.link_signup:
-                signUp();
-                break;
-            case R.id.btn_login:
-                SignIn();
-                break;
+        else {
+            int id = v.getId();
+            switch (id) {
+                case R.id.btn_sign_in_google:
+                    googleSignIn();
+                    break;
+                case R.id.link_skip:
+                    onSkipClicked();
+                    break;
+                case R.id.link_signup:
+                    signUp();
+                    break;
+                case R.id.btn_login:
+                    SignIn();
+                    break;
+            }
         }
-
     }
 
     @Override
@@ -373,21 +373,6 @@ public class SignInActivity extends AppCompatActivity implements
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
-        }
-    }
 
     // validating email id
     private boolean isValidEmail(String email) {
