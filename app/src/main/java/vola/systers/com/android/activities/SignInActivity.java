@@ -187,25 +187,17 @@ public class SignInActivity extends AppCompatActivity implements
     private void SignIn() {
         final String email = emailText.getText().toString();
         final String pass = passwordText.getText().toString();
-        if(! new NetworkConnectivity().checkConnectivity(this)) {
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
-            View sbView = snackbar.getView();
-            sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
-            snackbar.show();
-        }
-        else {
-            if (!isValidEmail(email)) {
-                emailText.setError(getText(R.string.invalid_username));
-            }
 
-            if (!isValidPassword(pass)) {
-                passwordText.setError(getText(R.string.empty_password));
-            }
-
-            if (isValidEmail(email) && isValidPassword(pass))
-                signin(emailText, passwordText);
+        if (!isValidEmail(email)) {
+            emailText.setError(getText(R.string.invalid_username));
         }
+
+        if (!isValidPassword(pass)) {
+            passwordText.setError(getText(R.string.empty_password));
+        }
+
+        if (isValidEmail(email) && isValidPassword(pass))
+            signin(emailText, passwordText);
     }
 
     private void launchHomeScreen() {
@@ -259,16 +251,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        if(! new NetworkConnectivity().checkConnectivity(this)) {
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
-            View sbView = snackbar.getView();
-            sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
-            snackbar.show();
-        }
-        else {
-            startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
-        }
+        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
     }
 
 
@@ -318,6 +301,13 @@ public class SignInActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
+        }
         int id = v.getId();
         switch (id) {
             case R.id.btn_sign_in_google:
@@ -325,7 +315,7 @@ public class SignInActivity extends AppCompatActivity implements
                 break;
             case R.id.link_skip:
                 onSkipClicked();
-               break;
+                break;
             case R.id.link_signup:
                 signUp();
                 break;
@@ -333,6 +323,7 @@ public class SignInActivity extends AppCompatActivity implements
                 SignIn();
                 break;
         }
+       
     }
 
     @Override

@@ -123,6 +123,7 @@ public class ScheduleFragment extends Fragment {
                             Intent i = new Intent(getActivity(), SignInActivity.class);
                             startActivity(i);
                             ((Activity) getActivity()).overridePendingTransition(0,0);
+                            getActivity().finish();
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -130,6 +131,7 @@ public class ScheduleFragment extends Fragment {
                             Intent i = new Intent(getActivity(), MenuActivity.class);
                             startActivity(i);
                             ((Activity) getActivity()).overridePendingTransition(0,0);
+                            getActivity().finish();
                         }
                     })
                     .show();
