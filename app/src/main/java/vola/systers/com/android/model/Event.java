@@ -29,6 +29,8 @@ public class Event implements Serializable {
         this.city=city;
         this.country=country;
         this.status=status;
+        this.latitude=latitude;
+        this.longitude=longitude;
     }
 
     public String getId() {
@@ -64,4 +66,9 @@ public class Event implements Serializable {
     public String getCountry() { return country; }
 
     public String getStatus() { return status; }
+
+    public String getLatitude() { return latitude; }
+
+    public String getLongitude() { return longitude; }
+
 }

@@ -1,6 +1,7 @@
 package vola.systers.com.android.adapter;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.StringTokenizer;
+
 import android.provider.CalendarContract.Events;
 
 import vola.systers.com.android.R;
@@ -49,6 +52,7 @@ public class ScheduleEventsListAdapter extends ArrayAdapter<Event> implements Vi
         switch (v.getId())
         {
             case R.id.calendar:
+                // Add event to the calendar
                 Calendar cal = Calendar.getInstance();
                 Intent intent = new Intent(Intent.ACTION_EDIT);
                 intent.setType("vnd.android.cursor.item/event");
@@ -81,6 +85,14 @@ public class ScheduleEventsListAdapter extends ArrayAdapter<Event> implements Vi
                 intent.putExtra("eventLocation",event.getLocationName());
                 mContext.startActivity(intent);
                 break;
+            case R.id.navigate:
+                // Navigate to the event
+                String latitude = event.getLatitude();
+                String longitude = event.getLongitude();
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+longitude+","+latitude);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                mContext.startActivity(mapIntent);
         }
     }
 
