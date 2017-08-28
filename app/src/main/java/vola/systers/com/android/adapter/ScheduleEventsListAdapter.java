@@ -15,6 +15,7 @@ import java.util.Calendar;
 import android.provider.CalendarContract.Events;
 
 import vola.systers.com.android.R;
+import vola.systers.com.android.model.DateTime;
 import vola.systers.com.android.model.Event;
 
 public class ScheduleEventsListAdapter extends ArrayAdapter<Event> implements View.OnClickListener{
@@ -41,7 +42,6 @@ public class ScheduleEventsListAdapter extends ArrayAdapter<Event> implements Vi
 
     @Override
     public void onClick(View v) {
-
         int position=(Integer) v.getTag();
         Object object= getItem(position);
         Event event = (Event) object;
@@ -54,25 +54,27 @@ public class ScheduleEventsListAdapter extends ArrayAdapter<Event> implements Vi
                 intent.setType("vnd.android.cursor.item/event");
                 String [] start_date = event.getStartDate().split("-");
                 String [] start_time = event.getStartTime().split(":");
+                DateTime startdateTime = new DateTime(start_date,start_time);
                 cal.set(
-                        Integer.parseInt(start_date[0]),    // Year
-                        Integer.parseInt(start_date[1]),    // Month
-                        Integer.parseInt(start_date[2]),    // Date
-                        Integer.parseInt(start_time[0]),    // Hour
-                        Integer.parseInt(start_time[1]),    // Minute
-                        Integer.parseInt(start_time[2])     // Second
+                        startdateTime.getYear(),
+                        startdateTime.getMonth(),
+                        startdateTime.getDate(),
+                        startdateTime.getHour(),
+                        startdateTime.getMinute(),
+                        startdateTime.getSecond()
                 );
                 intent.putExtra("beginTime", cal.getTimeInMillis());
 
                 String [] end_date = event.getEndDate().split("-");
                 String [] end_time = event.getEndTime().split(":");
+                DateTime enddateTime = new DateTime(end_date,end_time);
                 cal.set(
-                        Integer.parseInt(end_date[0]),      // Year
-                        Integer.parseInt(end_date[1]),      // Month
-                        Integer.parseInt(end_date[2]),      // Date
-                        Integer.parseInt(end_time[0]),      // Hour
-                        Integer.parseInt(end_time[1]),      // Minute
-                        Integer.parseInt(end_time[2])       // Second
+                        enddateTime.getYear(),
+                        enddateTime.getMonth(),
+                        enddateTime.getDate(),
+                        enddateTime.getHour(),
+                        enddateTime.getMinute(),
+                        enddateTime.getSecond()
                 );
                 intent.putExtra("endTime", cal.getTimeInMillis());
                 intent.putExtra("title", event.getName());
