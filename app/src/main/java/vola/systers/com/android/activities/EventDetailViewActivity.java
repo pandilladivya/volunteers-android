@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -13,11 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import vola.systers.com.android.R;
@@ -28,8 +31,10 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
 
     private TextView eventName,eventDescription,locationName,locationCity,locationCountry,eventTime,eventDate;
     private Button register;
+    public static String userToken="",eventId="";
     private CoordinatorLayout coordinatorLayout;
     final static FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail_view);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         if(! new NetworkConnectivity().checkConnectivity(this)) {
             Snackbar snackbar = Snackbar
@@ -65,6 +71,7 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
         String time = "TIME : " + event.getStartTime()+" to "+event.getEndTime();
 
         eventName = (TextView) findViewById(R.id.event_name);
+        eventId= event.getId();
         eventDescription = (TextView)findViewById(R.id.event_description);
         locationName = (TextView) findViewById(R.id.event_location_name);
         locationCity = (TextView)findViewById(R.id.event_location_city);
@@ -73,6 +80,7 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
         eventDate=(TextView)findViewById(R.id.event_date);
         register=(Button)findViewById(R.id.btn_register);
         register.setOnClickListener(this);
+        fab.setOnClickListener(this);
 
         eventName.setText(name);
         eventDescription.setText(description);
@@ -141,12 +149,40 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
         }
     }
 
+    private void bookMarkEvent()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(! new NetworkConnectivity().checkConnectivity(this)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            snackbar.show();
+        }
+        else {
+            if (user!=null) {
+                userToken = user.getUid();
+                DatabaseReference eventsRef = database.getReference("starred_events");
+                eventsRef.child(userToken).child(eventId).child("bookmarked").setValue("true");
+
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "BookMarked Successfull!", Snackbar.LENGTH_LONG);
+                View sbView = snackbar.getView();
+                sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+                snackbar.show();
+            }
+          }
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
             case R.id.btn_register:
                 registerEvent();
+                break;
+            case R.id.fab:
+                bookMarkEvent();
                 break;
         }
     }
