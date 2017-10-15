@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,12 +21,19 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import vola.systers.com.android.R;
 import vola.systers.com.android.model.Event;
 import vola.systers.com.android.utils.NetworkConnectivity;
+
+import static android.content.ContentValues.TAG;
 
 public class EventDetailViewActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -34,6 +42,7 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
     public static String userToken="",eventId="";
     private CoordinatorLayout coordinatorLayout;
     final static FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public ArrayList starredEvents = new ArrayList();
     private FloatingActionButton fab;
 
     @Override
@@ -51,6 +60,31 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
             sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             snackbar.show();
         }
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userToken = user.getUid();
+        }
+        DatabaseReference starredEventsRef = database.getReference("starred_events").child(userToken);
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    starredEvents.add(ds.getKey().toString());
+                }
+                if(starredEvents.contains(eventId)){
+                    Log.i("EVENT IDS", eventId);
+                    fab.setAlpha(.5f);
+                    fab.setClickable(false);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+            }
+
+        };
+        starredEventsRef.addValueEventListener(valueEventListener);
 
         Event event = (Event) getIntent().getSerializableExtra("selectedEvent");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,11 +123,13 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
         locationCountry.setText(country);
         eventDate.setText(date);
         eventTime.setText(time);
+
         if(!event.getStatus().equals("Require Volunteers") && !event.getStatus().equals(""))
         {
             register.setAlpha(.5f);
             register.setClickable(false);
         }
+
     }
 
     @Override
@@ -116,6 +152,7 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
             snackbar.show();
         }
         else {
+
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 Event event = (Event) getIntent().getSerializableExtra("selectedEvent");
@@ -152,6 +189,7 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
     private void bookMarkEvent()
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if(! new NetworkConnectivity().checkConnectivity(this)) {
             Snackbar snackbar = Snackbar
                     .make(coordinatorLayout, "Please Make Sure You are Connected to Internet!", Snackbar.LENGTH_LONG);
@@ -161,6 +199,7 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
         }
         else {
             if (user!=null) {
+
                 userToken = user.getUid();
                 DatabaseReference eventsRef = database.getReference("starred_events");
                 eventsRef.child(userToken).child(eventId).child("bookmarked").setValue("true");
