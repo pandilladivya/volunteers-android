@@ -54,9 +54,6 @@ public class StarredEventsListAdapter extends ArrayAdapter<Event>{
             viewHolder.location = (TextView) convertView.findViewById(R.id.location);
             viewHolder.status = (TextView)convertView.findViewById(R.id.status);
 
-            viewHolder.calendar = (ImageView)convertView.findViewById(R.id.calendar);
-            viewHolder.navigate = (ImageView)convertView.findViewById(R.id.navigate);
-
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

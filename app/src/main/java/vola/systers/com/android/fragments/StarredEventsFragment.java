@@ -140,7 +140,15 @@ public class StarredEventsFragment extends Fragment {
                     if (getContext()!=null){
                         eventListAdapter = new StarredEventsListAdapter(eventList,getContext());
                         eventsListView.setAdapter(eventListAdapter);
-
+                        eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Event selectedEvent = eventList.get(position);
+                                Intent intent = new Intent(getActivity(), EventDetailViewActivity.class);
+                                intent.putExtra("selectedEvent", selectedEvent);
+                                startActivity(intent);
+                            }
+                        });
                     }
                 }
                 @Override
