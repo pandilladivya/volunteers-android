@@ -2,6 +2,7 @@ package vola.systers.com.android.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -75,6 +76,7 @@ public class EventDetailViewActivity extends AppCompatActivity implements View.O
                 if(starredEvents.contains(eventId)){
                     Log.i("EVENT IDS", eventId);
                     fab.setAlpha(.5f);
+                    fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.emerald)));
                     fab.setClickable(false);
                 }
             }
